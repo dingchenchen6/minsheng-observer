@@ -25,6 +25,7 @@
 - `sources.json`
 - `policy_links.json`
 - `discussion_archive.json`
+- `social_hot_topics.json`
 - `evidence_records.json`
 - `polls.json`
 - `site_meta.json`
@@ -32,6 +33,7 @@
 ## 自动化
 
 - `scripts/refresh_data.py`: 刷新站点元数据、来源检查时间、热点归档，并尝试用 Crossref/OpenAlex 补充论文元数据
+- `scripts/fetch_social_topics.py`: 尝试抓取知乎/微博公开热榜；若触发鉴权或访客系统，则保留最近一次成功结果并公开标记抓取状态
 - `scripts/export_discussions.py`: 从 GitHub Discussions 导出公开讨论摘录到 `discussion_archive.json`
 - `.github/workflows/refresh-data.yml`: 定时刷新数据
 - `.github/workflows/export-discussions.yml`: 定时导出讨论归档

@@ -2,8 +2,8 @@
   "site_name": "民声 2.0",
   "site_subtitle": "数据新闻与公共议题研究实验站",
   "description": "围绕教育、医疗、住房、就业、养老、食品、科技与综合民生议题，连接权威统计、政策入口、论文证据与公共讨论。",
-  "last_updated": "2026-03-16T06:15:26.734882+00:00",
-  "last_updated_label": "2026年03月16日 07:15（本地构建时间）",
+  "last_updated": "2026-03-16T07:27:45.415793+00:00",
+  "last_updated_label": "2026年03月16日 08:27（本地构建时间）",
   "project_site": "https://dingchenchen6.github.io/minsheng-observer/",
   "repository": {
     "owner": "dingchenchen6",
@@ -23,8 +23,8 @@
     },
     {
       "label": "归档条目",
-      "value": "24",
-      "note": "热点快照、证据库、论文卡片与讨论摘录可检索"
+      "value": "38",
+      "note": "热点快照、证据库、论文卡片、讨论摘录与社媒热榜均可检索"
     },
     {
       "label": "自动化链路",
@@ -40,7 +40,8 @@
   "methodology_highlights": [
     "热点条目优先连接官方发布、公共热榜入口与站内归档，不把热搜截图当成证据本身。",
     "最新年度数值仅在能对齐到公开公报或部委发布时更新；拿不稳口径时保留旧值并明确给出最新官方入口。",
-    "Giscus 已写入 repo_id 和 category_id；如浏览器首次提示安装或授权，需要对 giscus GitHub App 做一次仓库授权。"
+    "Giscus 已写入 repo_id 和 category_id；如浏览器首次提示安装或授权，需要对 giscus GitHub App 做一次仓库授权。",
+    "知乎与微博热榜采用尽力抓取策略；若遇到鉴权、访客系统或公开接口失效，则保留最近一次成功或校准结果并公开显示受限状态。"
   ],
   "giscus": {
     "enabled": true,

@@ -11,7 +11,8 @@ const DATA_FILES = [
   'policy_links',
   'discussion_archive',
   'evidence_records',
-  'polls'
+  'polls',
+  'social_hot_topics'
 ];
 const TOPIC_NAMES = {
   all: '全部议题',
@@ -30,6 +31,7 @@ const TYPE_NAMES = {
   evidence: '证据库',
   paper: '论文卡片',
   discussion: '讨论摘录',
+  social: '社媒热榜',
   investigating: '调查中',
   context: '背景说明',
   exposed: '问题暴露'
@@ -164,6 +166,27 @@ function renderHome(data) {
       <p>${escapeHtml(item.summary)}</p>
     </article>
   `).join('');
+
+  const socialGrid = byId('socialSnapshotGrid');
+  const socialStatus = byId('socialStatusCards');
+  if (socialGrid && socialStatus) {
+    socialGrid.innerHTML = data.social_hot_topics.items.slice(0, 6).map((item) => html`
+      <article class="trend-card">
+        <div class="meta-line"><span>${escapeHtml(item.platform)}</span><span>${escapeHtml(getTopicName(item.topic))}</span><span>热度 ${item.heat}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开平台入口</a></div>
+      </article>
+    `).join('');
+    socialStatus.innerHTML = Object.entries(data.social_hot_topics.platform_status).map(([platform, status]) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(platform)}</small>
+        <h3>${escapeHtml(status.label)}</h3>
+        <p>${escapeHtml(status.note)}</p>
+        <div class="meta-line"><span>最近尝试：${formatDate(status.last_attempt)}</span><span>${status.last_success ? `最近成功：${formatDate(status.last_success)}` : '暂无成功抓取'}</span></div>
+      </article>
+    `).join('');
+  }
 
   byId('topicGrid').innerHTML = data.topics.map((topic) => html`
     <article class="topic-card" data-accent="${escapeHtml(topic.accent)}">
@@ -356,6 +379,28 @@ function renderTrends(data) {
       <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">打开公开入口</a></div>
     </article>
   `).join('');
+
+  const socialTrendGrid = byId('socialTrendGrid');
+  const socialPlatformStatus = byId('socialPlatformStatus');
+  if (socialTrendGrid && socialPlatformStatus) {
+    socialTrendGrid.innerHTML = data.social_hot_topics.items.map((item) => html`
+      <article class="trend-card">
+        <div class="meta-line"><span>${escapeHtml(item.platform)}</span><span>${escapeHtml(getTopicName(item.topic))}</span><span>${escapeHtml(item.snapshot_date)}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <div class="meta-line"><span>状态：${escapeHtml(item.fetch_status)}</span><span>热度 ${item.heat}</span></div>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开来源</a></div>
+      </article>
+    `).join('');
+    socialPlatformStatus.innerHTML = Object.entries(data.social_hot_topics.platform_status).map(([platform, status]) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(platform)}</small>
+        <h3>${escapeHtml(status.label)}</h3>
+        <p>${escapeHtml(status.note)}</p>
+        <div class="meta-line"><span>最近尝试：${formatDate(status.last_attempt)}</span><span>${status.last_success ? `最近成功：${formatDate(status.last_success)}` : '暂无成功抓取'}</span></div>
+      </article>
+    `).join('');
+  }
 }
 
 function renderEvidence(data) {
@@ -494,7 +539,17 @@ function buildArchiveIndex(data) {
     url: item.url,
     keywords: `${item.title} ${item.excerpt}`
   }));
-  return [...trendDocs, ...evidenceDocs, ...paperDocs, ...discussionDocs];
+  const socialDocs = data.social_hot_topics.items.map((item) => ({
+    id: item.id,
+    type: 'social',
+    topic: item.topic,
+    title: item.title,
+    summary: item.summary,
+    date: item.snapshot_date,
+    url: item.url,
+    keywords: `${item.title} ${item.summary} ${item.platform}`
+  }));
+  return [...trendDocs, ...evidenceDocs, ...paperDocs, ...discussionDocs, ...socialDocs];
 }
 
 function renderArchive(data) {
@@ -510,7 +565,7 @@ function renderArchive(data) {
   const meta = byId('archiveMeta');
 
   topicSelect.innerHTML = Object.entries(TOPIC_NAMES).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
-  typeSelect.innerHTML = Object.entries(TYPE_NAMES).filter(([key]) => ['all', 'trend', 'evidence', 'paper', 'discussion'].includes(key)).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
+  typeSelect.innerHTML = Object.entries(TYPE_NAMES).filter(([key]) => ['all', 'trend', 'evidence', 'paper', 'discussion', 'social'].includes(key)).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
 
   const params = new URLSearchParams(window.location.search);
   queryInput.value = params.get('q') || '';

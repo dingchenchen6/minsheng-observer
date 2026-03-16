@@ -1,0 +1,88 @@
+{
+  "updated_at": "2026-03-16T07:27:45.377949+00:00",
+  "note": "优先抓取知乎与微博公开热榜；若触发鉴权或访客系统，则保留最近一次成功结果并公开标注抓取状态。",
+  "platform_status": {
+    "zhihu": {
+      "status": "restricted",
+      "label": "抓取受限",
+      "note": "知乎公开 API 和页面触发鉴权，保留最近一次成功或校准结果。",
+      "last_attempt": "2026-03-16T07:27:45.396604+00:00",
+      "last_success": ""
+    },
+    "weibo": {
+      "status": "visitor_gate",
+      "label": "游客验证",
+      "note": "微博公开页触发访客系统或接口拒绝访问，保留最近一次成功或校准结果。",
+      "last_attempt": "2026-03-16T07:27:45.408986+00:00",
+      "last_success": ""
+    }
+  },
+  "items": [
+    {
+      "id": "weibo_seed_001",
+      "platform": "weibo",
+      "title": "延迟退休与家庭照护压力",
+      "summary": "围绕退休年龄、养老金和失能老人照护的复合议题。",
+      "topic": "elderly",
+      "heat": 91,
+      "url": "https://s.weibo.com/top/summary",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    },
+    {
+      "id": "weibo_seed_002",
+      "platform": "weibo",
+      "title": "预制菜标注与 12315 维权",
+      "summary": "食品标签、投诉处理速度和赔付机制是微博食品话题里最能形成情绪聚集的点。",
+      "topic": "food",
+      "heat": 84,
+      "url": "https://s.weibo.com/top/summary",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    },
+    {
+      "id": "weibo_seed_003",
+      "platform": "weibo",
+      "title": "基层医疗与医保体验",
+      "summary": "公众讨论会把基层承接能力、报销感受和大医院拥挤混合在一起。",
+      "topic": "healthcare",
+      "heat": 80,
+      "url": "https://s.weibo.com/top/summary",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    },
+    {
+      "id": "zhihu_seed_001",
+      "platform": "zhihu",
+      "title": "青年就业与岗位门槛",
+      "summary": "站内按公开热榜长期主题与最近社会讨论手工校准的观察条目。",
+      "topic": "employment",
+      "heat": 94,
+      "url": "https://www.zhihu.com/hot",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    },
+    {
+      "id": "zhihu_seed_002",
+      "platform": "zhihu",
+      "title": "保障性住房与城市更新",
+      "summary": "围绕保障房、城中村改造、租住成本和通勤压力的常驻高关注话题。",
+      "topic": "housing",
+      "heat": 86,
+      "url": "https://www.zhihu.com/hot",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    },
+    {
+      "id": "zhihu_seed_003",
+      "platform": "zhihu",
+      "title": "AI 对岗位任务的改变",
+      "summary": "比起抽象的“抢工作”，公众更关注具体岗位会先失去哪些任务。",
+      "topic": "technology",
+      "heat": 82,
+      "url": "https://www.zhihu.com/hot",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "seed"
+    }
+  ]
+}

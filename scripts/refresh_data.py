@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import os
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
@@ -143,7 +144,16 @@ def enrich_paper_metadata():
     save_json('papers.json', papers)
 
 
+def refresh_social_topics():
+    script = ROOT / 'scripts' / 'fetch_social_topics.py'
+    try:
+        subprocess.run(['python3', str(script)], cwd=ROOT, check=True)
+    except Exception as error:
+        print(f'social topic refresh skipped: {error}')
+
+
 def main():
+    refresh_social_topics()
     refresh_site_meta()
     refresh_sources()
     merge_current_trends_into_archive()

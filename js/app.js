@@ -107,6 +107,81 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function renderDiagnosticChips(containerId, items) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = items.map((item) => html`
+    <div class="diag-chip">
+      <span>${escapeHtml(item.label)}</span>
+      <strong>${escapeHtml(item.value)}</strong>
+    </div>
+  `).join('');
+}
+
+function configureChartDefaults() {
+  if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
+
+  const neonPlugin = {
+    id: 'cyberGlow',
+    beforeDatasetDraw(chart, args) {
+      const { ctx } = chart;
+      const dataset = chart.data.datasets[args.index] || {};
+      const color = dataset.borderColor || dataset.backgroundColor || CHART_PALETTE.cyan;
+      ctx.save();
+      ctx.shadowColor = Array.isArray(color) ? color[0] : color;
+      ctx.shadowBlur = chart.config.type === 'doughnut' ? 0 : 16;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 0;
+    },
+    afterDatasetDraw(chart) {
+      chart.ctx.restore();
+    },
+    afterDraw(chart) {
+      const { ctx, chartArea } = chart;
+      if (!chartArea) return;
+      const { left, right, top, bottom } = chartArea;
+      const corner = 14;
+      ctx.save();
+      ctx.strokeStyle = 'rgba(0, 217, 255, 0.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(left, top + corner);
+      ctx.lineTo(left, top);
+      ctx.lineTo(left + corner, top);
+      ctx.moveTo(right - corner, top);
+      ctx.lineTo(right, top);
+      ctx.lineTo(right, top + corner);
+      ctx.moveTo(left, bottom - corner);
+      ctx.lineTo(left, bottom);
+      ctx.lineTo(left + corner, bottom);
+      ctx.moveTo(right - corner, bottom);
+      ctx.lineTo(right, bottom);
+      ctx.lineTo(right, bottom - corner);
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
+
+  Chart.register(neonPlugin);
+  Chart.defaults.color = '#b6d7f4';
+  Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
+  Chart.defaults.font.size = 13;
+  Chart.defaults.plugins.legend.labels.color = '#e6f8ff';
+  Chart.defaults.plugins.legend.labels.boxWidth = 14;
+  Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(6, 15, 31, 0.92)';
+  Chart.defaults.plugins.tooltip.borderColor = 'rgba(0, 217, 255, 0.24)';
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
+  Chart.defaults.plugins.tooltip.bodyColor = '#b6f6ff';
+  Chart.defaults.scale.grid.color = 'rgba(0, 217, 255, 0.12)';
+  Chart.defaults.scale.border.color = 'rgba(0, 217, 255, 0.18)';
+  Chart.defaults.scale.ticks.color = '#9dc8ea';
+  Chart.defaults.elements.line.borderWidth = 2.5;
+  Chart.defaults.elements.point.radius = 3;
+  Chart.defaults.elements.point.hoverRadius = 5;
+  window.__cyberChartsConfigured = true;
+}
+
 async function fetchJson(name) {
   const response = await fetch(`data/${name}.json`, { cache: 'no-cache' });
   if (!response.ok) throw new Error(`Failed to load ${name}.json`);
@@ -423,6 +498,13 @@ function renderHome(data) {
       </div>
     `).join('');
   }
+
+  renderDiagnosticChips('heroDiagnostics', [
+    { label: 'SYNC', value: data.site_meta.last_updated_label || '更新中' },
+    { label: 'TRACK', value: `${data.trend_current.length} HOT` },
+    { label: 'ARCHIVE', value: `${data.trend_archive.length} LOGS` },
+    { label: 'MODE', value: 'CYBER DESK' }
+  ]);
 
   byId('trendTape').innerHTML = data.trend_current.map((item) => html`
     <article class="heat-item">
@@ -1285,6 +1367,13 @@ function renderTrends(data) {
   const rankingByTopic = Object.fromEntries((analysis.topic_rankings || []).map((item) => [item.topic, item]));
   const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
 
+  renderDiagnosticChips('trendHeroDiagnostics', [
+    { label: 'EDITION', value: ((analysis.express_brief || {}).edition_date_label || '更新中').replace('2026年', '26年') },
+    { label: 'SOCIAL', value: `${(analysis.capture_overview || {}).social_item_count || 0} SNAP` },
+    { label: 'SIGNAL', value: `${(analysis.signal_distribution || [])[0]?.count || 0} UP` },
+    { label: 'WATCH', value: `${activeWindows.length || ((data.editorial_watchlist || {}).windows || []).length} WINDOWS` }
+  ]);
+
   renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
   const trendEditionTitle = byId('trendEditionTitle');
   if (trendEditionTitle && analysis.express_brief) {
@@ -1543,6 +1632,13 @@ function renderExposure(data) {
   const caseLibrary = byId('exposureCaseLibrary');
   const routeTree = byId('exposureRouteTree');
   if (!digest || !summaryGrid || !topicList || !timeline || !caseGrid) return;
+
+  renderDiagnosticChips('exposureHeroDiagnostics', [
+    { label: 'FOCUS', value: digest.exposure_summary.focus_topic || '监测中' },
+    { label: 'CASES', value: `${digest.exposure_summary.exposed + digest.exposure_summary.investigating}` },
+    { label: 'ROUTES', value: `${(digest.complaint_routes || []).length}` },
+    { label: 'STATUS', value: 'RISK MAP' }
+  ]);
 
   summaryGrid.innerHTML = [
     { label: '问题条目', value: `${digest.exposure_summary.total}`, note: '当前证据库中的全部记录，包含问题暴露、调查中与背景说明。' },
@@ -2452,6 +2548,7 @@ function renderMethodology(data) {
 }
 
 async function init() {
+  configureChartDefaults();
   initChrome();
   initLiveInfoBar();
   const data = await loadData();

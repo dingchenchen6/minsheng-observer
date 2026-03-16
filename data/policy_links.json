@@ -1,0 +1,74 @@
+[
+  {
+    "id": "policy_edu",
+    "topic": "education",
+    "title": "教育部政策文件库",
+    "url": "https://www.moe.gov.cn/jyb_xxgk/moe_1777/moe_1778/",
+    "source_name": "教育部",
+    "label": "查政策原文"
+  },
+  {
+    "id": "policy_health",
+    "topic": "healthcare",
+    "title": "国家卫健委政策文件",
+    "url": "https://www.nhc.gov.cn/wjw/zcjd/list.shtml",
+    "source_name": "国家卫健委",
+    "label": "查医改政策"
+  },
+  {
+    "id": "policy_housing",
+    "topic": "housing",
+    "title": "中国政府网住房政策专题",
+    "url": "https://www.gov.cn/zhengce/",
+    "source_name": "中国政府网",
+    "label": "查政策动态"
+  },
+  {
+    "id": "policy_employment",
+    "topic": "employment",
+    "title": "人社部就业创业政策",
+    "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/",
+    "source_name": "人社部",
+    "label": "查就业政策"
+  },
+  {
+    "id": "policy_aging",
+    "topic": "elderly",
+    "title": "人社部养老保险政策",
+    "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/",
+    "source_name": "人社部",
+    "label": "查社保养老"
+  },
+  {
+    "id": "policy_food",
+    "topic": "food",
+    "title": "市场监管总局食品安全信息",
+    "url": "https://www.samr.gov.cn/spjgs/",
+    "source_name": "市场监管总局",
+    "label": "查食品监管"
+  },
+  {
+    "id": "policy_tech",
+    "topic": "technology",
+    "title": "中国政府网数字经济与人工智能政策",
+    "url": "https://www.gov.cn/zhengce/",
+    "source_name": "中国政府网",
+    "label": "查政策动态"
+  },
+  {
+    "id": "policy_livelihood",
+    "topic": "livelihood",
+    "title": "国家统计局统计公报与发布",
+    "url": "https://www.stats.gov.cn/sj/",
+    "source_name": "国家统计局",
+    "label": "查统计发布"
+  },
+  {
+    "id": "service_12315",
+    "topic": "food",
+    "title": "全国 12315 平台",
+    "url": "https://www.12315.cn/",
+    "source_name": "全国 12315 平台",
+    "label": "投诉举报入口"
+  }
+]

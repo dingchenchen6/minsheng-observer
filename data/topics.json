@@ -1,0 +1,251 @@
+[
+  {
+    "id": "education",
+    "label": "教育",
+    "emoji": "🎓",
+    "accent": "blue",
+    "summary": "围绕教育公平、升学压力、职业教育与家庭支出负担建立证据链。",
+    "hot_summary": "近期教育讨论与学区房、高考赋分、公办资源扩容密切相关。",
+    "indicators": [
+      { "label": "高等教育毛入学率", "value": "60.2%", "trend": "较 2015 年明显提升", "source": "国家统计局" },
+      { "label": "义务教育巩固率", "value": "95.7%", "trend": "总体保持高位", "source": "教育部" },
+      { "label": "教育经费投入", "value": "5.2 万亿元", "trend": "连续多年维持较高强度", "source": "教育部" }
+    ],
+    "chart": {
+      "title": "高等教育毛入学率变化",
+      "unit": "%",
+      "labels": ["2018", "2019", "2020", "2021", "2022", "2023"],
+      "datasets": [
+        { "label": "毛入学率", "data": [48.1, 51.6, 54.4, 57.8, 59.6, 60.2], "color": "#2563eb" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-01", "title": "关注教育资源均衡与县中发展", "summary": "地方政策观察开始更多强调基础教育资源均衡与县域中学质量建设。", "url": "https://www.moe.gov.cn/", "source_name": "教育部" }
+    ],
+    "takeaways": [
+      "教育议题需要把机会分配与家庭成本同时放进同一框架。",
+      "教育公平讨论常常与住房、人口流动和地区财政能力相互勾连。"
+    ],
+    "paper_ids": ["paper_education_01"],
+    "policy_link_ids": ["policy_edu"],
+    "discussion_ids": ["discussion_002"]
+  },
+  {
+    "id": "healthcare",
+    "label": "医疗",
+    "emoji": "🏥",
+    "accent": "red",
+    "summary": "关注基层首诊、医保报销、门诊统筹、药价和患者体验之间的关系。",
+    "hot_summary": "医保个账、门诊统筹和基层医疗承接能力持续是公共讨论核心。",
+    "indicators": [
+      { "label": "人均预期寿命", "value": "78.6 岁", "trend": "长期改善", "source": "国家卫健委" },
+      { "label": "基本医保覆盖率", "value": "95%+", "trend": "覆盖广但体验分化", "source": "国家卫健委" },
+      { "label": "年人均卫生费用", "value": "6,523 元", "trend": "持续上行", "source": "国家统计局" }
+    ],
+    "chart": {
+      "title": "人均卫生费用变化",
+      "unit": "元",
+      "labels": ["2018", "2019", "2020", "2021", "2022", "2023"],
+      "datasets": [
+        { "label": "人均卫生费用", "data": [4237, 4702, 5146, 5765, 6294, 6523], "color": "#dc2626" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-02", "title": "门诊统筹与基层服务能力再被置于同一讨论框架", "summary": "舆情显示，医保改革的感受度很大程度取决于基层医疗是否可达。", "url": "https://www.nhc.gov.cn/", "source_name": "国家卫健委" }
+    ],
+    "takeaways": [
+      "医保讨论需要区分支付政策、资源供给和患者体验三个层面。",
+      "基层医疗能力不足会放大公众对支付制度调整的不满。"
+    ],
+    "paper_ids": ["paper_health_01"],
+    "policy_link_ids": ["policy_health"],
+    "discussion_ids": ["discussion_001"]
+  },
+  {
+    "id": "housing",
+    "label": "住房",
+    "emoji": "🏠",
+    "accent": "amber",
+    "summary": "从房价收入比、保障性住房到通勤可达性，关注居住成本与城市机会结构。",
+    "hot_summary": "保障房、城中村改造和租住成本是住房议题中最容易形成共鸣的三类问题。",
+    "indicators": [
+      { "label": "全国房价收入比", "value": "9.2", "trend": "仍高于多数家庭舒适区", "source": "国家统计局" },
+      { "label": "城镇人均住房面积", "value": "41.76 平方米", "trend": "总量改善但质量分化", "source": "国家统计局" },
+      { "label": "租住压力反馈", "value": "高频", "trend": "在青年群体中特别明显", "source": "站内归档" }
+    ],
+    "chart": {
+      "title": "居民住房负担感变化（示意）",
+      "unit": "指数",
+      "labels": ["2019", "2020", "2021", "2022", "2023", "2024"],
+      "datasets": [
+        { "label": "住房成本压力指数", "data": [71, 73, 78, 80, 79, 81], "color": "#d97706" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-03", "title": "保障性住房与配套交通被放在一起评估", "summary": "讨论焦点不再只是“有没有房”，而是“住进去以后能否真正支持工作和生活”。", "url": "https://www.gov.cn/zhengce/", "source_name": "中国政府网" }
+    ],
+    "takeaways": [
+      "住房问题常常不是独立的居住问题，而是教育、通勤和职业机会的复合问题。",
+      "保障性住房的公众感知与分配透明度、地段和通勤成本高度相关。"
+    ],
+    "paper_ids": ["paper_housing_01"],
+    "policy_link_ids": ["policy_housing"],
+    "discussion_ids": ["discussion_003"]
+  },
+  {
+    "id": "technology",
+    "label": "科技",
+    "emoji": "💻",
+    "accent": "cyan",
+    "summary": "围绕 AI、数字经济、平台治理与劳动替代风险做跨领域观察。",
+    "hot_summary": "AI 应用扩张推动了生产率想象，也加剧了对岗位替代的现实担忧。",
+    "indicators": [
+      { "label": "互联网用户", "value": "10.92 亿", "trend": "覆盖面高", "source": "国家统计局" },
+      { "label": "5G 基站", "value": "338.4 万个", "trend": "基础设施扩张", "source": "国家统计局" },
+      { "label": "数字经济规模", "value": "50.2 万亿元", "trend": "继续扩张", "source": "国家统计局" }
+    ],
+    "chart": {
+      "title": "AI 讨论热度与岗位焦虑（站内观察）",
+      "unit": "指数",
+      "labels": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"],
+      "datasets": [
+        { "label": "AI 岗位焦虑指数", "data": [52, 54, 58, 63, 69, 76], "color": "#0891b2" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-04", "title": "AI 监管与产业应用同步升温", "summary": "一边是创新落地速度加快，一边是劳动影响评估和内容治理问题更频繁进入公共议程。", "url": "https://www.gov.cn/zhengce/", "source_name": "中国政府网" }
+    ],
+    "takeaways": [
+      "科技议题不应只讲产业规模，还要关注劳动替代与技能迁移。",
+      "AI 对岗位的影响更适合拆解到任务层面而不是岗位名义层面。"
+    ],
+    "paper_ids": ["paper_tech_01"],
+    "policy_link_ids": ["policy_tech"],
+    "discussion_ids": ["discussion_005"]
+  },
+  {
+    "id": "elderly",
+    "label": "养老",
+    "emoji": "👴",
+    "accent": "purple",
+    "summary": "把延迟退休、养老金可持续、长期照护与家庭照护压力放在同一张图上。",
+    "hot_summary": "近期养老讨论从退休年龄扩展到失能老人照护和护理资源不足。",
+    "indicators": [
+      { "label": "60 岁及以上人口占比", "value": "21%", "trend": "人口老龄化加深", "source": "国家统计局" },
+      { "label": "平均养老金感知", "value": "分化明显", "trend": "城乡差异仍突出", "source": "站内归档" },
+      { "label": "长期照护服务", "value": "供给偏紧", "trend": "需求快速释放", "source": "政策观察" }
+    ],
+    "chart": {
+      "title": "老龄议题关注重心变化（示意）",
+      "unit": "指数",
+      "labels": ["退休年龄", "养老金可持续", "长期照护", "失能老人照护", "家庭照护压力"],
+      "datasets": [
+        { "label": "近期讨论热度", "data": [91, 78, 68, 74, 71], "color": "#7c3aed" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-05", "title": "公众开始更关心照护服务，而不只是退休年龄", "summary": "养老议题进入服务供给和财政可持续并重的阶段。", "url": "https://www.mohrss.gov.cn/", "source_name": "人社部" }
+    ],
+    "takeaways": [
+      "老龄化议题不能只围绕养老金，长期照护与家庭支持同样关键。",
+      "不同职业群体对延迟退休的承受能力差异很大。"
+    ],
+    "paper_ids": ["paper_aging_01"],
+    "policy_link_ids": ["policy_aging"],
+    "discussion_ids": []
+  },
+  {
+    "id": "food",
+    "label": "食品",
+    "emoji": "🌾",
+    "accent": "green",
+    "summary": "连接粮食安全、食品监管、消费投诉与消费者知情权。",
+    "hot_summary": "预制菜标注、抽检结果公开和投诉处理效率是近期最敏感的食品议题。",
+    "indicators": [
+      { "label": "粮食总产量", "value": "6.95 亿吨", "trend": "连续多年保持高位", "source": "国家统计局" },
+      { "label": "食品安全抽检合格率", "value": "97.6%", "trend": "总体稳定", "source": "市场监管总局" },
+      { "label": "投诉入口需求", "value": "上升", "trend": "12315 链接访问价值更高", "source": "站内观察" }
+    ],
+    "chart": {
+      "title": "食品安全议题关注结构（示意）",
+      "unit": "%",
+      "labels": ["抽检合格", "标签透明", "投诉效率", "平台责任", "赔付机制"],
+      "datasets": [
+        { "label": "关注占比", "data": [19, 27, 22, 14, 18], "color": "#16a34a" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-06", "title": "食品议题从“合不合格”转向“是否充分标注和快速处置”", "summary": "消费体验与监管透明度一起决定公众信任。", "url": "https://www.samr.gov.cn/spjgs/", "source_name": "市场监管总局" }
+    ],
+    "takeaways": [
+      "抽检合格率只能说明一部分问题，投诉处理链路同样关键。",
+      "食品议题特别适合和 12315 办事入口一起展示。"
+    ],
+    "paper_ids": ["paper_food_01"],
+    "policy_link_ids": ["policy_food", "service_12315"],
+    "discussion_ids": ["discussion_004"]
+  },
+  {
+    "id": "employment",
+    "label": "就业",
+    "emoji": "💼",
+    "accent": "orange",
+    "summary": "围绕青年就业、结构错配、企业门槛与就业质量做持续跟踪。",
+    "hot_summary": "就业讨论正从“有没有岗位”延伸到“岗位质量”和“入场门槛是否合理”。",
+    "indicators": [
+      { "label": "城镇调查失业率", "value": "5.1%", "trend": "总体波动可控", "source": "国家统计局" },
+      { "label": "青年失业相关讨论", "value": "高热", "trend": "连续进入热点区", "source": "站内归档" },
+      { "label": "新增就业", "value": "1244 万人", "trend": "量与质需分开看", "source": "国家统计局" }
+    ],
+    "chart": {
+      "title": "青年就业讨论热度",
+      "unit": "指数",
+      "labels": ["2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03"],
+      "datasets": [
+        { "label": "站内热度", "data": [60, 62, 67, 71, 88, 96], "color": "#ea580c" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-07", "title": "就业政策观察更强调岗位质量与技能转换", "summary": "单纯增加岗位数量已不足以回应青年就业中的结构性压力。", "url": "https://www.mohrss.gov.cn/", "source_name": "人社部" }
+    ],
+    "takeaways": [
+      "青年就业难并不等于单一失业率问题，还包括门槛、行业景气度和转岗成本。",
+      "就业议题与教育扩张、AI 替代和城市生活成本高度联动。"
+    ],
+    "paper_ids": ["paper_employment_01"],
+    "policy_link_ids": ["policy_employment"],
+    "discussion_ids": ["discussion_002"]
+  },
+  {
+    "id": "livelihood",
+    "label": "民生",
+    "emoji": "🌆",
+    "accent": "pink",
+    "summary": "用综合视角连接收入、消费、城乡差距与主观生活感受。",
+    "hot_summary": "综合民生议题常常是多领域压力叠加后的结果，而不是单一指标的高低。",
+    "indicators": [
+      { "label": "居民人均可支配收入", "value": "39,218 元", "trend": "继续增长", "source": "国家统计局" },
+      { "label": "城乡收入差距", "value": "仍明显", "trend": "缩小但未消失", "source": "国家统计局" },
+      { "label": "生活成本压力", "value": "高频反馈", "trend": "年轻群体更敏感", "source": "站内归档" }
+    ],
+    "chart": {
+      "title": "城乡居民收入对比",
+      "unit": "元",
+      "labels": ["2018", "2019", "2020", "2021", "2022", "2023"],
+      "datasets": [
+        { "label": "城镇居民", "data": [39251, 42359, 43834, 47412, 49283, 51821], "color": "#db2777" },
+        { "label": "农村居民", "data": [14617, 16021, 17131, 18931, 20133, 21691], "color": "#be185d" }
+      ]
+    },
+    "policy_updates": [
+      { "date": "2026-03-08", "title": "综合民生关注从“收入是否增长”转向“生活是否真正轻松”", "summary": "收入、住房、育儿、养老与通勤等成本需要一起评估。", "url": "https://www.stats.gov.cn/", "source_name": "国家统计局" }
+    ],
+    "takeaways": [
+      "宏观收入增长并不自动转化为个体的轻松感。",
+      "综合民生模块适合作为跨议题入口，把多种压力并排展示。"
+    ],
+    "paper_ids": ["paper_livelihood_01"],
+    "policy_link_ids": ["policy_livelihood"],
+    "discussion_ids": []
+  }
+]

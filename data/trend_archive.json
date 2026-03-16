@@ -1,0 +1,200 @@
+[
+  {
+    "id": "archive_trend_005",
+    "snapshot_date": "2026-03-16",
+    "topic": "technology",
+    "title": "AI 替代岗位与技能升级话题持续发酵",
+    "summary": "站内观察到关于“岗位替代速度”“行业差异”和“转岗培训”的讨论频次显著增加。",
+    "heat_score": 78,
+    "source_links": [
+      {
+        "label": "B站热门入口",
+        "url": "https://www.bilibili.com/v/popular/all"
+      },
+      {
+        "label": "中国政府网政策入口",
+        "url": "https://www.gov.cn/zhengce/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_tech"
+    ],
+    "related_papers": [
+      "paper_tech_01"
+    ]
+  },
+  {
+    "id": "archive_trend_004",
+    "snapshot_date": "2026-03-16",
+    "topic": "food",
+    "title": "预制菜标注与食品安全投诉入口需求上升",
+    "summary": "相关讨论开始从“是否反感预制菜”转向“有没有充分标注”和“投诉后多久有结果”。",
+    "heat_score": 81,
+    "source_links": [
+      {
+        "label": "全国 12315 平台",
+        "url": "https://www.12315.cn/"
+      },
+      {
+        "label": "市场监管总局食品安全栏目",
+        "url": "https://www.samr.gov.cn/spjgs/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_food",
+      "service_12315"
+    ],
+    "related_papers": [
+      "paper_food_01"
+    ]
+  },
+  {
+    "id": "archive_trend_003",
+    "snapshot_date": "2026-03-16",
+    "topic": "housing",
+    "title": "保障性住房与城中村改造进入政策观察区",
+    "summary": "公众在支持扩大供给的同时，也更关注分配透明度、长期租住成本和通勤可达性。",
+    "heat_score": 86,
+    "source_links": [
+      {
+        "label": "中国政府网政策入口",
+        "url": "https://www.gov.cn/zhengce/"
+      },
+      {
+        "label": "知乎热榜入口",
+        "url": "https://www.zhihu.com/hot"
+      }
+    ],
+    "related_policy_links": [
+      "policy_housing"
+    ],
+    "related_papers": [
+      "paper_housing_01"
+    ]
+  },
+  {
+    "id": "archive_trend_002",
+    "snapshot_date": "2026-03-16",
+    "topic": "elderly",
+    "title": "延迟退休与养老服务承压持续交织",
+    "summary": "讨论不只聚焦退休年龄本身，还涉及养老金可持续、灵活就业参保和失能老人照护服务是否跟得上。",
+    "heat_score": 91,
+    "source_links": [
+      {
+        "label": "微博热搜入口",
+        "url": "https://s.weibo.com/top/summary"
+      },
+      {
+        "label": "人社部养老保险栏目",
+        "url": "https://www.mohrss.gov.cn/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_aging"
+    ],
+    "related_papers": [
+      "paper_aging_01"
+    ]
+  },
+  {
+    "id": "archive_trend_001",
+    "snapshot_date": "2026-03-16",
+    "topic": "employment",
+    "title": "高校毕业生与青年就业仍是本周高热议题",
+    "summary": "岗位数量和门槛要求仍是两条最突出的公共讨论主线。",
+    "heat_score": 96,
+    "source_links": [
+      {
+        "label": "知乎热榜入口",
+        "url": "https://www.zhihu.com/hot"
+      }
+    ],
+    "related_policy_links": [
+      "policy_employment"
+    ],
+    "related_papers": [
+      "paper_employment_01"
+    ]
+  },
+  {
+    "id": "archive_trend_002",
+    "snapshot_date": "2026-03-14",
+    "topic": "healthcare",
+    "title": "门诊统筹、医保个人账户与就医负担讨论回升",
+    "summary": "公众更关注报销比例、报销可解释性以及基层门诊可用性。",
+    "heat_score": 84,
+    "source_links": [
+      {
+        "label": "微博热搜入口",
+        "url": "https://s.weibo.com/top/summary"
+      }
+    ],
+    "related_policy_links": [
+      "policy_health"
+    ],
+    "related_papers": [
+      "paper_health_01"
+    ]
+  },
+  {
+    "id": "archive_trend_003",
+    "snapshot_date": "2026-03-12",
+    "topic": "education",
+    "title": "教育公平、招生机会与学区房的联动讨论增强",
+    "summary": "对教育资源均衡与升学公平的关注重新升温。",
+    "heat_score": 76,
+    "source_links": [
+      {
+        "label": "知乎热榜入口",
+        "url": "https://www.zhihu.com/hot"
+      }
+    ],
+    "related_policy_links": [
+      "policy_edu"
+    ],
+    "related_papers": [
+      "paper_education_01"
+    ]
+  },
+  {
+    "id": "archive_trend_004",
+    "snapshot_date": "2026-03-09",
+    "topic": "food",
+    "title": "预制菜标注与消费投诉渠道成为讨论焦点",
+    "summary": "围绕知情权、投诉流程和抽检结果公开程度的关注度增加。",
+    "heat_score": 79,
+    "source_links": [
+      {
+        "label": "全国 12315 平台",
+        "url": "https://www.12315.cn/"
+      }
+    ],
+    "related_policy_links": [
+      "service_12315",
+      "policy_food"
+    ],
+    "related_papers": [
+      "paper_food_01"
+    ]
+  },
+  {
+    "id": "archive_trend_005",
+    "snapshot_date": "2026-03-07",
+    "topic": "elderly",
+    "title": "居家养老喘息服务与长期照护资源短缺进入公共视野",
+    "summary": "延迟退休之外，照护人压力和服务供给不足也逐步上升为热点。",
+    "heat_score": 72,
+    "source_links": [
+      {
+        "label": "中国政府网政策入口",
+        "url": "https://www.gov.cn/zhengce/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_aging"
+    ],
+    "related_papers": [
+      "paper_aging_01"
+    ]
+  }
+]

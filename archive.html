@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>归档检索 | 民声 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="archive">
+  <header class="site-header"><div class="shell nav-shell"><a class="brand" href="index.html"><span class="brand-mark">民声</span><span class="brand-sub">Minsheng Observer</span></a><button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button><nav class="site-nav" id="siteNav"><a href="index.html">首页</a><a href="analysis.html">议题分析</a><a href="trends.html">热点追踪</a><a href="evidence.html">证据库</a><a href="discuss.html">讨论与弹幕</a><a href="archive.html" class="active">归档检索</a><a href="polls.html">轻投票</a><a href="methodology.html">方法说明</a></nav></div></header>
+  <main>
+    <section class="page-hero"><div class="shell narrow"><span class="eyebrow">归档检索</span><h1>旧记录也能搜、能筛、能分享链接</h1><p>支持关键词、议题、类型、日期与排序，结果来自热点快照、证据库、论文卡片和讨论摘录。</p></div></section>
+    <section class="section tone-paper"><div class="shell"><form class="search-panel" id="archiveSearchForm"><input id="searchQuery" name="q" type="search" placeholder="搜索关键词，例如 就业、医保、12315、AI"><select id="searchTopic" name="topic"></select><select id="searchType" name="type"></select><input id="searchFrom" name="from" type="date"><input id="searchTo" name="to" type="date"><select id="searchSort" name="sort"><option value="newest">最新优先</option><option value="oldest">最早优先</option><option value="relevance">关键词优先</option></select><button class="button primary" type="submit">检索</button></form><div class="search-meta" id="archiveMeta"></div><div class="archive-results" id="archiveResults"></div></div></section>
+  </main>
+  <footer class="site-footer" id="siteFooter"></footer><button class="backtop" id="backTop" aria-label="返回顶部">↑</button><script src="js/app.js"></script>
+</body>
+</html>

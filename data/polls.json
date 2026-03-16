@@ -1,0 +1,38 @@
+[
+  {
+    "id": "poll_education_1",
+    "topic": "education",
+    "question": "你认为当前最该优先补齐的教育短板是什么？",
+    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+    "options": [
+      { "id": "a", "label": "区域与城乡资源差距", "votes": 324 },
+      { "id": "b", "label": "升学竞争与内卷压力", "votes": 287 },
+      { "id": "c", "label": "高等教育与就业脱节", "votes": 191 },
+      { "id": "d", "label": "家庭教育成本过高", "votes": 166 }
+    ]
+  },
+  {
+    "id": "poll_health_1",
+    "topic": "healthcare",
+    "question": "你最希望医疗改革优先改善什么？",
+    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+    "options": [
+      { "id": "a", "label": "基层诊疗能力", "votes": 302 },
+      { "id": "b", "label": "医保报销与费用透明度", "votes": 351 },
+      { "id": "c", "label": "挂号与等待时间", "votes": 278 },
+      { "id": "d", "label": "医患沟通与体验", "votes": 94 }
+    ]
+  },
+  {
+    "id": "poll_employment_1",
+    "topic": "employment",
+    "question": "青年就业难最主要的压力来自哪里？",
+    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+    "options": [
+      { "id": "a", "label": "岗位数量不足", "votes": 318 },
+      { "id": "b", "label": "要求与经验门槛过高", "votes": 406 },
+      { "id": "c", "label": "专业与岗位错配", "votes": 233 },
+      { "id": "d", "label": "期望和现实不匹配", "votes": 119 }
+    ]
+  }
+]

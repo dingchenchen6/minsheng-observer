@@ -1,0 +1,110 @@
+[
+  {
+    "id": "stats",
+    "name": "国家统计局",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.stats.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "宏观经济、人口、就业、收入、粮食等核心统计入口。"
+  },
+  {
+    "id": "moe",
+    "name": "教育部",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.moe.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "教育统计、政策文件、招生考试与职业教育入口。"
+  },
+  {
+    "id": "nhc",
+    "name": "国家卫生健康委员会",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.nhc.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "卫生健康统计、公共卫生和医改政策入口。"
+  },
+  {
+    "id": "mohrss",
+    "name": "人力资源和社会保障部",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.mohrss.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "就业、社保、养老金和劳动关系政策入口。"
+  },
+  {
+    "id": "samr",
+    "name": "国家市场监督管理总局",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.samr.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "食品安全、消费维权、市场监管与抽检信息入口。"
+  },
+  {
+    "id": "12315",
+    "name": "全国 12315 平台",
+    "category": "service",
+    "authority_level": "A",
+    "url": "https://www.12315.cn/",
+    "last_checked": "2026-03-16",
+    "note": "消费者投诉、举报、咨询和维权办事入口。"
+  },
+  {
+    "id": "crossref",
+    "name": "Crossref API",
+    "category": "research-metadata",
+    "authority_level": "B",
+    "url": "https://api.crossref.org/",
+    "last_checked": "2026-03-16",
+    "note": "优先用于 DOI 元数据补全。"
+  },
+  {
+    "id": "openalex",
+    "name": "OpenAlex API",
+    "category": "research-metadata",
+    "authority_level": "B",
+    "url": "https://api.openalex.org/",
+    "last_checked": "2026-03-16",
+    "note": "作为 Crossref 的补充来源，用于论文摘要、期刊与作者信息兜底。"
+  },
+  {
+    "id": "weibo-hot",
+    "name": "微博热搜",
+    "category": "public-link",
+    "authority_level": "C",
+    "url": "https://s.weibo.com/top/summary",
+    "last_checked": "2026-03-16",
+    "note": "仅保留公开入口链接与站内快照，不做高频抓取。"
+  },
+  {
+    "id": "zhihu-hot",
+    "name": "知乎热榜",
+    "category": "public-link",
+    "authority_level": "C",
+    "url": "https://www.zhihu.com/hot",
+    "last_checked": "2026-03-16",
+    "note": "作为公共讨论入口，不直接声明站内热度等同平台热度。"
+  },
+  {
+    "id": "bilibili-hot",
+    "name": "B站热搜",
+    "category": "public-link",
+    "authority_level": "C",
+    "url": "https://www.bilibili.com/v/popular/all",
+    "last_checked": "2026-03-16",
+    "note": "视频平台热点的公开入口。"
+  },
+  {
+    "id": "gov-cn",
+    "name": "中国政府网",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "国务院政策文件与政策解读汇总入口。"
+  }
+]

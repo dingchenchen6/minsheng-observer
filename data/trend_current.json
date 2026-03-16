@@ -1,0 +1,73 @@
+[
+  {
+    "id": "trend_001",
+    "topic": "employment",
+    "title": "高校毕业生与青年就业仍是本周高热议题",
+    "summary": "从招聘门槛、岗位结构到实习转正率，公共讨论的核心问题仍然集中在“岗位不足”和“要求过高”的双重压力。",
+    "heat_score": 96,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      { "label": "知乎热榜入口", "url": "https://www.zhihu.com/hot" },
+      { "label": "微博热搜入口", "url": "https://s.weibo.com/top/summary" },
+      { "label": "人社部就业政策", "url": "https://www.mohrss.gov.cn/" }
+    ],
+    "related_policy_links": ["policy_employment"],
+    "related_papers": ["paper_employment_01"]
+  },
+  {
+    "id": "trend_002",
+    "topic": "elderly",
+    "title": "延迟退休与养老服务承压持续交织",
+    "summary": "讨论不只聚焦退休年龄本身，还涉及养老金可持续、灵活就业参保和失能老人照护服务是否跟得上。",
+    "heat_score": 91,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      { "label": "微博热搜入口", "url": "https://s.weibo.com/top/summary" },
+      { "label": "人社部养老保险栏目", "url": "https://www.mohrss.gov.cn/" }
+    ],
+    "related_policy_links": ["policy_aging"],
+    "related_papers": ["paper_aging_01"]
+  },
+  {
+    "id": "trend_003",
+    "topic": "housing",
+    "title": "保障性住房与城中村改造进入政策观察区",
+    "summary": "公众在支持扩大供给的同时，也更关注分配透明度、长期租住成本和通勤可达性。",
+    "heat_score": 86,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      { "label": "中国政府网政策入口", "url": "https://www.gov.cn/zhengce/" },
+      { "label": "知乎热榜入口", "url": "https://www.zhihu.com/hot" }
+    ],
+    "related_policy_links": ["policy_housing"],
+    "related_papers": ["paper_housing_01"]
+  },
+  {
+    "id": "trend_004",
+    "topic": "food",
+    "title": "预制菜标注与食品安全投诉入口需求上升",
+    "summary": "相关讨论开始从“是否反感预制菜”转向“有没有充分标注”和“投诉后多久有结果”。",
+    "heat_score": 81,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      { "label": "全国 12315 平台", "url": "https://www.12315.cn/" },
+      { "label": "市场监管总局食品安全栏目", "url": "https://www.samr.gov.cn/spjgs/" }
+    ],
+    "related_policy_links": ["policy_food", "service_12315"],
+    "related_papers": ["paper_food_01"]
+  },
+  {
+    "id": "trend_005",
+    "topic": "technology",
+    "title": "AI 替代岗位与技能升级话题持续发酵",
+    "summary": "站内观察到关于“岗位替代速度”“行业差异”和“转岗培训”的讨论频次显著增加。",
+    "heat_score": 78,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      { "label": "B站热门入口", "url": "https://www.bilibili.com/v/popular/all" },
+      { "label": "中国政府网政策入口", "url": "https://www.gov.cn/zhengce/" }
+    ],
+    "related_policy_links": ["policy_tech"],
+    "related_papers": ["paper_tech_01"]
+  }
+]

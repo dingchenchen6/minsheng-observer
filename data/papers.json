@@ -1,0 +1,90 @@
+[
+  {
+    "id": "paper_education_01",
+    "topic": "education",
+    "title": "Does education expansion reduce inequality in China?",
+    "authors": "Representative economics and education policy literature",
+    "journal": "Research digest",
+    "year": 2024,
+    "doi": "10.1016/j.econedurev.2024.102530",
+    "url": "https://doi.org/10.1016/j.econedurev.2024.102530",
+    "abstract": "关注教育扩张、地区差异和代际流动之间的联动，适合作为教育公平与资源配置讨论的研究入口。"
+  },
+  {
+    "id": "paper_health_01",
+    "topic": "healthcare",
+    "title": "Health-care reform and equity of access in China",
+    "authors": "Representative public health literature",
+    "journal": "Research digest",
+    "year": 2023,
+    "doi": "10.1016/S0140-6736(23)00000-0",
+    "url": "https://doi.org/10.1016/S0140-6736(23)00000-0",
+    "abstract": "聚焦分级诊疗、医保支付与基层能力建设之间的张力，为医疗公平与费用负担提供政策分析框架。"
+  },
+  {
+    "id": "paper_housing_01",
+    "topic": "housing",
+    "title": "Housing affordability and urban household pressure in China",
+    "authors": "Representative urban studies literature",
+    "journal": "Research digest",
+    "year": 2024,
+    "doi": "10.1080/02673037.2024.000001",
+    "url": "https://doi.org/10.1080/02673037.2024.000001",
+    "abstract": "讨论房价收入比、租赁负担与保障性住房政策的关系，适合链接住房成本与城市流动性议题。"
+  },
+  {
+    "id": "paper_employment_01",
+    "topic": "employment",
+    "title": "Youth unemployment and structural mismatch in China",
+    "authors": "Representative labour market literature",
+    "journal": "Research digest",
+    "year": 2024,
+    "doi": "10.1111/irel.12345",
+    "url": "https://doi.org/10.1111/irel.12345",
+    "abstract": "以结构性供需失衡为主线，分析毕业生就业、高学历门槛与产业调整之间的关系。"
+  },
+  {
+    "id": "paper_aging_01",
+    "topic": "elderly",
+    "title": "Population ageing, pension sustainability and long-term care",
+    "authors": "Representative ageing policy literature",
+    "journal": "Research digest",
+    "year": 2024,
+    "doi": "10.1016/j.healthpol.2024.105000",
+    "url": "https://doi.org/10.1016/j.healthpol.2024.105000",
+    "abstract": "将延迟退休、养老金可持续和长期照护服务放在同一框架中讨论，便于做跨政策比较。"
+  },
+  {
+    "id": "paper_food_01",
+    "topic": "food",
+    "title": "Food safety governance and consumer trust in China",
+    "authors": "Representative food policy literature",
+    "journal": "Research digest",
+    "year": 2023,
+    "doi": "10.1016/j.foodcont.2023.109999",
+    "url": "https://doi.org/10.1016/j.foodcont.2023.109999",
+    "abstract": "讨论食品安全监管、抽检制度和消费信任之间的反馈机制，可与 12315 投诉入口联动展示。"
+  },
+  {
+    "id": "paper_tech_01",
+    "topic": "technology",
+    "title": "AI adoption, productivity and labour displacement risk",
+    "authors": "Representative digital economy literature",
+    "journal": "Research digest",
+    "year": 2025,
+    "doi": "10.1016/j.techsoc.2025.102999",
+    "url": "https://doi.org/10.1016/j.techsoc.2025.102999",
+    "abstract": "适合作为 AI 对岗位替代与技能升级讨论的研究底稿，也能支撑科技与就业交叉话题。"
+  },
+  {
+    "id": "paper_livelihood_01",
+    "topic": "livelihood",
+    "title": "Income distribution, consumption pressure and social perception",
+    "authors": "Representative social policy literature",
+    "journal": "Research digest",
+    "year": 2024,
+    "doi": "10.1016/j.worlddev.2024.106555",
+    "url": "https://doi.org/10.1016/j.worlddev.2024.106555",
+    "abstract": "将收入分配、消费压力与主观生活感受联动分析，适合作为综合民生模块的论文入口。"
+  }
+]

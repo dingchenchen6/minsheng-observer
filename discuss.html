@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>讨论与弹幕 | 民声 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="discuss">
+  <header class="site-header"><div class="shell nav-shell"><a class="brand" href="index.html"><span class="brand-mark">民声</span><span class="brand-sub">Minsheng Observer</span></a><button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button><nav class="site-nav" id="siteNav"><a href="index.html">首页</a><a href="analysis.html">议题分析</a><a href="trends.html">热点追踪</a><a href="evidence.html">证据库</a><a href="discuss.html" class="active">讨论与弹幕</a><a href="archive.html">归档检索</a><a href="polls.html">轻投票</a><a href="methodology.html">方法说明</a></nav></div></header>
+  <main>
+    <section class="page-hero"><div class="shell narrow"><span class="eyebrow">讨论与弹幕</span><h1>站内展示公开摘录，正式留言走 GitHub Discussions</h1><p>这样可以保持 Pages 的纯静态部署，同时保留可持续的讨论归档和外部可访问入口。</p></div></section>
+    <section class="section tone-ink"><div class="shell"><div class="section-head compact light"><span class="eyebrow">弹幕墙</span><h2>最近公开摘录</h2></div><div class="danmu-stage large" id="discussionDanmu"></div></div></section>
+    <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">精选摘录</span><h2>可搜索的观点归档</h2></div><div class="stack-list" id="discussionCards"></div></div><div><div class="section-head compact"><span class="eyebrow">正式留言区</span><h2>GitHub Discussions / Giscus</h2></div><div class="discussion-shell"><div class="note-card" id="discussionIntro"></div><div id="giscusContainer"></div></div></div></div></section>
+  </main>
+  <footer class="site-footer" id="siteFooter"></footer><button class="backtop" id="backTop" aria-label="返回顶部">↑</button><script src="js/app.js"></script>
+</body>
+</html>

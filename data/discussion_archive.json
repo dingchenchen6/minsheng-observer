@@ -1,0 +1,57 @@
+[
+  {
+    "id": "discussion_001",
+    "source_type": "featured",
+    "title": "医疗讨论摘录",
+    "excerpt": "基层医院能不能真正承担起首诊功能，关键不只是设备，而是医生培养、药品可得性和患者信任。",
+    "topic": "healthcare",
+    "created_at": "2026-03-15T09:00:00+08:00",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+    "likes": 34,
+    "featured": true
+  },
+  {
+    "id": "discussion_002",
+    "source_type": "featured",
+    "title": "就业讨论摘录",
+    "excerpt": "很多岗位名义上招应届生，实际上要求有两三段高质量实习，这本身就是隐形门槛。",
+    "topic": "employment",
+    "created_at": "2026-03-14T18:20:00+08:00",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+    "likes": 52,
+    "featured": true
+  },
+  {
+    "id": "discussion_003",
+    "source_type": "latest",
+    "title": "住房讨论摘录",
+    "excerpt": "保障房有没有真正建在可通勤的位置，直接影响年轻人对这项政策的实际感受。",
+    "topic": "housing",
+    "created_at": "2026-03-13T20:00:00+08:00",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+    "likes": 21,
+    "featured": false
+  },
+  {
+    "id": "discussion_004",
+    "source_type": "latest",
+    "title": "食品讨论摘录",
+    "excerpt": "对消费者来说，最重要的不只是抽检合格率，而是出问题后能不能快速追责和赔付。",
+    "topic": "food",
+    "created_at": "2026-03-12T11:30:00+08:00",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+    "likes": 18,
+    "featured": false
+  },
+  {
+    "id": "discussion_005",
+    "source_type": "latest",
+    "title": "科技讨论摘录",
+    "excerpt": "AI 真正改变的不是一个岗位是否消失，而是岗位里哪些任务先被拆分和自动化。",
+    "topic": "technology",
+    "created_at": "2026-03-11T09:15:00+08:00",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+    "likes": 27,
+    "featured": false
+  }
+]

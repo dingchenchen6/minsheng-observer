@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="民声 2.0：连接权威统计、政策入口、论文证据与公共讨论的中国社会经济观察站。">
+  <title>民声 2.0 | 数据新闻与公共议题研究实验站</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <div class="shell nav-shell">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">民声</span>
+        <span class="brand-sub">Minsheng Observer</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button>
+      <nav class="site-nav" id="siteNav">
+        <a href="index.html" class="active">首页</a>
+        <a href="analysis.html">议题分析</a>
+        <a href="trends.html">热点追踪</a>
+        <a href="evidence.html">证据库</a>
+        <a href="discuss.html">讨论与弹幕</a>
+        <a href="archive.html">归档检索</a>
+        <a href="polls.html">轻投票</a>
+        <a href="methodology.html">方法说明</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero news-hero">
+      <div class="shell hero-grid">
+        <div>
+          <span class="eyebrow">数据新闻与公共议题研究实验站</span>
+          <h1>把热点、数据、政策与研究<br>放进同一条证据链</h1>
+          <p class="hero-copy">民声 2.0 以静态站的稳定性承载动态公共议题：一边接权威统计、部委政策与论文 DOI，一边把网络热议、讨论摘录和历史快照做成可追溯的归档。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="analysis.html">查看议题分析</a>
+            <a class="button ghost" href="discuss.html">进入讨论区</a>
+          </div>
+        </div>
+        <aside class="hero-panel" id="heroStats"></aside>
+      </div>
+    </section>
+
+    <section class="signal-strip section-tight">
+      <div class="shell">
+        <div class="section-head compact">
+          <span class="eyebrow">本周变化</span>
+          <h2>编辑台信号条</h2>
+        </div>
+        <div class="bullet-stream" id="weeklyChanges"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell two-col">
+        <div>
+          <div class="section-head">
+            <span class="eyebrow">热点信号</span>
+            <h2>当前最热的公共议题</h2>
+          </div>
+          <div class="heat-tape" id="trendTape"></div>
+        </div>
+        <div>
+          <div class="section-head">
+            <span class="eyebrow">时间线</span>
+            <h2>最近更新</h2>
+          </div>
+          <div class="timeline-list" id="updateTimeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tone-paper">
+      <div class="shell">
+        <div class="section-head">
+          <span class="eyebrow">核心议题</span>
+          <h2>八个议题入口</h2>
+          <p>每个议题都按照“热点摘要 - 核心指标 - 政策 - 论文 - 讨论”组织。</p>
+        </div>
+        <div class="topic-grid" id="topicGrid"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="shell split-grid">
+        <div>
+          <div class="section-head compact">
+            <span class="eyebrow">权威入口</span>
+            <h2>官方数据与办事链接</h2>
+          </div>
+          <div class="source-grid" id="sourceGrid"></div>
+        </div>
+        <div>
+          <div class="section-head compact">
+            <span class="eyebrow">研究与政策</span>
+            <h2>可直接跳转的证据卡片</h2>
+          </div>
+          <div class="stack-list" id="paperPolicyCards"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tone-ink">
+      <div class="shell split-grid inverted">
+        <div>
+          <div class="section-head compact light">
+            <span class="eyebrow">讨论弹幕墙</span>
+            <h2>来自公开归档的观点摘录</h2>
+            <p>弹幕展示的是公开讨论归档，不是匿名即时聊天室。</p>
+          </div>
+          <div class="danmu-stage" id="danmuStage"></div>
+        </div>
+        <div>
+          <div class="section-head compact light">
+            <span class="eyebrow">方法提示</span>
+            <h2>这不是“抓热搜机器人”</h2>
+          </div>
+          <div class="method-card" id="methodHighlights"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="siteFooter"></footer>
+  <button class="backtop" id="backTop" aria-label="返回顶部">↑</button>
+  <script src="js/app.js"></script>
+</body>
+</html>

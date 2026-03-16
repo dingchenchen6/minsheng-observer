@@ -1,0 +1,59 @@
+{
+  "site_name": "民声 2.0",
+  "site_subtitle": "数据新闻与公共议题研究实验站",
+  "description": "围绕教育、医疗、住房、就业、养老、食品、科技与综合民生议题，连接权威统计、政策入口、论文证据与公共讨论。",
+  "last_updated": "2026-03-16T04:36:02.651387+00:00",
+  "last_updated_label": "2026年03月16日 05:36（本地构建时间）",
+  "project_site": "https://dingchenchen6.github.io/minsheng-observer/",
+  "repository": {
+    "owner": "dingchenchen6",
+    "name": "minsheng-observer",
+    "discussions_url": "https://github.com/dingchenchen6/minsheng-observer/discussions"
+  },
+  "hero_stats": [
+    {
+      "label": "重点议题",
+      "value": "8",
+      "note": "覆盖教育、医疗、住房、就业、养老、食品、科技与综合民生"
+    },
+    {
+      "label": "来源注册表",
+      "value": "12",
+      "note": "官方部门、平台与论文元数据服务统一登记"
+    },
+    {
+      "label": "历史记录",
+      "value": "18",
+      "note": "热点快照、辟谣记录、论文卡片与讨论摘录可检索"
+    },
+    {
+      "label": "更新机制",
+      "value": "3",
+      "note": "数据刷新、讨论导出、Pages 发布三条自动化工作流"
+    }
+  ],
+  "weekly_changes": [
+    "就业与延迟退休议题仍处于高热区，相关政策检索量持续高位。",
+    "保障性住房与城中村改造继续上榜，公众同时关注准入规则与长期可负担性。",
+    "医保、12315 与食品安全投诉入口的外链需求增加，站点强化了办事型导航。"
+  ],
+  "methodology_highlights": [
+    "热点分为“公开热榜链接”与“站内归档快照”，避免高风险自动抓取。",
+    "官方指标默认展示最近公开统计口径与说明，不伪装为实时政务接口。",
+    "留言区采用 GitHub Discussions/Giscus，站内弹幕只展示公开归档摘录。"
+  ],
+  "giscus": {
+    "enabled": false,
+    "repo": "dingchenchen6/minsheng-observer",
+    "repo_id": "",
+    "category": "General",
+    "category_id": "",
+    "mapping": "pathname",
+    "strict": "0",
+    "reactions_enabled": "1",
+    "emit_metadata": "0",
+    "input_position": "top",
+    "theme": "light",
+    "lang": "zh-CN"
+  }
+}

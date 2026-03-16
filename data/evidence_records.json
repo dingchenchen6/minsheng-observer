@@ -1,0 +1,54 @@
+[
+  {
+    "id": "evidence_001",
+    "topic": "food",
+    "type": "investigating",
+    "title": "预制菜标注争议：核心问题正在从“喜不喜欢”转向“是否充分告知”",
+    "claim": "网上很多讨论把争议简化为“预制菜是否应该被全面禁止”。",
+    "verdict": "问题更接近消费知情权、标签规范和投诉处理效率，而不是单一的“禁或不禁”。",
+    "published_at": "2026-03-16",
+    "summary": "从 12315 投诉入口、监管部门信息发布与社交讨论来看，公众更在意标注、责任归属和抽检透明度。",
+    "source_ids": ["12315", "samr"],
+    "policy_link_ids": ["service_12315", "policy_food"],
+    "paper_ids": ["paper_food_01"],
+    "related_trend_ids": ["trend_004"],
+    "history": [
+      "2026-03-12：将记录从“热点条目”升级为证据库条目。",
+      "2026-03-16：补充 12315 办事入口和监管线索说明。"
+    ]
+  },
+  {
+    "id": "evidence_002",
+    "topic": "healthcare",
+    "type": "context",
+    "title": "医保讨论为何反复升温：个人账户、门诊统筹与就医体验是三个不同问题",
+    "claim": "一些社交讨论把所有不满都归因为“医保改革失败”。",
+    "verdict": "更准确的拆解方式是区分账户变动、门诊可及性和基层服务承接能力。",
+    "published_at": "2026-03-14",
+    "summary": "同样是对医保不满，背后可能是政策误解，也可能是真实的就医可及性不足，需要分层讨论。",
+    "source_ids": ["nhc"],
+    "policy_link_ids": ["policy_health"],
+    "paper_ids": ["paper_health_01"],
+    "related_trend_ids": ["archive_trend_002"],
+    "history": [
+      "2026-03-14：创建首版背景说明。"
+    ]
+  },
+  {
+    "id": "evidence_003",
+    "topic": "employment",
+    "type": "exposed",
+    "title": "就业门槛与“隐性经验要求”成为校招反馈中的高频问题",
+    "claim": "很多企业声称校招岗位只看潜力，不会设置额外门槛。",
+    "verdict": "站内归档讨论显示，高强度实习经历、院校筛选和非公开加分项仍然普遍存在。",
+    "published_at": "2026-03-13",
+    "summary": "这类问题不一定都构成违法，但已明显影响青年就业获得感。",
+    "source_ids": ["mohrss"],
+    "policy_link_ids": ["policy_employment"],
+    "paper_ids": ["paper_employment_01"],
+    "related_trend_ids": ["trend_001"],
+    "history": [
+      "2026-03-13：由公共讨论整理为证据库条目。"
+    ]
+  }
+]

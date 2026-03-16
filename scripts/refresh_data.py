@@ -304,10 +304,35 @@ def build_hotspot_analysis():
         },
     ]
 
+    weekly_sections = []
+    for item in topic_rankings[:4]:
+        weekly_sections.append({
+            'topic': item['topic'],
+            'label': item['label'],
+            'headline': f"{item['label']}进入{item['signal_label']}区间",
+            'summary': f"综合分 {item['combined_score']}，当前热度 {item['current_heat']}，社媒均值 {item['social_average_heat']}，历史差值 {item['delta_vs_archive']:+.1f}。",
+            'action': item['watch_reason'],
+        })
+
+    strongest_support = max(topic_rankings, key=lambda item: item['evidence_count'] + item['report_count'] + item['discussion_count'], default=None)
+    poll_candidate = max(topic_rankings, key=lambda item: item['social_total_heat'] + item['current_heat'], default=None)
+    weekly_report = {
+        'headline': f"本周最值得持续追踪的是“{top_topic['label']}”" if top_topic else '本周热点周报生成中',
+        'summary': '把当前热点、社媒快照、历史档案、证据库、讨论摘录和报告入口一起看，能更快判断哪些议题只是短时情绪，哪些已经进入结构性关注阶段。',
+        'sections': weekly_sections,
+        'editor_notes': [
+            f"当前监测面已覆盖 {len(topics)} 个议题、{len(social.get('items', []))} 条社媒快照和 {len(archive)} 条历史档案。",
+            f"证据支撑最厚的议题是“{strongest_support['label']}”。" if strongest_support else '证据支撑议题正在统计。',
+            f"最适合和站内投票联动观察的议题是“{poll_candidate['label']}”。" if poll_candidate else '投票联动议题正在统计。',
+            '平台公开入口受限时，周报会明确保留“回退层”和“人工校准”说明，不把平台限制包装成实时抓取成功。'
+        ]
+    }
+
     payload = {
         'updated_at': iso_now(),
         'summary_cards': summary_cards,
         'lead_brief': lead_brief,
+        'weekly_report': weekly_report,
         'topic_rankings': topic_rankings,
         'platform_breakdown': platform_breakdown,
         'capture_overview': {

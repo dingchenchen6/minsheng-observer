@@ -364,6 +364,7 @@ function pickFeaturedReports(data, topicIds = [], limit = 6) {
 function renderHome(data) {
   const heroBriefGrid = byId('heroBriefGrid');
   const topSignal = (((data || {}).hotspot_analysis || {}).topic_rankings || [])[0];
+  const weeklyReport = ((data || {}).hotspot_analysis || {}).weekly_report || {};
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -373,6 +374,11 @@ function renderHome(data) {
   `).join('');
 
   byId('weeklyChanges').innerHTML = data.site_meta.weekly_changes.map((item) => `<div class="bullet-item">${escapeHtml(item)}</div>`).join('');
+  renderWeeklyReport('homeWeeklyBrief', weeklyReport, 2);
+  const homeWeeklyList = byId('homeWeeklyList');
+  if (homeWeeklyList) {
+    homeWeeklyList.innerHTML = (weeklyReport.editor_notes || []).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
 
   if (heroBriefGrid) {
     heroBriefGrid.innerHTML = [
@@ -639,6 +645,94 @@ function renderTrendCharts(analysis) {
   }
 }
 
+function renderWeeklyReport(containerId, weeklyReport, limit = 4) {
+  const container = byId(containerId);
+  if (!container || !weeklyReport) return;
+  const sections = (weeklyReport.sections || []).slice(0, limit);
+  container.innerHTML = [
+    weeklyReport.headline ? html`
+      <article class="stack-card">
+        <small>本周主标题</small>
+        <h3>${escapeHtml(weeklyReport.headline)}</h3>
+        <p>${escapeHtml(weeklyReport.summary || '')}</p>
+      </article>
+    ` : '',
+    ...sections.map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)}</small>
+        <h3>${escapeHtml(item.headline)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <div class="meta-line"><span>${escapeHtml(item.action)}</span></div>
+      </article>
+    `)
+  ].join('');
+}
+
+function renderAnalysisSignalChart(analysis) {
+  if (typeof Chart === 'undefined' || !analysis) return;
+  const canvas = byId('analysisSignalChart');
+  if (!canvas) return;
+  window.__analysisCharts = window.__analysisCharts || {};
+  if (window.__analysisCharts.signal) window.__analysisCharts.signal.destroy();
+  const ranking = (analysis.topic_rankings || []).slice(0, 6);
+  window.__analysisCharts.signal = new Chart(canvas.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ranking.map((item) => item.label),
+      datasets: [
+        {
+          label: '综合分',
+          data: ranking.map((item) => item.combined_score),
+          backgroundColor: '#165dff'
+        },
+        {
+          label: '证据+报告+讨论',
+          data: ranking.map((item) => item.evidence_count + item.report_count + item.discussion_count),
+          backgroundColor: '#b42318'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: true } }
+    }
+  });
+}
+
+function renderPollAttentionChart(topicSummary, analysis) {
+  if (typeof Chart === 'undefined' || !analysis) return;
+  const canvas = byId('pollAttentionChart');
+  if (!canvas) return;
+  const sampleByTopic = Object.fromEntries(topicSummary.map((item) => [item.topic, item.sample]));
+  const ranking = (analysis.topic_rankings || []).filter((item) => sampleByTopic[item.topic]).slice(0, 8);
+  window.__pollCharts = window.__pollCharts || {};
+  if (window.__pollCharts.attention) window.__pollCharts.attention.destroy();
+  window.__pollCharts.attention = new Chart(canvas.getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ranking.map((item) => item.label),
+      datasets: [
+        {
+          label: '热点综合分',
+          data: ranking.map((item) => item.combined_score),
+          backgroundColor: '#165dff'
+        },
+        {
+          label: '投票样本量',
+          data: ranking.map((item) => sampleByTopic[item.topic] || 0),
+          backgroundColor: '#b42318'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: true } }
+    }
+  });
+}
+
 function relatedLinks(ids, lookup) {
   return (ids || []).map((id) => lookup[id]).filter(Boolean);
 }
@@ -676,6 +770,7 @@ function renderAnalysis(data) {
   const tabs = byId('topicTabs');
   const sections = byId('analysisSections');
   if (!tabs || !sections) return;
+  const analysis = data.hotspot_analysis || {};
 
   renderSummaryGrid('analysisSummaryGrid', [
     {
@@ -704,6 +799,8 @@ function renderAnalysis(data) {
   if (analysisReportGrid) {
     analysisReportGrid.innerHTML = pickFeaturedReports(data, data.topics.map((topic) => topic.id), 6).map(reportStackMarkup).join('');
   }
+  renderWeeklyReport('analysisBriefList', analysis.weekly_report, 4);
+  renderAnalysisSignalChart(analysis);
 
   tabs.innerHTML = `<div class="tab-row">${data.topics.map((topic, index) => `<button class="tab-button ${index === 0 ? 'active' : ''}" data-target="${escapeHtml(topic.id)}">${escapeHtml(topic.emoji)} ${escapeHtml(topic.label)}</button>`).join('')}</div>`;
   sections.innerHTML = data.topics.map((topic) => {
@@ -1360,6 +1457,7 @@ function getPollPayload(data) {
 
 function renderPolls(data) {
   const payload = getPollPayload(data);
+  const hotspotAnalysis = data.hotspot_analysis || {};
   const surveys = payload.surveys || [];
   const suggestionBoards = payload.suggestion_boards || [];
   const actionCards = payload.action_cards || [];
@@ -1374,6 +1472,7 @@ function renderPolls(data) {
   const suggestionText = byId('pollSuggestionText');
   const localSuggestionList = byId('localSuggestionList');
   const actionGrid = byId('pollActionCards');
+  const pollWeeklyList = byId('pollWeeklyList');
   const resetButton = byId('pollResetButton');
   if (!container || !summaryGrid || !insightGrid || !suggestionGrid || !topicFilters) return;
 
@@ -1492,6 +1591,25 @@ function renderPolls(data) {
         }
       }
     );
+    renderPollAttentionChart(topicSummary, hotspotAnalysis);
+
+    if (pollWeeklyList) {
+      const rankingMap = Object.fromEntries((hotspotAnalysis.topic_rankings || []).map((item) => [item.topic, item]));
+      pollWeeklyList.innerHTML = topicSummary.map((item) => {
+        const ranking = rankingMap[item.topic];
+        return html`
+          <article class="stack-card">
+            <small>${escapeHtml(getTopicName(item.topic))}</small>
+            <h3>${escapeHtml(ranking ? `热点分 ${ranking.combined_score} / 样本 ${item.sample}` : `样本 ${item.sample}`)}</h3>
+            <p>${escapeHtml(ranking ? ranking.watch_reason : '该议题当前还没有完整的热点周报判断。')}</p>
+            <div class="meta-line">
+              <span>领先选项 ${item.leading}%</span>
+              <span>${escapeHtml(ranking ? ranking.signal_label : '观察中')}</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
 
     topicFilters.innerHTML = ['all', ...Object.keys(TOPIC_NAMES).filter((key) => key !== 'all')].map((topic) => `
       <button class="filter-pill${currentTopic === topic ? ' active' : ''}" type="button" data-topic-filter="${escapeHtml(topic)}">${escapeHtml(getTopicName(topic))}</button>

@@ -55,19 +55,19 @@ const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 
 const html = String.raw;
 const CHART_PALETTE = {
-  cyan: '#00d9ff',
-  pink: '#ff4fd8',
-  amber: '#ffb703',
-  green: '#7cff6b',
-  violet: '#7b61ff',
-  orange: '#ff7b00',
-  red: '#ff4d6d',
-  cyanSoft: 'rgba(0,217,255,0.16)',
-  pinkSoft: 'rgba(255,79,216,0.16)',
-  greenSoft: 'rgba(124,255,107,0.14)',
-  redSoft: 'rgba(255,77,109,0.14)',
-  violetSoft: 'rgba(123,97,255,0.16)',
-  light: '#b6f6ff'
+  cyan: '#6df4ff',
+  pink: '#b995ff',
+  amber: '#ffd56a',
+  green: '#95ffd6',
+  violet: '#8f88ff',
+  orange: '#ffb072',
+  red: '#ff9780',
+  cyanSoft: 'rgba(109,244,255,0.16)',
+  pinkSoft: 'rgba(185,149,255,0.16)',
+  greenSoft: 'rgba(149,255,214,0.14)',
+  redSoft: 'rgba(255,151,128,0.14)',
+  violetSoft: 'rgba(143,136,255,0.16)',
+  light: '#c8fbff'
 };
 
 function escapeHtml(value) {
@@ -196,7 +196,7 @@ function configureChartDefaults() {
       const { left, right, top, bottom } = chartArea;
       const corner = 14;
       ctx.save();
-      ctx.strokeStyle = 'rgba(0, 217, 255, 0.28)';
+      ctx.strokeStyle = 'rgba(109, 244, 255, 0.22)';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(left, top + corner);
@@ -217,19 +217,19 @@ function configureChartDefaults() {
   };
 
   Chart.register(neonPlugin);
-  Chart.defaults.color = '#b6d7f4';
+  Chart.defaults.color = '#bfd7eb';
   Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
   Chart.defaults.font.size = 13;
   Chart.defaults.plugins.legend.labels.color = '#e6f8ff';
   Chart.defaults.plugins.legend.labels.boxWidth = 14;
-  Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(6, 15, 31, 0.92)';
-  Chart.defaults.plugins.tooltip.borderColor = 'rgba(0, 217, 255, 0.24)';
+  Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(8, 17, 34, 0.94)';
+  Chart.defaults.plugins.tooltip.borderColor = 'rgba(109, 244, 255, 0.18)';
   Chart.defaults.plugins.tooltip.borderWidth = 1;
   Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
-  Chart.defaults.plugins.tooltip.bodyColor = '#b6f6ff';
-  Chart.defaults.scale.grid.color = 'rgba(0, 217, 255, 0.12)';
-  Chart.defaults.scale.border.color = 'rgba(0, 217, 255, 0.18)';
-  Chart.defaults.scale.ticks.color = '#9dc8ea';
+  Chart.defaults.plugins.tooltip.bodyColor = '#dffcff';
+  Chart.defaults.scale.grid.color = 'rgba(109, 244, 255, 0.1)';
+  Chart.defaults.scale.border.color = 'rgba(109, 244, 255, 0.14)';
+  Chart.defaults.scale.ticks.color = '#a9c7df';
   Chart.defaults.elements.line.borderWidth = 2.5;
   Chart.defaults.elements.point.radius = 3;
   Chart.defaults.elements.point.hoverRadius = 5;

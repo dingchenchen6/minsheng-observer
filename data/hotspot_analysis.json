@@ -1,0 +1,198 @@
+{
+  "updated_at": "2026-03-16T12:32:11.498232+00:00",
+  "summary_cards": [
+    {
+      "label": "监测议题",
+      "value": "8 个",
+      "note": "综合当前热点、社媒快照、历史档案、证据库、讨论和报告入口做交叉判断。"
+    },
+    {
+      "label": "社媒快照",
+      "value": "10 条",
+      "note": "抓取失败时会自动回退到人工审核池和站内热点回填，保证监测面不空白。"
+    },
+    {
+      "label": "热点档案",
+      "value": "12 条",
+      "note": "当前热点不是孤立事件，历史快照会一起参与评分，帮助判断“短时爆点”还是“长期争议”。"
+    },
+    {
+      "label": "平台受限",
+      "value": "2 个",
+      "note": "即使公开入口受限，站点仍会保留公开来源、回退层与人工审核说明，不伪装成实时热搜。"
+    }
+  ],
+  "lead_brief": [
+    "当前综合信号最强的议题是“就业”，综合分值 206，说明热点、证据和讨论正在同向累积。",
+    "相对历史档案升温最快的是“住房”，较历史平均热度变化 +5.0。",
+    "当前社媒快照共保留 10 条，其中 4 条来自审核池或站内热点回填。",
+    "当前仍受平台限制的入口有：ZHIHU、WEIBO，因此站点继续保留回退层和人工校准快照。"
+  ],
+  "topic_rankings": [
+    {
+      "topic": "employment",
+      "label": "就业",
+      "combined_score": 206,
+      "current_heat": 96.0,
+      "archive_average_heat": 96.0,
+      "archive_mentions": 1,
+      "social_average_heat": 93.0,
+      "social_total_heat": 186,
+      "social_item_count": 2,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 0,
+      "delta_vs_archive": 0.0,
+      "signal_label": "显著升温",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "housing",
+      "label": "住房",
+      "combined_score": 206,
+      "current_heat": 87.0,
+      "archive_average_heat": 82.0,
+      "archive_mentions": 3,
+      "social_average_heat": 84.5,
+      "social_total_heat": 169,
+      "social_item_count": 2,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 1,
+      "delta_vs_archive": 5.0,
+      "signal_label": "持续高位",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "elderly",
+      "label": "养老",
+      "combined_score": 203,
+      "current_heat": 91.0,
+      "archive_average_heat": 91.0,
+      "archive_mentions": 1,
+      "social_average_heat": 89.0,
+      "social_total_heat": 178,
+      "social_item_count": 2,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 2,
+      "delta_vs_archive": 0.0,
+      "signal_label": "显著升温",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "food",
+      "label": "食品",
+      "combined_score": 166,
+      "current_heat": 84.0,
+      "archive_average_heat": 80.7,
+      "archive_mentions": 3,
+      "social_average_heat": 84.0,
+      "social_total_heat": 84,
+      "social_item_count": 1,
+      "evidence_count": 2,
+      "discussion_count": 1,
+      "report_count": 0,
+      "delta_vs_archive": 3.3,
+      "signal_label": "持续高位",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "healthcare",
+      "label": "医疗",
+      "combined_score": 161,
+      "current_heat": 82.0,
+      "archive_average_heat": 80.0,
+      "archive_mentions": 2,
+      "social_average_heat": 80.0,
+      "social_total_heat": 80,
+      "social_item_count": 1,
+      "evidence_count": 2,
+      "discussion_count": 1,
+      "report_count": 2,
+      "delta_vs_archive": 2.0,
+      "signal_label": "持续高位",
+      "watch_reason": "证据和讨论积累较厚，适合做专题化持续追踪。"
+    },
+    {
+      "topic": "technology",
+      "label": "科技",
+      "combined_score": 144,
+      "current_heat": 79.0,
+      "archive_average_heat": 79.0,
+      "archive_mentions": 1,
+      "social_average_heat": 82.0,
+      "social_total_heat": 82,
+      "social_item_count": 1,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 1,
+      "delta_vs_archive": 0.0,
+      "signal_label": "持续高位",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "education",
+      "label": "教育",
+      "combined_score": 57,
+      "current_heat": 0.0,
+      "archive_average_heat": 77.0,
+      "archive_mentions": 1,
+      "social_average_heat": 76.0,
+      "social_total_heat": 76,
+      "social_item_count": 1,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 2,
+      "delta_vs_archive": -77.0,
+      "signal_label": "结构性关注",
+      "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
+    },
+    {
+      "topic": "livelihood",
+      "label": "民生",
+      "combined_score": 28,
+      "current_heat": 0.0,
+      "archive_average_heat": 0.0,
+      "archive_mentions": 0,
+      "social_average_heat": 0.0,
+      "social_total_heat": 0,
+      "social_item_count": 0,
+      "evidence_count": 1,
+      "discussion_count": 1,
+      "report_count": 6,
+      "delta_vs_archive": 0.0,
+      "signal_label": "结构性关注",
+      "watch_reason": "当前热度存在，但仍需要更多证据和长期报告支撑。"
+    }
+  ],
+  "platform_breakdown": [
+    {
+      "platform": "zhihu",
+      "label": "ZHIHU",
+      "status": "restricted",
+      "status_label": "抓取受限",
+      "item_count": 5,
+      "average_heat": 85.0,
+      "top_topic": "employment",
+      "note": "知乎公开 API 和页面触发鉴权，保留最近一次成功或校准结果。"
+    },
+    {
+      "platform": "weibo",
+      "label": "WEIBO",
+      "status": "visitor_gate",
+      "status_label": "游客验证",
+      "item_count": 5,
+      "average_heat": 86.0,
+      "top_topic": "employment",
+      "note": "微博公开页触发访客系统或接口拒绝访问，保留最近一次成功或校准结果。"
+    }
+  ],
+  "capture_overview": {
+    "current_trend_count": 6,
+    "social_item_count": 10,
+    "archive_count": 12,
+    "discussion_count": 8,
+    "evidence_count": 10
+  }
+}

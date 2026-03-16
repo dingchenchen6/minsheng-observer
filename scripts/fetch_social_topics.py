@@ -19,6 +19,10 @@ RSSHUB_ROUTES = {
     'zhihu': '/zhihu/hot',
     'weibo': '/weibo/search/hot/fulltext',
 }
+PLATFORM_DEFAULT_URLS = {
+    'zhihu': 'https://www.zhihu.com/hot',
+    'weibo': 'https://s.weibo.com/top/summary',
+}
 TOPIC_KEYWORDS = {
     'employment': ['就业', '求职', '招聘', '毕业', '失业'],
     'healthcare': ['医保', '医疗', '就医', '医院', '门诊'],
@@ -126,6 +130,65 @@ def mark_platform(payload: dict, platform: str, status: str, label: str, note: s
 
 def replace_platform_items(payload: dict, platform: str, items: list[dict]):
     payload['items'] = [item for item in payload.get('items', []) if item.get('platform') != platform] + items
+
+
+def dedupe_items(items: list[dict]) -> list[dict]:
+    deduped = []
+    seen = set()
+    for item in items:
+        key = (item.get('platform'), item.get('title', '').strip())
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(item)
+    return deduped
+
+
+def backfill_platform_items(payload: dict, platform: str, *, min_count: int = 5):
+    existing = dedupe_items([item for item in payload.get('items', []) if item.get('platform') == platform])
+    existing_titles = {item.get('title') for item in existing}
+    existing_topics = {item.get('topic') for item in existing}
+    current_trends = load_json('trend_current.json')
+    candidates = []
+
+    for review in payload.get('review_pool', []):
+        if review.get('platform') != platform:
+            continue
+        candidates.append({
+            'id': f"{platform}_review_{review['id']}",
+            'platform': platform,
+            'title': review['title'],
+            'summary': normalize_summary(review.get('reason') or review.get('action') or '人工审核池补充条目。'),
+            'topic': review.get('topic') or infer_topic(review.get('title', '')),
+            'heat': 76,
+            'url': PLATFORM_DEFAULT_URLS.get(platform, '#'),
+            'snapshot_date': today_label(),
+            'fetch_status': 'review_pool',
+        })
+
+    for item in current_trends:
+        candidates.append({
+            'id': f"{platform}_trend_{item['id']}",
+            'platform': platform,
+            'title': item['title'],
+            'summary': normalize_summary(item.get('summary') or '站内热点快照回填条目。'),
+            'topic': item.get('topic') or infer_topic(item.get('title', '')),
+            'heat': max(68, int(item.get('heat_score', 72)) - 4),
+            'url': PLATFORM_DEFAULT_URLS.get(platform, '#'),
+            'snapshot_date': today_label(),
+            'fetch_status': 'review_pool',
+        })
+
+    for candidate in candidates:
+        if len(existing) >= min_count:
+            break
+        if candidate['title'] in existing_titles or candidate['topic'] in existing_topics:
+            continue
+        existing.append(candidate)
+        existing_titles.add(candidate['title'])
+        existing_topics.add(candidate['topic'])
+
+    replace_platform_items(payload, platform, existing)
 
 
 def parse_rss_items(raw: str, platform: str, fallback_url: str, fetch_status: str) -> list[dict]:
@@ -302,7 +365,10 @@ def main():
         update_layer(payload, 'feed_proxy', 'standby', '可启用', '当前保留 RSSHub 回退能力，但尚未拿到稳定返回结果；站内仍展示人工校准和历史快照。')
 
     update_layer(payload, 'manual_review', 'active', '已启用', '人工审核池持续保留，用于处理平台限制、临时波动和热点语义清洗。')
-    payload['items'] = sorted(payload.get('items', []), key=lambda item: (item.get('platform', ''), -item.get('heat', 0), item.get('title', '')))
+    for platform in ['zhihu', 'weibo']:
+        backfill_platform_items(payload, platform, min_count=5)
+
+    payload['items'] = sorted(dedupe_items(payload.get('items', [])), key=lambda item: (-item.get('heat', 0), item.get('platform', ''), item.get('title', '')))
     save_json('social_hot_topics.json', payload)
     print('fetch_social_topics.py completed')
 

@@ -128,5 +128,15 @@
     "year": 2025,
     "url": "https://class.ruc.edu.cn/",
     "summary": "面向老龄化、养老保障、健康状况、家庭支持与社区照护的全国性追踪调查，是养老议题的重要底层资料。"
+  },
+  {
+    "id": "report_chns_home",
+    "topic": "healthcare",
+    "category": "academic-survey",
+    "title": "中国健康与营养调查（CHNS）项目主页",
+    "publisher": "University of North Carolina at Chapel Hill",
+    "year": 2025,
+    "url": "https://www.cpc.unc.edu/projects/china",
+    "summary": "长期追踪营养、健康、家庭行为与社会经济变化，适合连接医疗、健康不平等与生活方式转变等议题。"
   }
 ]

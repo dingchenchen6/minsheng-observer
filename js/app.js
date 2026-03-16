@@ -13,6 +13,7 @@ const DATA_FILES = [
   'evidence_records',
   'polls',
   'social_hot_topics',
+  'hotspot_analysis',
   'live_config',
   'reports'
 ];
@@ -76,6 +77,12 @@ function getTypeName(id) {
 
 function getReportCategoryName(id) {
   return REPORT_CATEGORY_NAMES[id] || id;
+}
+
+function formatSignedNumber(value) {
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) return String(value ?? '');
+  return `${numeric > 0 ? '+' : ''}${numeric}`;
 }
 
 function byId(id) {
@@ -356,6 +363,7 @@ function pickFeaturedReports(data, topicIds = [], limit = 6) {
 
 function renderHome(data) {
   const heroBriefGrid = byId('heroBriefGrid');
+  const topSignal = (((data || {}).hotspot_analysis || {}).topic_rankings || [])[0];
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -370,7 +378,8 @@ function renderHome(data) {
     heroBriefGrid.innerHTML = [
       { title: '最新更新时间', body: data.site_meta.last_updated_label },
       { title: '当前归档规模', body: `${data.trend_archive.length + data.evidence_records.length + data.papers.length + data.discussion_archive.length + data.reports.length} 条可检索记录` },
-      { title: '报告与调查入口', body: `${data.reports.length} 个官方/学术报告入口` }
+      { title: '报告与调查入口', body: `${data.reports.length} 个官方/学术报告入口` },
+      { title: '综合强信号', body: topSignal ? `${topSignal.label} · 综合分 ${topSignal.combined_score}` : '热点分析生成中' }
     ].map((item) => html`
       <div class="hero-brief-card">
         <strong>${escapeHtml(item.title)}</strong>
@@ -579,12 +588,54 @@ function renderHomeCharts(data) {
     const highestTrend = data.trend_current[0];
     const largestPoll = topicTotals.slice().sort((a, b) => b.total - a.total)[0];
     const largestSource = sourceGroups.slice().sort((a, b) => b[1] - a[1])[0];
+    const analysisNotes = (((data || {}).hotspot_analysis || {}).lead_brief || []).slice(0, 2);
     notes.innerHTML = [
+      ...analysisNotes,
       `当前热点强度最高的是“${highestTrend ? highestTrend.title : '暂无'}”。`,
       `基础样本量最高的调查议题是“${largestPoll ? getTopicName(largestPoll.topic) : '暂无'}”。`,
       `站内来源类型中占比最高的是“${largestSource ? largestSource[0] : '暂无'}”。`,
       `报告库已经把官方统计、年鉴和长期追踪调查放到同一层入口。`
-    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+    ].slice(0, 4).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+}
+
+function renderTrendCharts(analysis) {
+  if (typeof Chart === 'undefined' || !analysis) return;
+  window.__trendCharts = window.__trendCharts || {};
+  const topicCanvas = byId('trendTopicChart');
+  const platformCanvas = byId('trendPlatformChart');
+  const ranking = (analysis.topic_rankings || []).slice(0, 6);
+  const platforms = analysis.platform_breakdown || [];
+
+  if (topicCanvas) {
+    if (window.__trendCharts.topic) window.__trendCharts.topic.destroy();
+    window.__trendCharts.topic = new Chart(topicCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ranking.map((item) => item.label),
+        datasets: [{
+          label: '综合分值',
+          data: ranking.map((item) => item.combined_score),
+          backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  if (platformCanvas) {
+    if (window.__trendCharts.platform) window.__trendCharts.platform.destroy();
+    window.__trendCharts.platform = new Chart(platformCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: platforms.map((item) => item.label),
+        datasets: [{
+          data: platforms.map((item) => item.item_count),
+          backgroundColor: ['#165dff', '#b42318', '#216e39', '#9a5b16']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
   }
 }
 
@@ -727,14 +778,44 @@ function renderAnalysis(data) {
 }
 
 function renderTrends(data) {
-  byId('currentTrendGrid').innerHTML = data.trend_current.map((item) => html`
+  const analysis = data.hotspot_analysis || {};
+  const rankingByTopic = Object.fromEntries((analysis.topic_rankings || []).map((item) => [item.topic, item]));
+
+  renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
+
+  const trendSignalNotes = byId('trendSignalNotes');
+  if (trendSignalNotes) {
+    trendSignalNotes.innerHTML = (analysis.lead_brief || []).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+
+  const topicRankList = byId('topicRankList');
+  if (topicRankList) {
+    topicRankList.innerHTML = (analysis.topic_rankings || []).slice(0, 6).map((item, index) => html`
+      <article class="stack-card">
+        <small>第 ${index + 1} 位 · ${escapeHtml(item.signal_label)}</small>
+        <h3>${escapeHtml(item.label)} · 综合分 ${escapeHtml(item.combined_score)}</h3>
+        <div class="meta-line">
+          <span>当前热度 ${escapeHtml(item.current_heat)}</span>
+          <span>社媒均值 ${escapeHtml(item.social_average_heat)}</span>
+          <span>较历史 ${escapeHtml(formatSignedNumber(item.delta_vs_archive))}</span>
+        </div>
+        <p>${escapeHtml(item.watch_reason)}</p>
+      </article>
+    `).join('');
+  }
+
+  byId('currentTrendGrid').innerHTML = data.trend_current.map((item) => {
+    const ranking = rankingByTopic[item.topic];
+    return html`
     <article class="trend-card">
       <div class="meta-line"><span>${escapeHtml(getTopicName(item.topic))}</span><span>热度 ${item.heat_score}</span><span>${escapeHtml(item.snapshot_date)}</span></div>
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.summary)}</p>
+      ${ranking ? `<div class="meta-line"><span>综合分 ${escapeHtml(ranking.combined_score)}</span><span>${escapeHtml(ranking.signal_label)}</span><span>较历史 ${escapeHtml(formatSignedNumber(ranking.delta_vs_archive))}</span></div>` : ''}
       <div class="link-pills" style="margin-top:12px;">${item.source_links.map((link) => `<a class="link-pill" href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}</a>`).join('')}</div>
     </article>
-  `).join('');
+  `;
+  }).join('');
 
   byId('trendArchiveList').innerHTML = data.trend_archive.map((item) => html`
     <article class="timeline-item">
@@ -768,14 +849,24 @@ function renderTrends(data) {
         <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开来源</a></div>
       </article>
     `).join('');
-    socialPlatformStatus.innerHTML = Object.entries(data.social_hot_topics.platform_status).map(([platform, status]) => html`
+    socialPlatformStatus.innerHTML = [
+      ...Object.entries(data.social_hot_topics.platform_status).map(([platform, status]) => html`
       <article class="stack-card">
         <small>${escapeHtml(platform)}</small>
         <h3>${escapeHtml(status.label)}</h3>
         <p>${escapeHtml(status.note)}</p>
         <div class="meta-line"><span>最近尝试：${formatDate(status.last_attempt)}</span><span>${status.last_success ? `最近成功：${formatDate(status.last_success)}` : '暂无成功抓取'}</span></div>
       </article>
-    `).join('');
+    `),
+      ...((analysis.platform_breakdown || []).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · 监测结构</small>
+        <h3>${escapeHtml(item.status_label)}</h3>
+        <p>${escapeHtml(item.note)}</p>
+        <div class="meta-line"><span>${item.item_count} 条快照</span><span>均值 ${escapeHtml(item.average_heat)}</span><span>最高议题 ${escapeHtml(getTopicName(item.top_topic))}</span></div>
+      </article>
+    `))
+    ].join('');
   }
   if (socialStrategyCards) {
     socialStrategyCards.innerHTML = data.social_hot_topics.strategy_layers.map((layer) => html`
@@ -798,6 +889,8 @@ function renderTrends(data) {
       </article>
     `).join('');
   }
+
+  renderTrendCharts(analysis);
 }
 
 function renderEvidence(data) {

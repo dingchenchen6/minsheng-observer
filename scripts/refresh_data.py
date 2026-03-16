@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from collections import defaultdict
 import json
 import os
 import subprocess
@@ -49,6 +50,13 @@ def check_url(url: str) -> bool:
             return True
     except (HTTPError, URLError, ValueError):
         return False
+
+
+def average(values) -> float:
+    values = [value for value in values if value is not None]
+    if not values:
+        return 0.0
+    return round(sum(values) / len(values), 1)
 
 
 def refresh_site_meta():
@@ -162,6 +170,157 @@ def enrich_paper_metadata():
     save_json('papers.json', papers)
 
 
+def build_hotspot_analysis():
+    topics = load_json('topics.json')
+    current = load_json('trend_current.json')
+    archive = load_json('trend_archive.json')
+    social = load_json('social_hot_topics.json')
+    evidence = load_json('evidence_records.json')
+    discussions = load_json('discussion_archive.json')
+    reports = load_json('reports.json')
+
+    current_by_topic = defaultdict(list)
+    archive_by_topic = defaultdict(list)
+    social_by_topic = defaultdict(list)
+    evidence_by_topic = defaultdict(int)
+    discussions_by_topic = defaultdict(int)
+    reports_by_topic = defaultdict(int)
+
+    for item in current:
+        current_by_topic[item['topic']].append(item.get('heat_score', 0))
+    for item in archive:
+        archive_by_topic[item['topic']].append(item.get('heat_score', 0))
+    for item in social.get('items', []):
+        social_by_topic[item['topic']].append(item.get('heat', 0))
+    for item in evidence:
+        evidence_by_topic[item['topic']] += 1
+    for item in discussions:
+        discussions_by_topic[item['topic']] += 1
+    for item in reports:
+        reports_by_topic[item['topic']] += 1
+
+    topic_rankings = []
+    for topic in topics:
+        topic_id = topic['id']
+        current_heat = average(current_by_topic[topic_id])
+        archive_avg = average(archive_by_topic[topic_id])
+        social_avg = average(social_by_topic[topic_id])
+        social_total = round(sum(social_by_topic[topic_id]), 1)
+        archive_mentions = len(archive_by_topic[topic_id])
+        evidence_count = evidence_by_topic[topic_id]
+        discussion_count = discussions_by_topic[topic_id]
+        report_count = reports_by_topic[topic_id]
+        delta = round(current_heat - archive_avg, 1) if archive_mentions else round(current_heat, 1)
+        combined_score = round(
+            current_heat * 1.1
+            + social_total * 0.45
+            + archive_mentions * 7
+            + evidence_count * 5
+            + discussion_count * 5
+            + report_count * 3
+        )
+
+        if delta >= 10 or social_total >= 170:
+            signal_label = '显著升温'
+        elif combined_score >= 120:
+            signal_label = '持续高位'
+        else:
+            signal_label = '结构性关注'
+
+        if social_total >= current_heat and social_total > 0:
+            watch_reason = '社媒热度高于站内快照，适合优先补政策口径和讨论摘录。'
+        elif evidence_count >= 2 or discussion_count >= 2:
+            watch_reason = '证据和讨论积累较厚，适合做专题化持续追踪。'
+        else:
+            watch_reason = '当前热度存在，但仍需要更多证据和长期报告支撑。'
+
+        topic_rankings.append({
+            'topic': topic_id,
+            'label': topic['label'],
+            'combined_score': combined_score,
+            'current_heat': current_heat,
+            'archive_average_heat': archive_avg,
+            'archive_mentions': archive_mentions,
+            'social_average_heat': social_avg,
+            'social_total_heat': social_total,
+            'social_item_count': len(social_by_topic[topic_id]),
+            'evidence_count': evidence_count,
+            'discussion_count': discussion_count,
+            'report_count': report_count,
+            'delta_vs_archive': delta,
+            'signal_label': signal_label,
+            'watch_reason': watch_reason,
+        })
+
+    topic_rankings.sort(key=lambda item: (-item['combined_score'], -item['current_heat'], item['topic']))
+
+    platform_breakdown = []
+    for platform, status in social.get('platform_status', {}).items():
+        items = [item for item in social.get('items', []) if item.get('platform') == platform]
+        platform_breakdown.append({
+            'platform': platform,
+            'label': platform.upper(),
+            'status': status.get('status', 'unknown'),
+            'status_label': status.get('label', '未标注'),
+            'item_count': len(items),
+            'average_heat': average([item.get('heat', 0) for item in items]),
+            'top_topic': max(items, key=lambda item: item.get('heat', 0)).get('topic', 'livelihood') if items else 'livelihood',
+            'note': status.get('note', ''),
+        })
+
+    restricted_platforms = [platform for platform, status in social.get('platform_status', {}).items() if status.get('status') not in {'ok', 'rsshub'}]
+    top_topic = topic_rankings[0] if topic_rankings else None
+    rising_topic = max(topic_rankings, key=lambda item: item['delta_vs_archive'], default=None)
+
+    lead_brief = []
+    if top_topic:
+        lead_brief.append(f"当前综合信号最强的议题是“{top_topic['label']}”，综合分值 {top_topic['combined_score']}，说明热点、证据和讨论正在同向累积。")
+    if rising_topic:
+        lead_brief.append(f"相对历史档案升温最快的是“{rising_topic['label']}”，较历史平均热度变化 {rising_topic['delta_vs_archive']:+.1f}。")
+    lead_brief.append(f"当前社媒快照共保留 {len(social.get('items', []))} 条，其中 {sum(1 for item in social.get('items', []) if item.get('fetch_status') == 'review_pool')} 条来自审核池或站内热点回填。")
+    if restricted_platforms:
+        lead_brief.append(f"当前仍受平台限制的入口有：{'、'.join(platform.upper() for platform in restricted_platforms)}，因此站点继续保留回退层和人工校准快照。")
+
+    summary_cards = [
+        {
+            'label': '监测议题',
+            'value': f'{len(topics)} 个',
+            'note': '综合当前热点、社媒快照、历史档案、证据库、讨论和报告入口做交叉判断。',
+        },
+        {
+            'label': '社媒快照',
+            'value': f"{len(social.get('items', []))} 条",
+            'note': '抓取失败时会自动回退到人工审核池和站内热点回填，保证监测面不空白。',
+        },
+        {
+            'label': '热点档案',
+            'value': f'{len(archive)} 条',
+            'note': '当前热点不是孤立事件，历史快照会一起参与评分，帮助判断“短时爆点”还是“长期争议”。',
+        },
+        {
+            'label': '平台受限',
+            'value': f'{len(restricted_platforms)} 个',
+            'note': '即使公开入口受限，站点仍会保留公开来源、回退层与人工审核说明，不伪装成实时热搜。',
+        },
+    ]
+
+    payload = {
+        'updated_at': iso_now(),
+        'summary_cards': summary_cards,
+        'lead_brief': lead_brief,
+        'topic_rankings': topic_rankings,
+        'platform_breakdown': platform_breakdown,
+        'capture_overview': {
+            'current_trend_count': len(current),
+            'social_item_count': len(social.get('items', [])),
+            'archive_count': len(archive),
+            'discussion_count': len(discussions),
+            'evidence_count': len(evidence),
+        },
+    }
+    save_json('hotspot_analysis.json', payload)
+
+
 def refresh_social_topics():
     script = ROOT / 'scripts' / 'fetch_social_topics.py'
     try:
@@ -172,6 +331,7 @@ def refresh_social_topics():
 
 def main():
     refresh_social_topics()
+    build_hotspot_analysis()
     refresh_site_meta()
     refresh_sources()
     merge_current_trends_into_archive()

@@ -5,12 +5,16 @@
   <title>热点追踪 | 民声 2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="trends">
   <header class="site-header"><div class="shell nav-shell"><a class="brand" href="index.html"><span class="brand-mark">民声</span><span class="brand-sub">Minsheng Observer</span></a><button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button><nav class="site-nav" id="siteNav"><a href="index.html">首页</a><a href="analysis.html">议题分析</a><a href="trends.html" class="active">热点追踪</a><a href="evidence.html">证据库</a><a href="discuss.html">讨论与弹幕</a><a href="archive.html">归档检索</a><a href="reports.html">报告库</a><a href="polls.html">轻投票</a><a href="methodology.html">方法说明</a></nav></div></header>
   <main>
     <section class="page-hero"><div class="shell narrow"><span class="eyebrow">热点追踪</span><h1>公开热榜入口与站内归档快照并存</h1><p>我们不冒充实时热榜接口，而是把可引用的公开入口、政策链接和论文证据一起存档。</p></div></section>
+    <section class="section tone-paper"><div class="shell"><div class="card-grid" id="hotspotSummaryGrid"></div></div></section>
+    <section class="section tone-paper"><div class="shell split-grid"><article class="chart-wrap"><h3>综合关注度排行</h3><div style="height:320px"><canvas id="trendTopicChart"></canvas></div></article><article class="chart-wrap"><h3>平台快照结构</h3><div style="height:320px"><canvas id="trendPlatformChart"></canvas></div></article></div></section>
+    <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">自动总结</span><h2>本轮综合判断</h2></div><div class="stack-list" id="trendSignalNotes"></div></div><div><div class="section-head compact"><span class="eyebrow">监测排序</span><h2>热点、证据与讨论的合成结果</h2></div><div class="stack-list" id="topicRankList"></div></div></div></section>
     <section class="section"><div class="shell"><div class="section-head"><span class="eyebrow">当前热点</span><h2>本周高热议题</h2></div><div class="feature-grid" id="currentTrendGrid"></div></div></section>
     <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">社媒热榜</span><h2>知乎 / 微博抓取结果</h2></div><div class="feature-grid" id="socialTrendGrid"></div></div><div><div class="section-head compact"><span class="eyebrow">抓取状态</span><h2>平台可达性说明</h2></div><div class="stack-list" id="socialPlatformStatus"></div></div></div></section>
     <section class="section tone-paper"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">三层策略</span><h2>热榜抓取与回退逻辑</h2></div><div class="stack-list" id="socialStrategyCards"></div></div><div><div class="section-head compact"><span class="eyebrow">人工审核池</span><h2>待核查与持续跟踪话题</h2></div><div class="stack-list" id="socialReviewQueue"></div></div></div></section>

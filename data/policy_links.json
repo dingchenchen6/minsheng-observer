@@ -2,31 +2,31 @@
   {
     "id": "policy_edu",
     "topic": "education",
-    "title": "教育部政策文件库",
-    "url": "https://www.moe.gov.cn/jyb_xxgk/moe_1777/moe_1778/",
+    "title": "2024年全国教育事业发展统计公报",
+    "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html",
     "source_name": "教育部",
-    "label": "查政策原文"
+    "label": "查教育公报"
   },
   {
     "id": "policy_health",
     "topic": "healthcare",
-    "title": "国家卫健委政策文件",
-    "url": "https://www.nhc.gov.cn/wjw/zcjd/list.shtml",
-    "source_name": "国家卫健委",
-    "label": "查医改政策"
+    "title": "2024年我国卫生健康事业发展统计公报解读",
+    "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm",
+    "source_name": "中国政府网 / 国家卫健委",
+    "label": "查卫生公报"
   },
   {
     "id": "policy_housing",
     "topic": "housing",
-    "title": "中国政府网住房政策专题",
-    "url": "https://www.gov.cn/zhengce/",
+    "title": "今年将加力实施城中村和危旧房改造",
+    "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm",
     "source_name": "中国政府网",
-    "label": "查政策动态"
+    "label": "查住房政策"
   },
   {
     "id": "policy_employment",
     "topic": "employment",
-    "title": "人社部就业创业政策",
+    "title": "人社部就业创业政策入口",
     "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/",
     "source_name": "人社部",
     "label": "查就业政策"
@@ -34,32 +34,32 @@
   {
     "id": "policy_aging",
     "topic": "elderly",
-    "title": "人社部养老保险政策",
+    "title": "人社部社会保障与养老政策",
     "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/",
     "source_name": "人社部",
-    "label": "查社保养老"
+    "label": "查养老政策"
   },
   {
     "id": "policy_food",
     "topic": "food",
-    "title": "市场监管总局食品安全信息",
-    "url": "https://www.samr.gov.cn/spjgs/",
+    "title": "食品安全监督抽检信息发布入口",
+    "url": "https://www.samr.gov.cn/spcjs/xxfb/",
     "source_name": "市场监管总局",
-    "label": "查食品监管"
+    "label": "查抽检结果"
   },
   {
     "id": "policy_tech",
     "topic": "technology",
-    "title": "中国政府网数字经济与人工智能政策",
-    "url": "https://www.gov.cn/zhengce/",
-    "source_name": "中国政府网",
-    "label": "查政策动态"
+    "title": "CNNIC 中国互联网络发展状况统计报告入口",
+    "url": "https://www.cnnic.cn/",
+    "source_name": "CNNIC",
+    "label": "查互联网报告"
   },
   {
     "id": "policy_livelihood",
     "topic": "livelihood",
-    "title": "国家统计局统计公报与发布",
-    "url": "https://www.stats.gov.cn/sj/",
+    "title": "国家统计局统计发布入口",
+    "url": "https://www.stats.gov.cn/sj/zxfb/",
     "source_name": "国家统计局",
     "label": "查统计发布"
   },

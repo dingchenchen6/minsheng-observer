@@ -6,7 +6,7 @@
     "authority_level": "A",
     "url": "https://www.stats.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "宏观经济、人口、就业、收入、粮食等核心统计入口。"
+    "note": "可追踪 2025 国民经济和社会发展统计公报、人口、收入、就业与粮食等核心统计。"
   },
   {
     "id": "moe",
@@ -15,7 +15,7 @@
     "authority_level": "A",
     "url": "https://www.moe.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "教育统计、政策文件、招生考试与职业教育入口。"
+    "note": "教育部 2025-06-11 发布 2024 年全国教育事业发展统计公报。"
   },
   {
     "id": "nhc",
@@ -24,7 +24,7 @@
     "authority_level": "A",
     "url": "https://www.nhc.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "卫生健康统计、公共卫生和医改政策入口。"
+    "note": "国家卫健委发布 2024 年卫生健康事业发展统计公报，最新解读显示人均预期寿命达到 79 岁。"
   },
   {
     "id": "mohrss",
@@ -33,7 +33,7 @@
     "authority_level": "A",
     "url": "https://www.mohrss.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "就业、社保、养老金和劳动关系政策入口。"
+    "note": "就业、社保、养老金和劳动关系政策入口，也作为青年就业议题的政策跳转来源。"
   },
   {
     "id": "samr",
@@ -42,7 +42,7 @@
     "authority_level": "A",
     "url": "https://www.samr.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "食品安全、消费维权、市场监管与抽检信息入口。"
+    "note": "市场监管、食品安全抽检、消费维权和 12315 相关公开信息入口。"
   },
   {
     "id": "12315",
@@ -51,7 +51,7 @@
     "authority_level": "A",
     "url": "https://www.12315.cn/",
     "last_checked": "2026-03-16",
-    "note": "消费者投诉、举报、咨询和维权办事入口。"
+    "note": "消费者投诉、举报、咨询与维权的官方入口，可直接跳转办理。"
   },
   {
     "id": "crossref",
@@ -105,6 +105,15 @@
     "authority_level": "A",
     "url": "https://www.gov.cn/",
     "last_checked": "2026-03-16",
-    "note": "国务院政策文件与政策解读汇总入口。"
+    "note": "政策原文与政策解读总入口，住房、医改和综合民生条目优先链接到这里。"
+  },
+  {
+    "id": "cnnic",
+    "name": "中国互联网络信息中心（CNNIC）",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://www.cnnic.cn/",
+    "last_checked": "2026-03-16",
+    "note": "《中国互联网络发展状况统计报告》来源，用于网民规模和互联网普及率口径。"
   }
 ]

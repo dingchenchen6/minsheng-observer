@@ -2,72 +2,152 @@
   {
     "id": "trend_001",
     "topic": "employment",
-    "title": "高校毕业生与青年就业仍是本周高热议题",
-    "summary": "从招聘门槛、岗位结构到实习转正率，公共讨论的核心问题仍然集中在“岗位不足”和“要求过高”的双重压力。",
+    "title": "青年就业与岗位门槛仍处热点中心",
+    "summary": "国家统计局 2025 公报显示全年城镇新增就业 1267 万人，但毕业生群体对“岗位质量”和“经验门槛”的讨论仍维持高热。",
     "heat_score": 96,
     "snapshot_date": "2026-03-16",
     "source_links": [
-      { "label": "知乎热榜入口", "url": "https://www.zhihu.com/hot" },
-      { "label": "微博热搜入口", "url": "https://s.weibo.com/top/summary" },
-      { "label": "人社部就业政策", "url": "https://www.mohrss.gov.cn/" }
+      {
+        "label": "国家统计局统计发布",
+        "url": "https://www.stats.gov.cn/sj/zxfb/"
+      },
+      {
+        "label": "人社部政策入口",
+        "url": "https://www.mohrss.gov.cn/"
+      },
+      {
+        "label": "知乎热榜入口",
+        "url": "https://www.zhihu.com/hot"
+      }
     ],
-    "related_policy_links": ["policy_employment"],
-    "related_papers": ["paper_employment_01"]
+    "related_policy_links": [
+      "policy_employment",
+      "policy_livelihood"
+    ],
+    "related_papers": [
+      "paper_employment_01"
+    ]
   },
   {
     "id": "trend_002",
     "topic": "elderly",
-    "title": "延迟退休与养老服务承压持续交织",
-    "summary": "讨论不只聚焦退休年龄本身，还涉及养老金可持续、灵活就业参保和失能老人照护服务是否跟得上。",
+    "title": "延迟退休之外，长期照护与家庭照护压力更受关注",
+    "summary": "2025 统计公报显示 60 岁及以上人口占比已达 23.0%，站内将养老讨论从“退休年龄”扩展到照护资源与家庭负担。",
     "heat_score": 91,
     "snapshot_date": "2026-03-16",
     "source_links": [
-      { "label": "微博热搜入口", "url": "https://s.weibo.com/top/summary" },
-      { "label": "人社部养老保险栏目", "url": "https://www.mohrss.gov.cn/" }
+      {
+        "label": "国家统计局统计发布",
+        "url": "https://www.stats.gov.cn/sj/zxfb/"
+      },
+      {
+        "label": "人社部养老政策",
+        "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/"
+      }
     ],
-    "related_policy_links": ["policy_aging"],
-    "related_papers": ["paper_aging_01"]
+    "related_policy_links": [
+      "policy_aging",
+      "policy_livelihood"
+    ],
+    "related_papers": [
+      "paper_aging_01"
+    ]
   },
   {
     "id": "trend_003",
     "topic": "housing",
-    "title": "保障性住房与城中村改造进入政策观察区",
-    "summary": "公众在支持扩大供给的同时，也更关注分配透明度、长期租住成本和通勤可达性。",
-    "heat_score": 86,
+    "title": "保障性住房与城中村改造进入“规模之外看质量”阶段",
+    "summary": "中国政府网 2025 年 1 月政策解读强调在新增 100 万套基础上继续扩大规模，讨论重心则进一步转向地段、通勤和分配透明度。",
+    "heat_score": 87,
     "snapshot_date": "2026-03-16",
     "source_links": [
-      { "label": "中国政府网政策入口", "url": "https://www.gov.cn/zhengce/" },
-      { "label": "知乎热榜入口", "url": "https://www.zhihu.com/hot" }
+      {
+        "label": "中国政府网政策解读",
+        "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm"
+      },
+      {
+        "label": "知乎热榜入口",
+        "url": "https://www.zhihu.com/hot"
+      }
     ],
-    "related_policy_links": ["policy_housing"],
-    "related_papers": ["paper_housing_01"]
+    "related_policy_links": [
+      "policy_housing"
+    ],
+    "related_papers": [
+      "paper_housing_01"
+    ]
   },
   {
     "id": "trend_004",
     "topic": "food",
-    "title": "预制菜标注与食品安全投诉入口需求上升",
-    "summary": "相关讨论开始从“是否反感预制菜”转向“有没有充分标注”和“投诉后多久有结果”。",
-    "heat_score": 81,
+    "title": "预制菜标注与投诉处理效率继续带动食品议题升温",
+    "summary": "市场监管总局发布的 2024 年食品安全监督抽检结果显示总体不合格率 2.96%，公众更关注的是标注透明和问题发生后的维权效率。",
+    "heat_score": 84,
     "snapshot_date": "2026-03-16",
     "source_links": [
-      { "label": "全国 12315 平台", "url": "https://www.12315.cn/" },
-      { "label": "市场监管总局食品安全栏目", "url": "https://www.samr.gov.cn/spjgs/" }
+      {
+        "label": "市场监管总局抽检发布入口",
+        "url": "https://www.samr.gov.cn/spcjs/xxfb/"
+      },
+      {
+        "label": "全国 12315 平台",
+        "url": "https://www.12315.cn/"
+      }
     ],
-    "related_policy_links": ["policy_food", "service_12315"],
-    "related_papers": ["paper_food_01"]
+    "related_policy_links": [
+      "policy_food",
+      "service_12315"
+    ],
+    "related_papers": [
+      "paper_food_01"
+    ]
   },
   {
     "id": "trend_005",
     "topic": "technology",
-    "title": "AI 替代岗位与技能升级话题持续发酵",
-    "summary": "站内观察到关于“岗位替代速度”“行业差异”和“转岗培训”的讨论频次显著增加。",
-    "heat_score": 78,
+    "title": "AI 替代工作焦虑从概念讨论走向岗位细分",
+    "summary": "技术讨论正在从“AI 会不会抢工作”转向“哪些任务先被拆分自动化”，站内因此把科技与就业条目交叉展示。",
+    "heat_score": 79,
     "snapshot_date": "2026-03-16",
     "source_links": [
-      { "label": "B站热门入口", "url": "https://www.bilibili.com/v/popular/all" },
-      { "label": "中国政府网政策入口", "url": "https://www.gov.cn/zhengce/" }
+      {
+        "label": "CNNIC 报告入口",
+        "url": "https://www.cnnic.cn/"
+      },
+      {
+        "label": "B站热门入口",
+        "url": "https://www.bilibili.com/v/popular/all"
+      }
     ],
-    "related_policy_links": ["policy_tech"],
-    "related_papers": ["paper_tech_01"]
+    "related_policy_links": [
+      "policy_tech"
+    ],
+    "related_papers": [
+      "paper_tech_01"
+    ]
+  },
+  {
+    "id": "trend_006",
+    "topic": "healthcare",
+    "title": "基层承接能力成为医保与就医讨论的关键变量",
+    "summary": "卫健委 2024 公报解读显示基层诊疗量继续扩大，但公众感知仍取决于门诊可及性、报销体验与基层医生能力。",
+    "heat_score": 82,
+    "snapshot_date": "2026-03-16",
+    "source_links": [
+      {
+        "label": "卫生健康公报解读",
+        "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm"
+      },
+      {
+        "label": "国家卫健委官网",
+        "url": "https://www.nhc.gov.cn/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_health"
+    ],
+    "related_papers": [
+      "paper_health_01"
+    ]
   }
 ]

@@ -1,43 +1,19 @@
 [
   {
-    "id": "archive_trend_005",
-    "snapshot_date": "2026-03-16",
-    "topic": "technology",
-    "title": "AI 替代岗位与技能升级话题持续发酵",
-    "summary": "站内观察到关于“岗位替代速度”“行业差异”和“转岗培训”的讨论频次显著增加。",
-    "heat_score": 78,
-    "source_links": [
-      {
-        "label": "B站热门入口",
-        "url": "https://www.bilibili.com/v/popular/all"
-      },
-      {
-        "label": "中国政府网政策入口",
-        "url": "https://www.gov.cn/zhengce/"
-      }
-    ],
-    "related_policy_links": [
-      "policy_tech"
-    ],
-    "related_papers": [
-      "paper_tech_01"
-    ]
-  },
-  {
     "id": "archive_trend_004",
     "snapshot_date": "2026-03-16",
     "topic": "food",
-    "title": "预制菜标注与食品安全投诉入口需求上升",
-    "summary": "相关讨论开始从“是否反感预制菜”转向“有没有充分标注”和“投诉后多久有结果”。",
-    "heat_score": 81,
+    "title": "预制菜标注与投诉处理效率继续带动食品议题升温",
+    "summary": "市场监管总局发布的 2024 年食品安全监督抽检结果显示总体不合格率 2.96%，公众更关注的是标注透明和问题发生后的维权效率。",
+    "heat_score": 84,
     "source_links": [
+      {
+        "label": "市场监管总局抽检发布入口",
+        "url": "https://www.samr.gov.cn/spcjs/xxfb/"
+      },
       {
         "label": "全国 12315 平台",
         "url": "https://www.12315.cn/"
-      },
-      {
-        "label": "市场监管总局食品安全栏目",
-        "url": "https://www.samr.gov.cn/spjgs/"
       }
     ],
     "related_policy_links": [
@@ -52,13 +28,13 @@
     "id": "archive_trend_003",
     "snapshot_date": "2026-03-16",
     "topic": "housing",
-    "title": "保障性住房与城中村改造进入政策观察区",
-    "summary": "公众在支持扩大供给的同时，也更关注分配透明度、长期租住成本和通勤可达性。",
-    "heat_score": 86,
+    "title": "保障性住房与城中村改造进入“规模之外看质量”阶段",
+    "summary": "中国政府网 2025 年 1 月政策解读强调在新增 100 万套基础上继续扩大规模，讨论重心则进一步转向地段、通勤和分配透明度。",
+    "heat_score": 87,
     "source_links": [
       {
-        "label": "中国政府网政策入口",
-        "url": "https://www.gov.cn/zhengce/"
+        "label": "中国政府网政策解读",
+        "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm"
       },
       {
         "label": "知乎热榜入口",
@@ -73,20 +49,37 @@
     ]
   },
   {
+    "id": "archive_trend_001",
+    "snapshot_date": "2026-03-16",
+    "topic": "employment",
+    "title": "青年就业与岗位门槛仍处热点中心",
+    "summary": "全年城镇新增就业保持增长，但公共讨论焦点已转向岗位质量、经验门槛与行业景气度。",
+    "heat_score": 96,
+    "source_links": [
+      {
+        "label": "国家统计局统计发布",
+        "url": "https://www.stats.gov.cn/sj/zxfb/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_employment",
+      "policy_livelihood"
+    ],
+    "related_papers": [
+      "paper_employment_01"
+    ]
+  },
+  {
     "id": "archive_trend_002",
     "snapshot_date": "2026-03-16",
     "topic": "elderly",
-    "title": "延迟退休与养老服务承压持续交织",
-    "summary": "讨论不只聚焦退休年龄本身，还涉及养老金可持续、灵活就业参保和失能老人照护服务是否跟得上。",
+    "title": "延迟退休之外，长期照护与家庭照护压力更受关注",
+    "summary": "养老热点开始从制度争论扩展到具体照护资源不足和家庭照护负担。",
     "heat_score": 91,
     "source_links": [
       {
-        "label": "微博热搜入口",
-        "url": "https://s.weibo.com/top/summary"
-      },
-      {
-        "label": "人社部养老保险栏目",
-        "url": "https://www.mohrss.gov.cn/"
+        "label": "人社部养老政策",
+        "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/"
       }
     ],
     "related_policy_links": [
@@ -97,36 +90,57 @@
     ]
   },
   {
-    "id": "archive_trend_001",
+    "id": "archive_trend_003",
     "snapshot_date": "2026-03-16",
-    "topic": "employment",
-    "title": "高校毕业生与青年就业仍是本周高热议题",
-    "summary": "岗位数量和门槛要求仍是两条最突出的公共讨论主线。",
-    "heat_score": 96,
+    "topic": "housing",
+    "title": "保障性住房与城中村改造进入质量评估阶段",
+    "summary": "新增供给规模之外，公众更关注地段、资格审核和长期租住可持续性。",
+    "heat_score": 87,
     "source_links": [
       {
-        "label": "知乎热榜入口",
-        "url": "https://www.zhihu.com/hot"
+        "label": "中国政府网政策解读",
+        "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm"
       }
     ],
     "related_policy_links": [
-      "policy_employment"
+      "policy_housing"
     ],
     "related_papers": [
-      "paper_employment_01"
+      "paper_housing_01"
     ]
   },
   {
-    "id": "archive_trend_002",
-    "snapshot_date": "2026-03-14",
-    "topic": "healthcare",
-    "title": "门诊统筹、医保个人账户与就医负担讨论回升",
-    "summary": "公众更关注报销比例、报销可解释性以及基层门诊可用性。",
+    "id": "archive_trend_004",
+    "snapshot_date": "2026-03-16",
+    "topic": "food",
+    "title": "预制菜标注与维权效率推动食品话题上升",
+    "summary": "抽检合格率之外，消费者更重视信息透明度和投诉后的处理速度。",
     "heat_score": 84,
     "source_links": [
       {
-        "label": "微博热搜入口",
-        "url": "https://s.weibo.com/top/summary"
+        "label": "市场监管总局抽检发布入口",
+        "url": "https://www.samr.gov.cn/spcjs/xxfb/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_food",
+      "service_12315"
+    ],
+    "related_papers": [
+      "paper_food_01"
+    ]
+  },
+  {
+    "id": "archive_trend_005",
+    "snapshot_date": "2026-03-16",
+    "topic": "healthcare",
+    "title": "基层承接能力成为医保与就医讨论的关键变量",
+    "summary": "对医保的满意度很大程度取决于基层门诊是否真正可用。",
+    "heat_score": 82,
+    "source_links": [
+      {
+        "label": "卫生健康公报解读",
+        "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm"
       }
     ],
     "related_policy_links": [
@@ -137,16 +151,56 @@
     ]
   },
   {
-    "id": "archive_trend_003",
-    "snapshot_date": "2026-03-12",
-    "topic": "education",
-    "title": "教育公平、招生机会与学区房的联动讨论增强",
-    "summary": "对教育资源均衡与升学公平的关注重新升温。",
-    "heat_score": 76,
+    "id": "archive_trend_006",
+    "snapshot_date": "2026-03-16",
+    "topic": "technology",
+    "title": "AI 替代工作焦虑从概念讨论走向岗位细分",
+    "summary": "公众开始讨论任务拆分和转岗培训，而不只是“岗位是否消失”。",
+    "heat_score": 79,
     "source_links": [
       {
-        "label": "知乎热榜入口",
-        "url": "https://www.zhihu.com/hot"
+        "label": "CNNIC 报告入口",
+        "url": "https://www.cnnic.cn/"
+      }
+    ],
+    "related_policy_links": [
+      "policy_tech"
+    ],
+    "related_papers": [
+      "paper_tech_01"
+    ]
+  },
+  {
+    "id": "archive_trend_007",
+    "snapshot_date": "2025-12-02",
+    "topic": "healthcare",
+    "title": "卫生健康公报将寿命、基层资源和费用控制放进同一视角",
+    "summary": "人均预期寿命 79 岁、基层诊疗量扩大与次均费用下降一起构成了医改观察的新基线。",
+    "heat_score": 78,
+    "source_links": [
+      {
+        "label": "中国政府网解读",
+        "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm"
+      }
+    ],
+    "related_policy_links": [
+      "policy_health"
+    ],
+    "related_papers": [
+      "paper_health_01"
+    ]
+  },
+  {
+    "id": "archive_trend_008",
+    "snapshot_date": "2025-06-11",
+    "topic": "education",
+    "title": "教育统计公报再次拉高教育公平讨论热度",
+    "summary": "高等教育毛入学率 60.80% 与义务教育巩固率 95.90% 提升了总量视角，但区域差距仍是公众关注点。",
+    "heat_score": 77,
+    "source_links": [
+      {
+        "label": "教育部公报原文",
+        "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html"
       }
     ],
     "related_policy_links": [
@@ -157,44 +211,44 @@
     ]
   },
   {
-    "id": "archive_trend_004",
-    "snapshot_date": "2026-03-09",
+    "id": "archive_trend_009",
+    "snapshot_date": "2025-03-14",
     "topic": "food",
-    "title": "预制菜标注与消费投诉渠道成为讨论焦点",
-    "summary": "围绕知情权、投诉流程和抽检结果公开程度的关注度增加。",
-    "heat_score": 79,
+    "title": "食品安全监督抽检结果发布后，公众关注转向标签与追责",
+    "summary": "总体不合格率 2.96% 之外，消费者更在意维权链路是否顺畅。",
+    "heat_score": 74,
     "source_links": [
       {
-        "label": "全国 12315 平台",
-        "url": "https://www.12315.cn/"
+        "label": "市场监管总局抽检发布入口",
+        "url": "https://www.samr.gov.cn/spcjs/xxfb/"
       }
     ],
     "related_policy_links": [
-      "service_12315",
-      "policy_food"
+      "policy_food",
+      "service_12315"
     ],
     "related_papers": [
       "paper_food_01"
     ]
   },
   {
-    "id": "archive_trend_005",
-    "snapshot_date": "2026-03-07",
-    "topic": "elderly",
-    "title": "居家养老喘息服务与长期照护资源短缺进入公共视野",
-    "summary": "延迟退休之外，照护人压力和服务供给不足也逐步上升为热点。",
+    "id": "archive_trend_010",
+    "snapshot_date": "2025-01-06",
+    "topic": "housing",
+    "title": "城中村和危旧房改造政策解读推动住房讨论升级",
+    "summary": "政策层面的“继续扩大规模”引发公众对分配机制与城市更新质量的更多追问。",
     "heat_score": 72,
     "source_links": [
       {
-        "label": "中国政府网政策入口",
-        "url": "https://www.gov.cn/zhengce/"
+        "label": "中国政府网政策解读",
+        "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm"
       }
     ],
     "related_policy_links": [
-      "policy_aging"
+      "policy_housing"
     ],
     "related_papers": [
-      "paper_aging_01"
+      "paper_housing_01"
     ]
   }
 ]

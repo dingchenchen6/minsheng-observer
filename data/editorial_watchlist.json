@@ -1,0 +1,53 @@
+{
+  "note": "用于补充每年固定时段的高关注公共议题。平台公开接口受限时，仍可把全国性公共议程纳入监测池。",
+  "windows": [
+    {
+      "id": "annual_two_sessions",
+      "label": "全国两会",
+      "start_mmdd": "03-03",
+      "end_mmdd": "03-16",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "全国两会与政府工作报告里的民生议题",
+          "summary": "每年 3 月全国两会期间，就业、消费、教育、医疗、住房、养老等民生议题都会集中升温。",
+          "topic": "livelihood",
+          "heat": 99,
+          "url": "https://www.gov.cn/guowuyuan/zfgzbg/"
+        },
+        {
+          "platform": "weibo",
+          "title": "两会期间最受关注的就业、消费与养老信号",
+          "summary": "围绕政府工作报告、预算、规划纲要和代表委员发言，微博会集中讨论与民生直接相关的政策信号。",
+          "topic": "livelihood",
+          "heat": 97,
+          "url": "https://www.gov.cn/guowuyuan/zfgzbg/"
+        }
+      ]
+    },
+    {
+      "id": "annual_315",
+      "label": "3·15消费维权",
+      "start_mmdd": "03-10",
+      "end_mmdd": "03-18",
+      "items": [
+        {
+          "platform": "weibo",
+          "title": "3·15消费维权、晚会曝光与12315处理效率",
+          "summary": "每年 3 月中旬，消费维权、曝光案例、平台治理和 12315 响应效率都会成为高讨论话题。",
+          "topic": "food",
+          "heat": 98,
+          "url": "https://www.12315.cn/"
+        },
+        {
+          "platform": "zhihu",
+          "title": "从3·15看消费维权、直播带货与平台规则",
+          "summary": "围绕 3·15 的讨论通常会延伸到直播电商、虚假宣传、售后维权和平台责任边界。",
+          "topic": "food",
+          "heat": 95,
+          "url": "https://www.12315.cn/"
+        }
+      ]
+    }
+  ]
+}

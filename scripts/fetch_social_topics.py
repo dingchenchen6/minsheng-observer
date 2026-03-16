@@ -29,9 +29,9 @@ TOPIC_KEYWORDS = {
     'housing': ['住房', '房价', '租房', '保障房', '城中村'],
     'technology': ['ai', '人工智能', '大模型', '科技', '算法'],
     'elderly': ['退休', '养老', '老龄', '照护'],
-    'food': ['食品', '预制菜', '外卖', '抽检', '12315'],
+    'food': ['食品', '预制菜', '外卖', '抽检', '12315', '315', '3·15', '315晚会', '消费维权', '晚会曝光'],
     'education': ['教育', '高考', '学校', '升学', '分流'],
-    'livelihood': ['民生', '收入', '消费', '社保'],
+    'livelihood': ['民生', '收入', '消费', '社保', '两会', '全国两会', '政府工作报告', '代表委员'],
 }
 
 
@@ -41,6 +41,10 @@ def now_iso() -> str:
 
 def today_label() -> str:
     return datetime.now().strftime('%Y-%m-%d')
+
+
+def today_mmdd() -> str:
+    return datetime.now().strftime('%m-%d')
 
 
 def load_json(name: str):
@@ -85,6 +89,13 @@ def get_rsshub_bases() -> list[str]:
     raw = os.environ.get('RSSHUB_BASES', '')
     bases = [item.strip().rstrip('/') for item in raw.split(',') if item.strip()]
     return bases or DEFAULT_RSSHUB_BASES
+
+
+def is_active_window(start_mmdd: str, end_mmdd: str, current_mmdd: str | None = None) -> bool:
+    current = current_mmdd or today_mmdd()
+    if start_mmdd <= end_mmdd:
+        return start_mmdd <= current <= end_mmdd
+    return current >= start_mmdd or current <= end_mmdd
 
 
 def get_source(payload: dict, source_id: str) -> dict | None:
@@ -142,6 +153,36 @@ def dedupe_items(items: list[dict]) -> list[dict]:
         seen.add(key)
         deduped.append(item)
     return deduped
+
+
+def inject_editorial_watchlist(payload: dict):
+    watchlist = load_json('editorial_watchlist.json')
+    current_mmdd = today_mmdd()
+    snapshot_date = today_label()
+    items = payload.get('items', [])
+    existing_ids = {item.get('id') for item in items}
+
+    for window in watchlist.get('windows', []):
+        if not is_active_window(window.get('start_mmdd', '01-01'), window.get('end_mmdd', '12-31'), current_mmdd):
+            continue
+        for index, item in enumerate(window.get('items', []), start=1):
+            injected_id = f"{window['id']}_{item['platform']}_{index}"
+            if injected_id in existing_ids:
+                continue
+            items.append({
+                'id': injected_id,
+                'platform': item['platform'],
+                'title': item['title'],
+                'summary': normalize_summary(item.get('summary') or window.get('label') or '编辑白名单补充条目。'),
+                'topic': item.get('topic') or infer_topic(item.get('title', '')),
+                'heat': item.get('heat', 90),
+                'url': item.get('url') or PLATFORM_DEFAULT_URLS.get(item['platform'], '#'),
+                'snapshot_date': snapshot_date,
+                'fetch_status': 'editorial_watchlist',
+            })
+            existing_ids.add(injected_id)
+
+    payload['items'] = items
 
 
 def backfill_platform_items(payload: dict, platform: str, *, min_count: int = 5):
@@ -344,6 +385,7 @@ def try_fetch_rsshub(payload: dict, platform: str) -> bool:
 def main():
     payload = load_json('social_hot_topics.json')
     payload['updated_at'] = now_iso()
+    inject_editorial_watchlist(payload)
 
     direct_results = {
         'zhihu': try_fetch_zhihu_direct(payload),

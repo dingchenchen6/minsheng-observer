@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T12:55:13.107875+00:00",
+  "updated_at": "2026-03-16T13:03:22.760965+00:00",
   "note": "知乎与微博优先走公开入口直抓；如触发鉴权，则回退到 RSSHub 等代理订阅源；仍失败时保留最近一次成功结果或人工校准快照，并公开显示状态。",
   "strategy_layers": [
     {
@@ -33,7 +33,7 @@
       "status": "restricted",
       "url": "https://www.zhihu.com/hot",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#zhihu",
-      "last_attempt": "2026-03-16T12:55:13.122128+00:00",
+      "last_attempt": "2026-03-16T13:03:22.773133+00:00",
       "last_success": "",
       "note": "知乎公开 API 和页面触发鉴权。"
     },
@@ -45,7 +45,7 @@
       "status": "visitor_gate",
       "url": "https://s.weibo.com/top/summary",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#weibo",
-      "last_attempt": "2026-03-16T12:55:13.130373+00:00",
+      "last_attempt": "2026-03-16T13:03:22.780526+00:00",
       "last_success": "",
       "note": "微博公开页触发访客系统或接口拒绝访问。"
     },
@@ -57,7 +57,7 @@
       "status": "standby",
       "url": "https://rsshub.app/zhihu/hot",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#zhihu",
-      "last_attempt": "2026-03-16T12:55:13.133016+00:00",
+      "last_attempt": "2026-03-16T13:03:22.783383+00:00",
       "last_success": "",
       "note": "RSSHub 实例当前不可达或未配置，继续保留站内快照。"
     },
@@ -69,7 +69,7 @@
       "status": "standby",
       "url": "https://rsshub.app/weibo/search/hot/fulltext",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#weibo",
-      "last_attempt": "2026-03-16T12:55:13.135802+00:00",
+      "last_attempt": "2026-03-16T13:03:22.785940+00:00",
       "last_success": "",
       "note": "RSSHub 实例当前不可达或未配置，继续保留站内快照。"
     }
@@ -79,14 +79,14 @@
       "status": "restricted",
       "label": "抓取受限",
       "note": "知乎公开 API 和页面触发鉴权，保留最近一次成功或校准结果。",
-      "last_attempt": "2026-03-16T12:55:13.133020+00:00",
+      "last_attempt": "2026-03-16T13:03:22.783390+00:00",
       "last_success": ""
     },
     "weibo": {
       "status": "visitor_gate",
       "label": "游客验证",
       "note": "微博公开页触发访客系统或接口拒绝访问，保留最近一次成功或校准结果。",
-      "last_attempt": "2026-03-16T12:55:13.135816+00:00",
+      "last_attempt": "2026-03-16T13:03:22.785945+00:00",
       "last_success": ""
     }
   },
@@ -129,6 +129,50 @@
     }
   ],
   "items": [
+    {
+      "id": "annual_two_sessions_zhihu_1",
+      "platform": "zhihu",
+      "title": "全国两会与政府工作报告里的民生议题",
+      "summary": "每年 3 月全国两会期间，就业、消费、教育、医疗、住房、养老等民生议题都会集中升温。",
+      "topic": "livelihood",
+      "heat": 99,
+      "url": "https://www.gov.cn/guowuyuan/zfgzbg/",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "editorial_watchlist"
+    },
+    {
+      "id": "annual_315_weibo_1",
+      "platform": "weibo",
+      "title": "3·15消费维权、晚会曝光与12315处理效率",
+      "summary": "每年 3 月中旬，消费维权、曝光案例、平台治理和 12315 响应效率都会成为高讨论话题。",
+      "topic": "food",
+      "heat": 98,
+      "url": "https://www.12315.cn/",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "editorial_watchlist"
+    },
+    {
+      "id": "annual_two_sessions_weibo_2",
+      "platform": "weibo",
+      "title": "两会期间最受关注的就业、消费与养老信号",
+      "summary": "围绕政府工作报告、预算、规划纲要和代表委员发言，微博会集中讨论与民生直接相关的政策信号。",
+      "topic": "livelihood",
+      "heat": 97,
+      "url": "https://www.gov.cn/guowuyuan/zfgzbg/",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "editorial_watchlist"
+    },
+    {
+      "id": "annual_315_zhihu_2",
+      "platform": "zhihu",
+      "title": "从3·15看消费维权、直播带货与平台规则",
+      "summary": "围绕 3·15 的讨论通常会延伸到直播电商、虚假宣传、售后维权和平台责任边界。",
+      "topic": "food",
+      "heat": 95,
+      "url": "https://www.12315.cn/",
+      "snapshot_date": "2026-03-16",
+      "fetch_status": "editorial_watchlist"
+    },
     {
       "id": "zhihu_seed_001",
       "platform": "zhihu",

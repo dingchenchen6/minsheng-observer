@@ -3,7 +3,7 @@ name: Export Discussions
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40 1 * * *'
+    - cron: '40 0,12 * * *'
 
 permissions:
   contents: write

@@ -70,5 +70,45 @@
     "url": "https://www.12315.cn/",
     "source_name": "全国 12315 平台",
     "label": "投诉举报入口"
+  },
+  {
+    "id": "policy_edu_antifraud",
+    "topic": "education",
+    "title": "教育部发布预警：高校招生录取期间谨防上当受骗",
+    "url": "https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/2025/2025_zt10/yw/202506/t20250627_1195766.html",
+    "source_name": "教育部",
+    "label": "查招生防骗提醒"
+  },
+  {
+    "id": "policy_employment_antifraud",
+    "topic": "employment",
+    "title": "人力资源社会保障部办公厅关于面向社会公开征集人力资源服务领域涉嫌违法违规行为线索的公告",
+    "url": "https://chinajob.mohrss.gov.cn/h5/c/2025-07-02/441799.shtml",
+    "source_name": "中国就业网 / 人社部",
+    "label": "查求职陷阱公告"
+  },
+  {
+    "id": "policy_housing_antifraud",
+    "topic": "housing",
+    "title": "廊坊市住房和城乡建设局关于防范以办理公租房等保障性住房名义实施诈骗的温馨提示",
+    "url": "https://www.lf.gov.cn/Item/151320.aspx",
+    "source_name": "廊坊市住房和城乡建设局",
+    "label": "查公租房防骗提示"
+  },
+  {
+    "id": "policy_health_antifraud",
+    "topic": "healthcare",
+    "title": "市场监管总局、中国消费者协会联合发布提示：普通食品不能宣称保健功能不得涉及疾病预防治疗功效",
+    "url": "https://www.samr.gov.cn/xw/sj/art/2025/art_e27f6eaa4c074317b256275698ba28d2.html",
+    "source_name": "市场监管总局",
+    "label": "查保健品澄清"
+  },
+  {
+    "id": "policy_livelihood_antifraud",
+    "topic": "livelihood",
+    "title": "扫码可领“2024年个人劳动补贴”？人力资源和社会保障部：小心是诈骗",
+    "url": "https://www.gov.cn/yaowen/liebiao/202405/content_6952339.htm",
+    "source_name": "中国政府网 / 人社部",
+    "label": "查补贴诈骗提醒"
   }
 ]

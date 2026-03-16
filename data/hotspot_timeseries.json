@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T13:47:03.553229+00:00",
+  "updated_at": "2026-03-16T21:41:40.966370+00:00",
   "topics": [
     {
       "topic": "education",
@@ -23,7 +23,7 @@
         "evidence_values": [
           0,
           1,
-          1
+          2
         ],
         "discussion_values": [
           0,
@@ -54,7 +54,7 @@
         "evidence_values": [
           0,
           1,
-          2
+          3
         ],
         "discussion_values": [
           0,
@@ -85,7 +85,7 @@
         "evidence_values": [
           0,
           1,
-          1
+          2
         ],
         "discussion_values": [
           0,
@@ -189,7 +189,7 @@
         ],
         "evidence_values": [
           1,
-          1
+          2
         ],
         "discussion_values": [
           0,
@@ -213,7 +213,7 @@
           "2026-03-16"
         ],
         "evidence_values": [
-          1
+          2
         ],
         "discussion_values": [
           1

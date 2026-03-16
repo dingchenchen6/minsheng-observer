@@ -124,5 +124,23 @@
     "url": "https://www.cnnic.cn/",
     "last_checked": "2026-03-16",
     "note": "《中国互联网络发展状况统计报告》来源，用于网民规模和互联网普及率口径。"
+  },
+  {
+    "id": "chinajob",
+    "name": "中国就业网",
+    "category": "official-data",
+    "authority_level": "A",
+    "url": "https://chinajob.mohrss.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "人社系统公开就业服务、风险提示、清理整顿人力资源市场秩序和求职陷阱整治信息。"
+  },
+  {
+    "id": "lf-housing",
+    "name": "廊坊市住房和城乡建设局",
+    "category": "official-data",
+    "authority_level": "B",
+    "url": "https://www.lf.gov.cn/",
+    "last_checked": "2026-03-16",
+    "note": "公开公租房申请、摇号、配租和防范保障房诈骗的官方提示。"
   }
 ]

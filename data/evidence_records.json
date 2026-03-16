@@ -1,5 +1,334 @@
 [
   {
+    "id": "evidence_015",
+    "topic": "livelihood",
+    "type": "exposed",
+    "title": "“扫码领取个人劳动补贴、社保补贴、财政补贴”多是假冒官方诈骗",
+    "claim": "短信、邮件或社交平台消息称可扫描二维码领取“个人劳动补贴”“薪资补贴”“社保补贴”等。",
+    "verdict": "中国政府网转引人社部明确说明，所谓“个人劳动补贴”通知为不实信息且涉嫌诈骗，官方不会通过陌生二维码要求填写银行卡、密码和验证码。",
+    "published_at": "2026-03-16",
+    "summary": "这类骗局最容易借政策热点和补贴焦虑扩散。判断真假时，关键不是“页面像不像官方”，而是官方是否会要求在陌生页面提交银行卡、验证码和支付密码。",
+    "source_ids": [
+      "gov-cn",
+      "mohrss"
+    ],
+    "policy_link_ids": [
+      "policy_livelihood",
+      "policy_livelihood_antifraud"
+    ],
+    "paper_ids": [
+      "paper_livelihood_01"
+    ],
+    "related_trend_ids": [],
+    "misinfo_kind": "impersonation",
+    "risk_tags": [
+      "补贴诈骗",
+      "二维码诈骗",
+      "冒充官方",
+      "假通知"
+    ],
+    "clarification_points": [
+      "人社部门不会通过陌生二维码、小程序或邮箱链接要求填银行卡密码和验证码。",
+      "涉及补贴、社保、医保、住房等信息时，应先回主管部门官网或 12333 等官方渠道核验。",
+      "一旦扫码后出现索要验证码、银行卡号、支付密码，应立即停止并保留证据。"
+    ],
+    "scam_signals": [
+      "以“财政补贴”“劳动补贴”为名群发邮件或短信",
+      "要求扫码进入所谓“官方小程序”",
+      "索要银行卡号、验证码、支付密码"
+    ],
+    "history": [
+      "2024-05-20：根据中国政府网转载人社部辟谣信息建立条目。",
+      "2026-03-16：补充补贴类假通知的统一识别规则。"
+    ]
+  },
+  {
+    "id": "evidence_014",
+    "topic": "healthcare",
+    "type": "exposed",
+    "title": "把普通食品、保健食品包装成“包治百病”的神药，是典型虚假宣传",
+    "claim": "直播间、讲座和线下体验店常把普通食品或保健食品宣传成能降三高、抗癌、防治慢病的“神药”。",
+    "verdict": "市场监管总局明确提示，普通食品不能宣称保健功能，不得涉及疾病预防治疗功效；保健食品也不是药品，不能替代药物治疗。",
+    "published_at": "2026-03-16",
+    "summary": "医疗健康领域最容易踩坑的不是“产品看起来像药”，而是商家利用疾病焦虑、专家人设、免费体验和私域直播，把并无治疗资质的产品包装成医疗解决方案。",
+    "source_ids": [
+      "samr",
+      "nhc"
+    ],
+    "policy_link_ids": [
+      "policy_health",
+      "policy_health_antifraud"
+    ],
+    "paper_ids": [
+      "paper_health_01"
+    ],
+    "related_trend_ids": [
+      "trend_006"
+    ],
+    "misinfo_kind": "false_promo",
+    "risk_tags": [
+      "包治百病",
+      "保健品骗局",
+      "虚假疗效",
+      "伪专家"
+    ],
+    "clarification_points": [
+      "普通食品不能声称治疗功效，保健食品也不能替代药品。",
+      "遇到“免费鸡蛋”“健康讲堂”“义诊体验”后导流销售，要警惕会销与私域直播套路。",
+      "判断产品是否可信，先看注册备案、标签说明和药品/保健食品法定属性。"
+    ],
+    "scam_signals": [
+      "宣称能治疗高血压、糖尿病、癌症等疾病",
+      "用“专家”“名医”“研究院”名头做口头背书",
+      "先免费体验再引流到微信群、直播间高价成交"
+    ],
+    "history": [
+      "2025-08-04：根据市场监管总局和中消协联合提示建立条目。",
+      "2026-03-16：补充普通食品、保健食品与药品的法律边界。"
+    ]
+  },
+  {
+    "id": "evidence_013",
+    "topic": "housing",
+    "type": "exposed",
+    "title": "“花钱代办公租房、找关系优先配租、短视频低价房源引流”属于高风险住房骗局",
+    "claim": "有不法分子声称可以代办公租房、加快审核、优先摇号，或通过短视频平台发布虚假低价房源吸引转账。",
+    "verdict": "住房保障主管部门已明确提示：公租房申请不收代办费、不靠熟人操作，配租过程公开摇号并公示结果。",
+    "published_at": "2026-03-16",
+    "summary": "住房领域的虚假信息往往借“资格焦虑”和“好房稀缺”牟利。判断真假的关键，不是看宣传多么像官方，而是核对申请渠道、费用规则、摇号流程和公示机制。",
+    "source_ids": [
+      "gov-cn",
+      "lf-housing"
+    ],
+    "policy_link_ids": [
+      "policy_housing",
+      "policy_housing_antifraud"
+    ],
+    "paper_ids": [
+      "paper_housing_01"
+    ],
+    "related_trend_ids": [
+      "trend_003"
+    ],
+    "misinfo_kind": "impersonation",
+    "risk_tags": [
+      "公租房骗局",
+      "假房源",
+      "代办收费",
+      "找关系配租"
+    ],
+    "clarification_points": [
+      "保障房申请、审核、摇号和配租应以住建部门公告与官方 App 为准。",
+      "所谓“代办费”“加急费”“内部操作费”本身就是风险信号。",
+      "低价房源若急于收定金、先看后补合同、只留私人联系方式，也应先回官方平台核验。"
+    ],
+    "scam_signals": [
+      "要求先转订金或代办费",
+      "声称认识住建、街道或摇号内部人员",
+      "只通过短信、微信、短视频私信发送“内部房源”"
+    ],
+    "history": [
+      "2025-11-17：根据住建部门防范公租房诈骗温馨提示建立条目。",
+      "2026-03-16：补充假房源与“代办配租”识别信号。"
+    ]
+  },
+  {
+    "id": "evidence_012",
+    "topic": "employment",
+    "type": "exposed",
+    "title": "“直签、保 offer、招转培、培训贷”不是正常求职服务，而是高风险套路",
+    "claim": "一些机构以“内部推荐”“包进名企”“先培训再安排上岗”为由，要求求职者先缴费或签贷款协议。",
+    "verdict": "人社系统将“黑职介”“招转培”“培训贷”“虚假招聘”“付费内推”等列为重点整治对象，说明这类做法并非行业惯例，而是典型风险。",
+    "published_at": "2026-03-16",
+    "summary": "求职风险正在从线下中介扩展到小程序、公众号、社群和短视频平台。风险识别要点不只是“对方像不像公司”，还包括是否违规收费、是否回避许可资质、是否诱导贷款。",
+    "source_ids": [
+      "mohrss",
+      "chinajob"
+    ],
+    "policy_link_ids": [
+      "policy_employment",
+      "policy_employment_antifraud"
+    ],
+    "paper_ids": [
+      "paper_employment_01"
+    ],
+    "related_trend_ids": [
+      "trend_001"
+    ],
+    "misinfo_kind": "fraud",
+    "risk_tags": [
+      "招转培",
+      "培训贷",
+      "黑职介",
+      "虚假招聘",
+      "付费内推"
+    ],
+    "clarification_points": [
+      "先核验招聘机构是否具有人力资源服务许可或正规用工主体资质。",
+      "凡是“先缴费再上岗”“先贷款再培训”“保录保 offer”的说法都应视为高风险。",
+      "保存招聘页面、聊天记录、付款与合同信息，必要时向人社部门举报。"
+    ],
+    "scam_signals": [
+      "高薪低门槛且立即要求缴费",
+      "以“内部推荐”“直签名企”制造稀缺感",
+      "要求签贷款协议、分期协议或转账到个人账户"
+    ],
+    "history": [
+      "2025-07-02：根据人社部征集违法违规线索公告建立条目。",
+      "2026-03-16：补充网络招聘平台与私域社群中的常见话术。"
+    ]
+  },
+  {
+    "id": "evidence_011",
+    "topic": "education",
+    "type": "exposed",
+    "title": "“内部指标、花钱保录、山寨志愿 App”是高招季高频骗局，不是正规升学渠道",
+    "claim": "一些机构宣称掌握“内部数据”“内部指标”，或通过仿冒“阳光高考”“阳光志愿”页面与 App 出售付费服务。",
+    "verdict": "教育部明确提醒，不存在所谓“内部信息”“内部数据”，考生和家长应只通过官方平台查询和填报，警惕近似名称 App、仿冒网站和“花钱保录”。",
+    "published_at": "2026-03-16",
+    "summary": "招生录取阶段最常见的误导并不是“信息少”，而是“假装掌握权威信息”的商业骗局。证据链来自教育部对假冒网站、近似名称 App、降分补录和内部关系录取的公开预警。",
+    "source_ids": [
+      "moe"
+    ],
+    "policy_link_ids": [
+      "policy_edu",
+      "policy_edu_antifraud"
+    ],
+    "paper_ids": [
+      "paper_education_01"
+    ],
+    "related_trend_ids": [],
+    "misinfo_kind": "impersonation",
+    "risk_tags": [
+      "招生骗局",
+      "山寨App",
+      "假冒网站",
+      "内部指标"
+    ],
+    "clarification_points": [
+      "只认教育部“阳光高考”平台和各省招考机构官方渠道。",
+      "不存在通过熟人或花钱购买的“内部指标”“机动计划”“降分补录”正规通道。",
+      "遇到近似名称 App、仿冒域名和收费包录服务，应先核对官方域名和主管部门公告。"
+    ],
+    "scam_signals": [
+      "近似“阳光高考”“阳光志愿”的名称或域名",
+      "承诺低分补录、内部关系、付费保录",
+      "要求跳转非官方小程序或第三方付款"
+    ],
+    "history": [
+      "2025-06-27：根据教育部招生录取防骗预警建立条目。",
+      "2026-03-16：补充山寨志愿 App 与仿冒域名识别信号。"
+    ]
+  },
+  {
+    "id": "evidence_010",
+    "topic": "healthcare",
+    "type": "exposed",
+    "title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
+    "claim": "只要继续扩建大医院、增加设备，就能明显改善医疗满意度。",
+    "verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。",
+    "published_at": "2026-03-16",
+    "summary": "不同地区、不同收入群体对‘同一套制度’的体验可能完全不同，这也是医疗舆论分歧长期存在的原因。",
+    "source_ids": [
+      "nhc",
+      "gov-cn"
+    ],
+    "policy_link_ids": [
+      "policy_health"
+    ],
+    "paper_ids": [
+      "paper_health_01",
+      "paper_health_02"
+    ],
+    "related_trend_ids": [
+      "trend_006"
+    ],
+    "history": [
+      "2026-03-16：把医疗议题中的地区与群体不平等显性化。"
+    ]
+  },
+  {
+    "id": "evidence_009",
+    "topic": "livelihood",
+    "type": "context",
+    "title": "收入与财富差距仍是多项民生焦虑的底层变量",
+    "claim": "只要总量增长继续，教育、住房、消费和养老焦虑会自然缓和。",
+    "verdict": "总量增长重要，但如果收入、财富和公共服务可及性差距继续存在，跨议题焦虑不会自动消散。",
+    "published_at": "2026-03-16",
+    "summary": "把综合民生单列为议题，是为了提醒读者：许多分散问题最终仍会回到分配结构和获得感的差异上。",
+    "source_ids": [
+      "stats",
+      "gov-cn"
+    ],
+    "policy_link_ids": [
+      "policy_livelihood"
+    ],
+    "paper_ids": [
+      "paper_livelihood_01",
+      "paper_livelihood_02"
+    ],
+    "related_trend_ids": [],
+    "history": [
+      "2026-03-16：新增综合民生条目，用于连接收入差距与多议题焦虑。"
+    ]
+  },
+  {
+    "id": "evidence_008",
+    "topic": "technology",
+    "type": "context",
+    "title": "AI 焦虑真正对应的是任务重组，而不是所有岗位同步消失",
+    "claim": "只要 AI 继续迭代，现有白领岗位会被整体替代。",
+    "verdict": "更有证据的说法是：岗位内部的可编码任务会先被拆分和自动化，替代与补充往往并存。",
+    "published_at": "2026-03-16",
+    "summary": "站内把科技议题与就业议题交叉展示，是因为公众最在意的并不是技术本身，而是劳动过程如何变化。",
+    "source_ids": [
+      "cnnic",
+      "mohrss"
+    ],
+    "policy_link_ids": [
+      "policy_tech",
+      "policy_employment"
+    ],
+    "paper_ids": [
+      "paper_tech_01",
+      "paper_tech_02"
+    ],
+    "related_trend_ids": [
+      "trend_005",
+      "trend_001"
+    ],
+    "history": [
+      "2026-03-16：补入自动化替代与任务拆分的比较研究框架。"
+    ]
+  },
+  {
+    "id": "evidence_007",
+    "topic": "elderly",
+    "type": "context",
+    "title": "养老压力不只在养老金账户，也在长期照护服务供给",
+    "claim": "社交平台对养老议题的讨论常被压缩成‘延迟退休赞成还是反对’。",
+    "verdict": "更完整的观察框架应同时纳入健康寿命、家庭照护负担和社区长期照护服务。",
+    "published_at": "2026-03-16",
+    "summary": "统计公报中的老龄人口占比上升，与照护制度和家庭时间成本一起，构成养老议题真正的压力面。",
+    "source_ids": [
+      "stats",
+      "mohrss"
+    ],
+    "policy_link_ids": [
+      "policy_aging"
+    ],
+    "paper_ids": [
+      "paper_aging_01",
+      "paper_aging_02"
+    ],
+    "related_trend_ids": [
+      "trend_002"
+    ],
+    "history": [
+      "2026-03-16：将养老议题从退休年龄争论扩展为养老金与照护双重压力。"
+    ]
+  },
+  {
     "id": "evidence_001",
     "topic": "food",
     "type": "investigating",
@@ -8,10 +337,21 @@
     "verdict": "更值得核查的是标注义务、责任归属和投诉处理效率。",
     "published_at": "2026-03-16",
     "summary": "食品安全监督抽检结果和 12315 投诉路径表明，信息透明和维权效率比单纯情绪对立更能解释公众不满。",
-    "source_ids": ["samr", "12315"],
-    "policy_link_ids": ["policy_food", "service_12315"],
-    "paper_ids": ["paper_food_01", "paper_food_02"],
-    "related_trend_ids": ["trend_004"],
+    "source_ids": [
+      "samr",
+      "12315"
+    ],
+    "policy_link_ids": [
+      "policy_food",
+      "service_12315"
+    ],
+    "paper_ids": [
+      "paper_food_01",
+      "paper_food_02"
+    ],
+    "related_trend_ids": [
+      "trend_004"
+    ],
     "history": [
       "2025-03-14：根据食品安全监督抽检结果补入监管背景。",
       "2026-03-16：将争议焦点明确调整为标签透明与维权效率。"
@@ -26,10 +366,20 @@
     "verdict": "更准确的分析方式是区分支付制度、基层承接能力和患者体验三个层面。",
     "published_at": "2026-03-14",
     "summary": "卫健委 2024 公报解读说明基层诊疗量在增长，但这并不自动转化为高质量就医体验。",
-    "source_ids": ["nhc", "gov-cn"],
-    "policy_link_ids": ["policy_health"],
-    "paper_ids": ["paper_health_01", "paper_health_02"],
-    "related_trend_ids": ["trend_006"],
+    "source_ids": [
+      "nhc",
+      "gov-cn"
+    ],
+    "policy_link_ids": [
+      "policy_health"
+    ],
+    "paper_ids": [
+      "paper_health_01",
+      "paper_health_02"
+    ],
+    "related_trend_ids": [
+      "trend_006"
+    ],
     "history": [
       "2025-12-02：依据卫生健康公报解读建立背景条目。",
       "2026-03-14：补充‘支付制度和服务供给要分开讨论’的提示。"
@@ -44,10 +394,20 @@
     "verdict": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。",
     "published_at": "2026-03-13",
     "summary": "即使全年新增就业保持增长，青年求职者面临的并不只是岗位总量问题。",
-    "source_ids": ["stats", "mohrss"],
-    "policy_link_ids": ["policy_employment"],
-    "paper_ids": ["paper_employment_01", "paper_tech_02"],
-    "related_trend_ids": ["trend_001"],
+    "source_ids": [
+      "stats",
+      "mohrss"
+    ],
+    "policy_link_ids": [
+      "policy_employment"
+    ],
+    "paper_ids": [
+      "paper_employment_01",
+      "paper_tech_02"
+    ],
+    "related_trend_ids": [
+      "trend_001"
+    ],
     "history": [
       "2026-03-13：由讨论归档整理为证据库条目。"
     ]
@@ -61,10 +421,19 @@
     "verdict": "真正影响获得感的还包括地段、交通、资格审核与长期租住成本。",
     "published_at": "2026-03-11",
     "summary": "中国政府网对 2025 年城中村和危旧房改造政策的解读，为站点补充了规模之外看质量的分析框架。",
-    "source_ids": ["gov-cn"],
-    "policy_link_ids": ["policy_housing"],
-    "paper_ids": ["paper_housing_01", "paper_housing_02"],
-    "related_trend_ids": ["trend_003"],
+    "source_ids": [
+      "gov-cn"
+    ],
+    "policy_link_ids": [
+      "policy_housing"
+    ],
+    "paper_ids": [
+      "paper_housing_01",
+      "paper_housing_02"
+    ],
+    "related_trend_ids": [
+      "trend_003"
+    ],
     "history": [
       "2025-01-06：以政策解读为基础建立住房背景条目。",
       "2026-03-11：补充地段与通勤可达性维度。"
@@ -79,9 +448,16 @@
     "verdict": "总量指标改善值得肯定，但区域差距、优质资源分布和家庭教育成本仍是核心矛盾。",
     "published_at": "2026-03-10",
     "summary": "教育部 2024 统计公报让教育‘总量改善’更清晰，也提醒我们继续观察结构性不平等。",
-    "source_ids": ["moe"],
-    "policy_link_ids": ["policy_edu"],
-    "paper_ids": ["paper_education_01", "paper_education_02"],
+    "source_ids": [
+      "moe"
+    ],
+    "policy_link_ids": [
+      "policy_edu"
+    ],
+    "paper_ids": [
+      "paper_education_01",
+      "paper_education_02"
+    ],
     "related_trend_ids": [],
     "history": [
       "2025-06-11：根据教育部公报建立背景条目。",
@@ -97,80 +473,21 @@
     "verdict": "当投诉、举报、咨询被持续记录时，它们会成为治理侧识别高频问题的重要入口。",
     "published_at": "2026-03-09",
     "summary": "站点把 12315 放在食品和消费维权模块的核心位置，是为了让‘办事路径’与‘议题讨论’直接连接。",
-    "source_ids": ["12315", "samr"],
-    "policy_link_ids": ["service_12315", "policy_food"],
-    "paper_ids": ["paper_food_01", "paper_food_02"],
+    "source_ids": [
+      "12315",
+      "samr"
+    ],
+    "policy_link_ids": [
+      "service_12315",
+      "policy_food"
+    ],
+    "paper_ids": [
+      "paper_food_01",
+      "paper_food_02"
+    ],
     "related_trend_ids": [],
     "history": [
       "2026-03-09：新增‘办事入口也是证据链的一部分’说明。"
-    ]
-  },
-  {
-    "id": "evidence_007",
-    "topic": "elderly",
-    "type": "context",
-    "title": "养老压力不只在养老金账户，也在长期照护服务供给",
-    "claim": "社交平台对养老议题的讨论常被压缩成‘延迟退休赞成还是反对’。",
-    "verdict": "更完整的观察框架应同时纳入健康寿命、家庭照护负担和社区长期照护服务。",
-    "published_at": "2026-03-16",
-    "summary": "统计公报中的老龄人口占比上升，与照护制度和家庭时间成本一起，构成养老议题真正的压力面。",
-    "source_ids": ["stats", "mohrss"],
-    "policy_link_ids": ["policy_aging"],
-    "paper_ids": ["paper_aging_01", "paper_aging_02"],
-    "related_trend_ids": ["trend_002"],
-    "history": [
-      "2026-03-16：将养老议题从退休年龄争论扩展为养老金与照护双重压力。"
-    ]
-  },
-  {
-    "id": "evidence_008",
-    "topic": "technology",
-    "type": "context",
-    "title": "AI 焦虑真正对应的是任务重组，而不是所有岗位同步消失",
-    "claim": "只要 AI 继续迭代，现有白领岗位会被整体替代。",
-    "verdict": "更有证据的说法是：岗位内部的可编码任务会先被拆分和自动化，替代与补充往往并存。",
-    "published_at": "2026-03-16",
-    "summary": "站内把科技议题与就业议题交叉展示，是因为公众最在意的并不是技术本身，而是劳动过程如何变化。",
-    "source_ids": ["cnnic", "mohrss"],
-    "policy_link_ids": ["policy_tech", "policy_employment"],
-    "paper_ids": ["paper_tech_01", "paper_tech_02"],
-    "related_trend_ids": ["trend_005", "trend_001"],
-    "history": [
-      "2026-03-16：补入自动化替代与任务拆分的比较研究框架。"
-    ]
-  },
-  {
-    "id": "evidence_009",
-    "topic": "livelihood",
-    "type": "context",
-    "title": "收入与财富差距仍是多项民生焦虑的底层变量",
-    "claim": "只要总量增长继续，教育、住房、消费和养老焦虑会自然缓和。",
-    "verdict": "总量增长重要，但如果收入、财富和公共服务可及性差距继续存在，跨议题焦虑不会自动消散。",
-    "published_at": "2026-03-16",
-    "summary": "把综合民生单列为议题，是为了提醒读者：许多分散问题最终仍会回到分配结构和获得感的差异上。",
-    "source_ids": ["stats", "gov-cn"],
-    "policy_link_ids": ["policy_livelihood"],
-    "paper_ids": ["paper_livelihood_01", "paper_livelihood_02"],
-    "related_trend_ids": [],
-    "history": [
-      "2026-03-16：新增综合民生条目，用于连接收入差距与多议题焦虑。"
-    ]
-  },
-  {
-    "id": "evidence_010",
-    "topic": "healthcare",
-    "type": "exposed",
-    "title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
-    "claim": "只要继续扩建大医院、增加设备，就能明显改善医疗满意度。",
-    "verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。",
-    "published_at": "2026-03-16",
-    "summary": "不同地区、不同收入群体对‘同一套制度’的体验可能完全不同，这也是医疗舆论分歧长期存在的原因。",
-    "source_ids": ["nhc", "gov-cn"],
-    "policy_link_ids": ["policy_health"],
-    "paper_ids": ["paper_health_01", "paper_health_02"],
-    "related_trend_ids": ["trend_006"],
-    "history": [
-      "2026-03-16：把医疗议题中的地区与群体不平等显性化。"
     ]
   }
 ]

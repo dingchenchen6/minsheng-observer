@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-03-16T13:47:03.551995+00:00",
+  "updated_at": "2026-03-16T21:41:40.965405+00:00",
   "edition": {
-    "slot": "evening",
-    "slot_label": "晚报",
-    "date_label": "2026年03月16日 晚报",
-    "timestamp_label": "2026年03月16日 21:47（北京时间）"
+    "slot": "morning",
+    "slot_label": "早报",
+    "date_label": "2026年03月17日 早报",
+    "timestamp_label": "2026年03月17日 05:41（北京时间）"
   },
   "summary_cards": [
     {
@@ -35,17 +35,17 @@
     "当前仍受平台限制的入口有：ZHIHU、WEIBO，因此站点继续保留回退层和人工校准快照。"
   ],
   "express_brief": {
-    "edition_slot": "evening",
-    "edition_label": "晚报",
-    "edition_date_label": "2026年03月16日 晚报",
-    "edition_timestamp_label": "2026年03月16日 21:47（北京时间）",
-    "headline": "2026年03月16日 晚报重点关注“食品”与“住房”",
-    "summary": "本站按晚报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
+    "edition_slot": "morning",
+    "edition_label": "早报",
+    "edition_date_label": "2026年03月17日 早报",
+    "edition_timestamp_label": "2026年03月17日 05:41（北京时间）",
+    "headline": "2026年03月17日 早报重点关注“食品”与“住房”",
+    "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "sections": [
       {
         "topic": "food",
         "label": "食品",
-        "headline": "食品列入晚报优先跟踪",
+        "headline": "食品列入早报优先跟踪",
         "summary": "综合分 253，当前热度 84.0，社媒总热度 277，证据 2 条，讨论 1 条。",
         "opinion_hint": "标签透明和真实告知",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -53,23 +53,23 @@
       {
         "topic": "employment",
         "label": "就业",
-        "headline": "就业列入晚报优先跟踪",
-        "summary": "综合分 206，当前热度 96.0，社媒总热度 186，证据 1 条，讨论 1 条。",
+        "headline": "就业列入早报优先跟踪",
+        "summary": "综合分 211，当前热度 96.0，社媒总热度 186，证据 2 条，讨论 1 条。",
         "opinion_hint": "要求与经验门槛过高",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
       },
       {
         "topic": "housing",
         "label": "住房",
-        "headline": "住房列入晚报优先跟踪",
-        "summary": "综合分 206，当前热度 87.0，社媒总热度 169，证据 1 条，讨论 1 条。",
+        "headline": "住房列入早报优先跟踪",
+        "summary": "综合分 211，当前热度 87.0，社媒总热度 169，证据 2 条，讨论 1 条。",
         "opinion_hint": "通勤成本与地段可达性",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
       },
       {
         "topic": "elderly",
         "label": "养老",
-        "headline": "养老列入晚报优先跟踪",
+        "headline": "养老列入早报优先跟踪",
         "summary": "综合分 203，当前热度 91.0，社媒总热度 178，证据 1 条，讨论 1 条。",
         "opinion_hint": "失能照护服务不足",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -77,8 +77,8 @@
       {
         "topic": "healthcare",
         "label": "医疗",
-        "headline": "医疗列入晚报优先跟踪",
-        "summary": "综合分 161，当前热度 82.0，社媒总热度 80，证据 2 条，讨论 1 条。",
+        "headline": "医疗列入早报优先跟踪",
+        "summary": "综合分 166，当前热度 82.0，社媒总热度 80，证据 3 条，讨论 1 条。",
         "opinion_hint": "医保报销与费用透明度",
         "watch_reason": "证据和讨论积累较厚，适合做专题化持续追踪。"
       }
@@ -86,7 +86,7 @@
     "chart_takeaways": [
       "综合分前两位分别是“食品”和“就业”，说明当前讨论并非单点爆发。",
       "当前热点分层为：显著升温 4 个，持续高位 3 个，结构性关注 1 个。",
-      "证据和报告支撑较厚的议题是：民生、医疗、养老。",
+      "证据和报告支撑较厚的议题是：民生、医疗、教育。",
       "平台受限仍集中在 ZHIHU、WEIBO，因此回退层仍需保留。"
     ],
     "watch_alerts": [
@@ -99,14 +99,14 @@
       {
         "topic": "employment",
         "label": "就业",
-        "title": "青年就业中的‘隐性经验门槛’确实存在",
-        "detail": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。"
+        "title": "“直签、保 offer、招转培、培训贷”不是正常求职服务，而是高风险套路",
+        "detail": "人社系统将“黑职介”“招转培”“培训贷”“虚假招聘”“付费内推”等列为重点整治对象，说明这类做法并非行业惯例，而是典型风险。"
       },
       {
         "topic": "housing",
         "label": "住房",
-        "title": "保障性住房扩容并不自动解决‘住得起、住得稳、通勤可承受’",
-        "detail": "真正影响获得感的还包括地段、交通、资格审核与长期租住成本。"
+        "title": "“花钱代办公租房、找关系优先配租、短视频低价房源引流”属于高风险住房骗局",
+        "detail": "住房保障主管部门已明确提示：公租房申请不收代办费、不靠熟人操作，配租过程公开摇号并公示结果。"
       },
       {
         "topic": "elderly",
@@ -131,14 +131,14 @@
         "topic": "employment",
         "label": "就业",
         "headline": "就业进入显著升温区间",
-        "summary": "综合分 206，当前热度 96.0，社媒均值 93.0，历史差值 +0.0。",
+        "summary": "综合分 211，当前热度 96.0，社媒均值 93.0，历史差值 +0.0。",
         "action": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
       },
       {
         "topic": "housing",
         "label": "住房",
         "headline": "住房进入持续高位区间",
-        "summary": "综合分 206，当前热度 87.0，社媒均值 84.5，历史差值 +5.0。",
+        "summary": "综合分 211，当前热度 87.0，社媒均值 84.5，历史差值 +5.0。",
         "action": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
       },
       {
@@ -177,14 +177,14 @@
     {
       "topic": "employment",
       "label": "就业",
-      "combined_score": 206,
+      "combined_score": 211,
       "current_heat": 96.0,
       "archive_average_heat": 96.0,
       "archive_mentions": 1,
       "social_average_heat": 93.0,
       "social_total_heat": 186,
       "social_item_count": 2,
-      "evidence_count": 1,
+      "evidence_count": 2,
       "discussion_count": 1,
       "report_count": 0,
       "delta_vs_archive": 0.0,
@@ -194,14 +194,14 @@
     {
       "topic": "housing",
       "label": "住房",
-      "combined_score": 206,
+      "combined_score": 211,
       "current_heat": 87.0,
       "archive_average_heat": 82.0,
       "archive_mentions": 3,
       "social_average_heat": 84.5,
       "social_total_heat": 169,
       "social_item_count": 2,
-      "evidence_count": 1,
+      "evidence_count": 2,
       "discussion_count": 1,
       "report_count": 1,
       "delta_vs_archive": 5.0,
@@ -228,14 +228,14 @@
     {
       "topic": "healthcare",
       "label": "医疗",
-      "combined_score": 161,
+      "combined_score": 166,
       "current_heat": 82.0,
       "archive_average_heat": 80.0,
       "archive_mentions": 2,
       "social_average_heat": 80.0,
       "social_total_heat": 80,
       "social_item_count": 1,
-      "evidence_count": 2,
+      "evidence_count": 3,
       "discussion_count": 1,
       "report_count": 2,
       "delta_vs_archive": 2.0,
@@ -262,14 +262,14 @@
     {
       "topic": "livelihood",
       "label": "民生",
-      "combined_score": 116,
+      "combined_score": 121,
       "current_heat": 0.0,
       "archive_average_heat": 0.0,
       "archive_mentions": 0,
       "social_average_heat": 98.0,
       "social_total_heat": 196,
       "social_item_count": 2,
-      "evidence_count": 1,
+      "evidence_count": 2,
       "discussion_count": 1,
       "report_count": 6,
       "delta_vs_archive": 0.0,
@@ -279,14 +279,14 @@
     {
       "topic": "education",
       "label": "教育",
-      "combined_score": 57,
+      "combined_score": 62,
       "current_heat": 0.0,
       "archive_average_heat": 77.0,
       "archive_mentions": 1,
       "social_average_heat": 76.0,
       "social_total_heat": 76,
       "social_item_count": 1,
-      "evidence_count": 1,
+      "evidence_count": 2,
       "discussion_count": 1,
       "report_count": 2,
       "delta_vs_archive": -77.0,
@@ -320,17 +320,17 @@
     {
       "label": "显著升温",
       "count": 4,
-      "combined_score": 778
+      "combined_score": 788
     },
     {
       "label": "持续高位",
       "count": 3,
-      "combined_score": 511
+      "combined_score": 521
     },
     {
       "label": "结构性关注",
       "count": 1,
-      "combined_score": 57
+      "combined_score": 62
     }
   ],
   "opinion_overview": [
@@ -355,7 +355,7 @@
       "topic": "employment",
       "label": "就业",
       "signal_label": "显著升温",
-      "combined_score": 206,
+      "combined_score": 211,
       "sample_total": 2183,
       "leading_option": "要求与经验门槛过高",
       "leading_votes": 406,
@@ -365,14 +365,14 @@
         "加强专业课程、职业教育与真实岗位技能的衔接。",
         "把再培训和转岗支持做成可触达、可负担的公共服务。"
       ],
-      "latest_exposure_title": "青年就业中的‘隐性经验门槛’确实存在",
-      "latest_exposure_verdict": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。"
+      "latest_exposure_title": "“直签、保 offer、招转培、培训贷”不是正常求职服务，而是高风险套路",
+      "latest_exposure_verdict": "人社系统将“黑职介”“招转培”“培训贷”“虚假招聘”“付费内推”等列为重点整治对象，说明这类做法并非行业惯例，而是典型风险。"
     },
     {
       "topic": "housing",
       "label": "住房",
       "signal_label": "持续高位",
-      "combined_score": 206,
+      "combined_score": 211,
       "sample_total": 2126,
       "leading_option": "通勤成本与地段可达性",
       "leading_votes": 331,
@@ -382,8 +382,8 @@
         "公开资格审核、轮候顺序和退出机制，减少不透明感。",
         "规范中介、二房东和租约管理，降低年轻租客的不稳定性。"
       ],
-      "latest_exposure_title": "保障性住房扩容并不自动解决‘住得起、住得稳、通勤可承受’",
-      "latest_exposure_verdict": "真正影响获得感的还包括地段、交通、资格审核与长期租住成本。"
+      "latest_exposure_title": "“花钱代办公租房、找关系优先配租、短视频低价房源引流”属于高风险住房骗局",
+      "latest_exposure_verdict": "住房保障主管部门已明确提示：公租房申请不收代办费、不靠熟人操作，配租过程公开摇号并公示结果。"
     },
     {
       "topic": "elderly",
@@ -406,7 +406,7 @@
       "topic": "healthcare",
       "label": "医疗",
       "signal_label": "持续高位",
-      "combined_score": 161,
+      "combined_score": 166,
       "sample_total": 2014,
       "leading_option": "医保报销与费用透明度",
       "leading_votes": 351,
@@ -416,8 +416,8 @@
         "把门诊、异地就医和报销规则说明做得更易懂。",
         "减少重复排队和检查，改善挂号、候诊和缴费体验。"
       ],
-      "latest_exposure_title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
-      "latest_exposure_verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。"
+      "latest_exposure_title": "把普通食品、保健食品包装成“包治百病”的神药，是典型虚假宣传",
+      "latest_exposure_verdict": "市场监管总局明确提示，普通食品不能宣称保健功能，不得涉及疾病预防治疗功效；保健食品也不是药品，不能替代药物治疗。"
     },
     {
       "topic": "technology",
@@ -442,6 +442,6 @@
     "social_item_count": 14,
     "archive_count": 12,
     "discussion_count": 8,
-    "evidence_count": 10
+    "evidence_count": 15
   }
 }

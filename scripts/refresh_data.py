@@ -574,6 +574,13 @@ def build_insight_digest():
         ('权益保障', ('维权', '保障', '补贴', '赔付', '反馈', '投诉')),
         ('能力建设', ('培训', '师资', '照护', '转岗', '职业', '基层')),
     ]
+    rumor_kind_labels = {
+        'rumor': '谣言澄清',
+        'impersonation': '假冒官方',
+        'counterfeit': '假冒伪劣',
+        'false_promo': '虚假宣传',
+        'fraud': '诈骗套路',
+    }
 
     exposure_topics = []
     exposure_theme_breakdown = defaultdict(int)
@@ -612,6 +619,31 @@ def build_insight_digest():
         }
         for item in evidence
     ], key=lambda item: item['published_at'], reverse=True)
+
+    rumor_tag_breakdown = defaultdict(int)
+    rumor_watchlist = []
+    for item in evidence:
+        kind = item.get('misinfo_kind')
+        if not kind:
+            continue
+        for tag in item.get('risk_tags', []):
+            rumor_tag_breakdown[tag] += 1
+        rumor_watchlist.append({
+            'id': item['id'],
+            'topic': item['topic'],
+            'label': topic_label_by_id.get(item['topic'], item['topic']),
+            'kind': kind,
+            'kind_label': rumor_kind_labels.get(kind, '风险澄清'),
+            'title': item['title'],
+            'claim': item.get('claim', ''),
+            'verdict': item.get('verdict', ''),
+            'published_at': item.get('published_at', ''),
+            'risk_tags': item.get('risk_tags', []),
+            'clarification_points': item.get('clarification_points', []),
+            'scam_signals': item.get('scam_signals', []),
+            'policy_link_ids': item.get('policy_link_ids', []),
+        })
+    rumor_watchlist.sort(key=lambda entry: (entry['published_at'], entry['title']), reverse=True)
 
     survey_priority_map = {}
     for survey in surveys:
@@ -735,6 +767,16 @@ def build_insight_digest():
         'exposure_theme_breakdown': [
             {'label': label, 'count': count}
             for label, count in sorted(exposure_theme_breakdown.items(), key=lambda item: (-item[1], item[0]))
+        ],
+        'rumor_summary': {
+            'case_count': len(rumor_watchlist),
+            'topic_count': len({item['topic'] for item in rumor_watchlist}),
+            'kind_count': len({item['kind'] for item in rumor_watchlist}),
+        },
+        'rumor_watchlist': rumor_watchlist[:10],
+        'rumor_tag_breakdown': [
+            {'label': label, 'count': count}
+            for label, count in sorted(rumor_tag_breakdown.items(), key=lambda item: (-item[1], item[0]))
         ],
         'guide_summary': {
             'topic_count': len(guide_topics),

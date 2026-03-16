@@ -1822,6 +1822,8 @@ function renderTrends(data) {
 function renderEvidence(data) {
   const list = byId('evidenceList');
   const filters = byId('evidenceFilters');
+  const clarifyList = byId('evidenceClarifyList');
+  const rumorTags = byId('evidenceRumorTags');
   if (!list || !filters) return;
 
   const evidenceTopics = [...new Set(data.evidence_records.map((item) => item.topic))];
@@ -1855,6 +1857,28 @@ function renderEvidence(data) {
     evidenceReportGrid.innerHTML = pickFeaturedReports(data, evidenceTopics, 6).map(reportStackMarkup).join('');
   }
 
+  if (clarifyList) {
+    clarifyList.innerHTML = ((data.insight_digest || {}).rumor_watchlist || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.kind_label)} · ${escapeHtml(item.label)}</small>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p><strong>常见说法：</strong>${escapeHtml(item.claim)}</p>
+        <p><strong>站内澄清：</strong>${escapeHtml(item.verdict)}</p>
+        ${item.clarification_points && item.clarification_points.length ? `<p>证据重点：${escapeHtml(item.clarification_points.join('；'))}</p>` : ''}
+      </article>
+    `).join('');
+  }
+
+  if (rumorTags) {
+    rumorTags.innerHTML = ((data.insight_digest || {}).rumor_tag_breakdown || []).slice(0, 8).map((item) => html`
+      <article class="stack-card">
+        <small>高频标签</small>
+        <h3>${escapeHtml(item.label)}</h3>
+        <p>当前关联 ${escapeHtml(item.count)} 条澄清或避坑记录。</p>
+      </article>
+    `).join('');
+  }
+
   const topics = ['all', ...new Set(data.evidence_records.map((item) => item.topic))];
   const types = ['all', ...new Set(data.evidence_records.map((item) => item.type))];
   let currentTopic = 'all';
@@ -1873,6 +1897,9 @@ function renderEvidence(data) {
           <p><strong>常见说法：</strong>${escapeHtml(item.claim)}</p>
           <p><strong>站内结论：</strong>${escapeHtml(item.verdict)}</p>
           <p>${escapeHtml(item.summary)}</p>
+          ${item.risk_tags && item.risk_tags.length ? `<div class="tag-row" style="margin-top:10px;">${item.risk_tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+          ${item.clarification_points && item.clarification_points.length ? `<ul class="suggest-list">${item.clarification_points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>` : ''}
+          ${item.scam_signals && item.scam_signals.length ? `<p><strong>识别信号：</strong>${escapeHtml(item.scam_signals.join('；'))}</p>` : ''}
           <div class="link-pills" style="margin-top:12px;">${sources.map((source) => `<a class="link-pill" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">来源：${escapeHtml(source.name)}</a>`).join('')}${policies.map((policy) => `<a class="link-pill" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}${papers.map((paper) => `<a class="link-pill" href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">论文 DOI</a>`).join('')}</div>
           <div class="stack-list" style="margin-top:14px;">${item.history.map((entry) => `<div class="timeline-item"><p>${escapeHtml(entry)}</p></div>`).join('')}</div>
         </article>
@@ -2057,6 +2084,8 @@ function renderGuide(data) {
   const actionGrid = byId('guideActionGrid');
   const priorityList = byId('guidePriorityList');
   const narrativeList = byId('guideNarrativeList');
+  const rumorList = byId('guideRumorList');
+  const checklistList = byId('guideChecklistList');
   if (!digest || !summaryGrid || !highlightList || !guideGrid || !actionGrid) return;
 
   renderAuroraBoard('guideAuroraBoard', [
@@ -2093,6 +2122,28 @@ function renderGuide(data) {
     { label: '动作类型', value: `${digest.guide_summary.action_type_count || 0}`, note: '建议已按信息公开、服务优化、供给扩容、权益保障等动作类型重组。' },
     { label: '阅读方式', value: '先看坑点，再看动作', note: '先知道最容易踩哪里，再看怎么避坑、去哪投诉、去哪核查。' }
   ].map(summaryCardMarkup).join('');
+
+  if (rumorList) {
+    rumorList.innerHTML = (digest.rumor_watchlist || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · ${escapeHtml(item.kind_label)}</small>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.verdict)}</p>
+        ${item.scam_signals && item.scam_signals.length ? `<p><strong>识别信号：</strong>${escapeHtml(item.scam_signals.join('；'))}</p>` : ''}
+      </article>
+    `).join('');
+  }
+
+  if (checklistList) {
+    checklistList.innerHTML = (digest.rumor_watchlist || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · 避坑清单</small>
+        <h3>${escapeHtml(item.kind_label)}先看什么</h3>
+        <p>${escapeHtml(item.claim)}</p>
+        ${item.clarification_points && item.clarification_points.length ? `<ul class="suggest-list">${item.clarification_points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>` : ''}
+      </article>
+    `).join('');
+  }
 
   highlightList.innerHTML = digest.guide_topics.slice().sort((a, b) => b.priority_votes - a.priority_votes).slice(0, 6).map((item) => html`
     <article class="stack-card">

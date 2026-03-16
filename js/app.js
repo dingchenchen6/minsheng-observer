@@ -54,6 +54,21 @@ const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
 const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 
 const html = String.raw;
+const CHART_PALETTE = {
+  cyan: '#00d9ff',
+  pink: '#ff4fd8',
+  amber: '#ffb703',
+  green: '#7cff6b',
+  violet: '#7b61ff',
+  orange: '#ff7b00',
+  red: '#ff4d6d',
+  cyanSoft: 'rgba(0,217,255,0.16)',
+  pinkSoft: 'rgba(255,79,216,0.16)',
+  greenSoft: 'rgba(124,255,107,0.14)',
+  redSoft: 'rgba(255,77,109,0.14)',
+  violetSoft: 'rgba(123,97,255,0.16)',
+  light: '#b6f6ff'
+};
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -586,7 +601,7 @@ function renderHomeCharts(data) {
         datasets: [{
           label: '热度分值',
           data: trendValues,
-          backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6']
+          backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.pink, CHART_PALETTE.amber, CHART_PALETTE.green, CHART_PALETTE.orange, CHART_PALETTE.violet]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
@@ -603,8 +618,8 @@ function renderHomeCharts(data) {
           label: '基础样本量',
           data: topicTotals.map((item) => item.total),
           backgroundColor: 'rgba(180, 35, 24, 0.14)',
-          borderColor: '#b42318',
-          pointBackgroundColor: '#165dff'
+          borderColor: CHART_PALETTE.pink,
+          pointBackgroundColor: CHART_PALETTE.cyan
         }]
       },
       options: {
@@ -623,7 +638,7 @@ function renderHomeCharts(data) {
         labels: sourceGroups.map(([label]) => label),
         datasets: [{
           data: sourceGroups.map(([, value]) => value),
-          backgroundColor: ['#165dff', '#b42318', '#216e39', '#9a5b16', '#6a31a6']
+          backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.pink, CHART_PALETTE.green, CHART_PALETTE.amber, CHART_PALETTE.violet]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
@@ -665,7 +680,7 @@ function renderTrendCharts(analysis) {
         datasets: [{
           label: '综合分值',
           data: ranking.map((item) => item.combined_score),
-          backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6']
+          backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.pink, CHART_PALETTE.amber, CHART_PALETTE.green, CHART_PALETTE.orange, CHART_PALETTE.violet]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
@@ -680,7 +695,7 @@ function renderTrendCharts(analysis) {
         labels: platforms.map((item) => item.label),
         datasets: [{
           data: platforms.map((item) => item.item_count),
-          backgroundColor: ['#165dff', '#b42318', '#216e39', '#9a5b16']
+          backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.pink, CHART_PALETTE.green, CHART_PALETTE.amber]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
@@ -697,12 +712,12 @@ function renderTrendCharts(analysis) {
           {
             label: '当前热度',
             data: ranking.map((item) => item.current_heat),
-            backgroundColor: '#165dff'
+            backgroundColor: CHART_PALETTE.cyan
           },
           {
             label: '历史均值',
             data: ranking.map((item) => item.archive_average_heat),
-            backgroundColor: '#c9d8ff'
+            backgroundColor: CHART_PALETTE.light
           }
         ]
       },
@@ -724,17 +739,17 @@ function renderTrendCharts(analysis) {
           {
             label: '证据条目',
             data: ranking.map((item) => item.evidence_count),
-            backgroundColor: '#b42318'
+            backgroundColor: CHART_PALETTE.pink
           },
           {
             label: '讨论条目',
             data: ranking.map((item) => item.discussion_count),
-            backgroundColor: '#216e39'
+            backgroundColor: CHART_PALETTE.green
           },
           {
             label: '报告入口',
             data: ranking.map((item) => item.report_count),
-            backgroundColor: '#9a5b16'
+            backgroundColor: CHART_PALETTE.amber
           }
         ]
       },
@@ -755,7 +770,7 @@ function renderTrendCharts(analysis) {
         labels: items.map((item) => item.label),
         datasets: [{
           data: items.map((item) => item.count),
-          backgroundColor: ['#b42318', '#165dff', '#9a5b16']
+          backgroundColor: [CHART_PALETTE.pink, CHART_PALETTE.cyan, CHART_PALETTE.amber]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
@@ -801,12 +816,12 @@ function renderAnalysisSignalChart(analysis) {
         {
           label: '综合分',
           data: ranking.map((item) => item.combined_score),
-          backgroundColor: '#165dff'
+          backgroundColor: CHART_PALETTE.cyan
         },
         {
           label: '证据+报告+讨论',
           data: ranking.map((item) => item.evidence_count + item.report_count + item.discussion_count),
-          backgroundColor: '#b42318'
+          backgroundColor: CHART_PALETTE.pink
         }
       ]
     },
@@ -834,12 +849,12 @@ function renderPollAttentionChart(topicSummary, analysis) {
         {
           label: '热点综合分',
           data: ranking.map((item) => item.combined_score),
-          backgroundColor: '#165dff'
+          backgroundColor: CHART_PALETTE.cyan
         },
         {
           label: '投票样本量',
           data: ranking.map((item) => sampleByTopic[item.topic] || 0),
-          backgroundColor: '#b42318'
+          backgroundColor: CHART_PALETTE.pink
         }
       ]
     },
@@ -867,7 +882,7 @@ function renderExposureCharts(digest) {
         labels: ['问题暴露', '调查中', '背景说明'],
         datasets: [{
           data: [digest.exposure_summary.exposed, digest.exposure_summary.investigating, digest.exposure_topics.reduce((sum, item) => sum + item.context_count, 0)],
-          backgroundColor: ['#b42318', '#9a5b16', '#165dff']
+          backgroundColor: [CHART_PALETTE.pink, CHART_PALETTE.amber, CHART_PALETTE.cyan]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
@@ -884,12 +899,12 @@ function renderExposureCharts(digest) {
           {
             label: '问题暴露',
             data: digest.exposure_topics.map((item) => item.exposed_count),
-            backgroundColor: '#b42318'
+            backgroundColor: CHART_PALETTE.pink
           },
           {
             label: '调查中',
             data: digest.exposure_topics.map((item) => item.investigating_count),
-            backgroundColor: '#9a5b16'
+            backgroundColor: CHART_PALETTE.amber
           }
         ]
       },
@@ -907,8 +922,8 @@ function renderExposureCharts(digest) {
         datasets: [{
           label: '近期曝光强度',
           data: recent.map((item) => (item.type === 'exposed' ? 3 : item.type === 'investigating' ? 2 : 1)),
-          borderColor: '#b42318',
-          backgroundColor: 'rgba(180,35,24,0.14)',
+          borderColor: CHART_PALETTE.pink,
+          backgroundColor: CHART_PALETTE.redSoft,
           tension: 0.3,
           fill: true
         }]
@@ -927,7 +942,7 @@ function renderExposureCharts(digest) {
         datasets: [{
           label: '条目数',
           data: items.map((item) => item.count),
-          backgroundColor: '#9a5b16'
+          backgroundColor: CHART_PALETTE.amber
         }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
@@ -953,7 +968,7 @@ function renderGuideCharts(digest) {
         datasets: [{
           label: '最高票优先建议',
           data: topTopics.map((item) => item.priority_votes),
-          backgroundColor: '#165dff'
+          backgroundColor: CHART_PALETTE.cyan
         }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
@@ -969,9 +984,9 @@ function renderGuideCharts(digest) {
         datasets: [{
           label: '建议条数',
           data: digest.guide_topics.map((item) => item.safe_steps.length),
-          backgroundColor: 'rgba(33,110,57,0.14)',
-          borderColor: '#216e39',
-          pointBackgroundColor: '#b42318'
+          backgroundColor: CHART_PALETTE.greenSoft,
+          borderColor: CHART_PALETTE.green,
+          pointBackgroundColor: CHART_PALETTE.pink
         }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
@@ -987,7 +1002,7 @@ function renderGuideCharts(digest) {
         labels: items.map((item) => item.label),
         datasets: [{
           data: items.map((item) => item.count),
-          backgroundColor: ['#165dff', '#216e39', '#b42318', '#9a5b16', '#6a31a6', '#146c94']
+          backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.green, CHART_PALETTE.red, CHART_PALETTE.amber, CHART_PALETTE.violet, CHART_PALETTE.orange]
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
@@ -1005,12 +1020,12 @@ function renderGuideCharts(digest) {
           {
             label: '坑点数',
             data: items.map((item) => item.risk_points.length),
-            backgroundColor: '#b42318'
+            backgroundColor: CHART_PALETTE.pink
           },
           {
             label: '动作数',
             data: items.map((item) => item.safe_steps.length),
-            backgroundColor: '#216e39'
+            backgroundColor: CHART_PALETTE.green
           }
         ]
       },
@@ -1061,8 +1076,8 @@ function createTopicHistoryCharts(topicId, data) {
         datasets: [{
           label: '综合热度',
           data: series.heat_series.values,
-          borderColor: '#165dff',
-          backgroundColor: 'rgba(22,93,255,0.14)',
+          borderColor: CHART_PALETTE.cyan,
+          backgroundColor: CHART_PALETTE.cyanSoft,
           tension: 0.35,
           fill: true,
           pointRadius: 3
@@ -1087,16 +1102,16 @@ function createTopicHistoryCharts(topicId, data) {
           {
             label: '证据累计',
             data: series.evidence_series.evidence_values,
-            borderColor: '#b42318',
-            backgroundColor: 'rgba(180,35,24,0.12)',
+            borderColor: CHART_PALETTE.pink,
+            backgroundColor: CHART_PALETTE.redSoft,
             tension: 0.25,
             pointRadius: 3
           },
           {
             label: '讨论累计',
             data: series.evidence_series.discussion_values,
-            borderColor: '#216e39',
-            backgroundColor: 'rgba(33,110,57,0.10)',
+            borderColor: CHART_PALETTE.green,
+            backgroundColor: CHART_PALETTE.greenSoft,
             tension: 0.25,
             pointRadius: 3
           }
@@ -2197,8 +2212,8 @@ function renderPolls(data) {
             label: '领先选项占比',
             data: topicSummary.map((item) => item.leading),
             backgroundColor: 'rgba(22, 93, 255, 0.16)',
-            borderColor: '#165dff',
-            pointBackgroundColor: '#b42318',
+            borderColor: CHART_PALETTE.cyan,
+            pointBackgroundColor: CHART_PALETTE.pink,
             pointRadius: 3
           }]
         },
@@ -2216,7 +2231,7 @@ function renderPolls(data) {
           datasets: [{
             label: '样本量',
             data: topicSummary.map((item) => item.sample),
-            backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6', '#c04b00', '#9d174d']
+            backgroundColor: [CHART_PALETTE.cyan, CHART_PALETTE.red, CHART_PALETTE.amber, CHART_PALETTE.green, CHART_PALETTE.orange, CHART_PALETTE.violet, CHART_PALETTE.pink, CHART_PALETTE.light]
           }]
         },
         options: {

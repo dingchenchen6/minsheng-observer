@@ -1453,6 +1453,34 @@ function renderAnalysis(data) {
   if (!tabs || !sections) return;
   const analysis = data.hotspot_analysis || {};
 
+  renderAuroraBoard('analysisAuroraBoard', [
+    {
+      eyebrow: 'Topic Matrix',
+      value: `${data.topics.length}`,
+      title: '核心议题覆盖',
+      body: '分析页把教育、医疗、住房、就业、养老、科技、食品和综合民生放进统一分析框架。',
+      note: `${data.policy_links.length} 个政策与办事入口`
+    },
+    {
+      eyebrow: 'Evidence Stack',
+      value: `${data.papers.length + data.evidence_records.length}`,
+      title: '论文与证据储备',
+      body: '论文卡片和证据库一起构成分析层的底座，帮助热点讨论回到可核对事实。'
+    },
+    {
+      eyebrow: 'Weekly Lens',
+      value: `${((analysis.weekly_report || {}).sections || []).length}`,
+      title: '本周周报分节',
+      body: '分析页顶部先给一层结构判断，帮助快速了解这周哪些议题在升温。'
+    },
+    {
+      eyebrow: 'Deep Links',
+      value: `${data.reports.length}`,
+      title: '延伸阅读入口',
+      body: '从单一议题往外跳，可以继续追到年鉴、长期调查和研究项目主页。'
+    }
+  ]);
+
   renderSummaryGrid('analysisSummaryGrid', [
     {
       label: '议题覆盖',
@@ -2031,6 +2059,33 @@ function renderGuide(data) {
   const narrativeList = byId('guideNarrativeList');
   if (!digest || !summaryGrid || !highlightList || !guideGrid || !actionGrid) return;
 
+  renderAuroraBoard('guideAuroraBoard', [
+    {
+      eyebrow: 'Guide Matrix',
+      value: `${digest.guide_summary.topic_count}`,
+      title: '覆盖议题数',
+      body: '防踩坑页把跨议题建议重组成更容易执行的动作清单。'
+    },
+    {
+      eyebrow: 'Action Stack',
+      value: `${digest.guide_summary.advice_count}`,
+      title: '建议总量',
+      body: '这些建议来自投票建议板、站内讨论摘录和编辑提炼的行动项。'
+    },
+    {
+      eyebrow: 'Priority Focus',
+      value: `${digest.guide_summary.priority_count}`,
+      title: '优先议题数',
+      body: '每个议题都会尽量标出当前最值得优先做的一件事。'
+    },
+    {
+      eyebrow: 'Action Types',
+      value: `${digest.guide_summary.action_type_count || 0}`,
+      title: '动作类型',
+      body: '把建议改写成信息公开、服务优化、权益保障和供给扩容等更具体类别。'
+    }
+  ]);
+
   summaryGrid.innerHTML = [
     { label: '议题覆盖', value: `${digest.guide_summary.topic_count}`, note: '每个议题都整理了高频建议、常见坑点和可执行动作。' },
     { label: '建议总数', value: `${digest.guide_summary.advice_count}`, note: '来自投票建议板与站内编辑整理的可执行经验。' },
@@ -2346,6 +2401,33 @@ function renderReports(data) {
   const topicsCovered = new Set(data.reports.map((item) => item.topic)).size;
   let currentTopic = 'all';
   let currentCategory = 'all';
+
+  renderAuroraBoard('reportsAuroraBoard', [
+    {
+      eyebrow: 'Shelf Size',
+      value: `${data.reports.length}`,
+      title: '当前书架规模',
+      body: '报告库把统计公报、统计年鉴、学术调查和研究项目集中到一个资料层。'
+    },
+    {
+      eyebrow: 'Official Core',
+      value: `${officialCount}`,
+      title: '官方资料入口',
+      body: '适合先建立总量和趋势底图，再回到细分议题做深入判断。'
+    },
+    {
+      eyebrow: 'Survey Track',
+      value: `${surveyCount}`,
+      title: '长期调查项目',
+      body: '学术调查特别适合观察群体差异、代际变化和长期结构。'
+    },
+    {
+      eyebrow: 'Coverage Year',
+      value: `${latestYear}`,
+      title: '当前最新年份',
+      body: `当前已经覆盖 ${topicsCovered} 个议题，后续还可以继续扩到更多白皮书与专项报告。`
+    }
+  ]);
 
   renderSummaryGrid('reportSummaryGrid', [
     {

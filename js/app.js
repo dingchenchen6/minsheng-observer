@@ -172,6 +172,20 @@ function renderCenterNavGrid(containerId, cards) {
   `).join('');
 }
 
+function renderAuroraBoard(containerId, panels) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = panels.map((panel) => html`
+    <article class="aurora-panel ${panel.wide ? 'is-wide' : ''}">
+      <small>${escapeHtml(panel.eyebrow)}</small>
+      <strong>${escapeHtml(panel.value)}</strong>
+      <h3>${escapeHtml(panel.title)}</h3>
+      <p>${escapeHtml(panel.body)}</p>
+      ${panel.note ? `<div class="aurora-note">${escapeHtml(panel.note)}</div>` : ''}
+    </article>
+  `).join('');
+}
+
 function configureChartDefaults() {
   if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
 
@@ -599,6 +613,36 @@ function renderHome(data) {
         { label: 'Discussion', value: data.discussion_archive.length * 9, display: `${data.discussion_archive.length}`, note: '讨论摘录' },
         { label: 'Reports', value: data.reports.length * 7, display: `${data.reports.length}`, note: '报告与调查入口' }
       ])
+    }
+  ]);
+
+  renderAuroraBoard('homeAuroraBoard', [
+    {
+      eyebrow: 'Live Archive',
+      value: `${data.trend_archive.length + data.evidence_records.length + data.papers.length + data.discussion_archive.length + data.reports.length}`,
+      title: '站内记录总量',
+      body: '把热点、证据、讨论、论文和报告放到一个统一索引里看，首页先给你总盘子。',
+      note: `当前已覆盖 ${data.topics.length} 个议题`
+    },
+    {
+      eyebrow: 'Signal Focus',
+      value: topSignal ? `${topSignal.combined_score}` : '--',
+      title: topSignal ? `${topSignal.label} 是当前最强信号` : '热点分析生成中',
+      body: '综合分结合热度、证据、讨论和报告入口，不只看单个平台的瞬时热词。'
+    },
+    {
+      eyebrow: 'Pulse Survey',
+      value: `${pollSurveys.length}`,
+      title: '轻投票题组',
+      body: '首页直接告诉你可投题组规模，方便快速进入民意面板。',
+      note: `基础样本 ${pollBaseVotes}`
+    },
+    {
+      eyebrow: 'Season Watch',
+      value: `${activeWindows.length || (data.editorial_watchlist.windows || []).length}`,
+      title: '时令监测窗口',
+      body: '两会、3·15、高考、毕业季等固定窗口会自动抬升为重点监测。',
+      note: activeWindows.length ? '当前存在激活窗口' : '当前展示全年日历'
     }
   ]);
 
@@ -1536,6 +1580,34 @@ function renderTrends(data) {
     { label: 'WATCH', value: `${activeWindows.length || ((data.editorial_watchlist || {}).windows || []).length} WINDOWS` }
   ]);
 
+  renderAuroraBoard('trendAuroraBoard', [
+    {
+      eyebrow: 'Edition',
+      value: (analysis.express_brief || {}).edition_label || 'AUTO',
+      title: (analysis.express_brief || {}).edition_date_label || '自动快报',
+      body: '热点页现在按自动快报模式阅读，先看本轮更新版本，再判断信号强弱。',
+      note: (analysis.express_brief || {}).headline || '快报标题生成中'
+    },
+    {
+      eyebrow: 'Top Signal',
+      value: `${(analysis.topic_rankings || [])[0]?.combined_score || 0}`,
+      title: (analysis.topic_rankings || [])[0] ? `${(analysis.topic_rankings || [])[0].label} 当前领跑` : '热点排序生成中',
+      body: '综合分领先意味着这个议题同时占住了热度、证据和讨论优势。'
+    },
+    {
+      eyebrow: 'Social Deck',
+      value: `${(analysis.capture_overview || {}).social_item_count || 0}`,
+      title: '社媒快照总数',
+      body: '公开抓取、回退快照和人工审核池会共同组成今天的社媒监测面。'
+    },
+    {
+      eyebrow: 'Watch Windows',
+      value: `${activeWindows.length || ((data.editorial_watchlist || {}).windows || []).length}`,
+      title: '时令专题窗口',
+      body: '全国性节点议题会在这里被固定看见，避免因为接口受限被平台噪声淹没。'
+    }
+  ]);
+
   renderCommandDeck('trendSignalMatrix', (analysis.topic_rankings || []).slice(0, 3).map((item, index) => ({
     eyebrow: `Lane 0${index + 1}`,
     title: `${item.label} / ${item.signal_label}`,
@@ -1812,6 +1884,33 @@ function renderExposure(data) {
     { label: 'CASES', value: `${digest.exposure_summary.exposed + digest.exposure_summary.investigating}` },
     { label: 'ROUTES', value: `${(digest.complaint_routes || []).length}` },
     { label: 'STATUS', value: 'RISK MAP' }
+  ]);
+
+  renderAuroraBoard('exposureAuroraBoard', [
+    {
+      eyebrow: 'Risk Total',
+      value: `${digest.exposure_summary.total}`,
+      title: '曝光页总条目',
+      body: '把问题暴露、调查中和背景说明都放在同一页里，便于一起看风险层次。'
+    },
+    {
+      eyebrow: 'Exposed',
+      value: `${digest.exposure_summary.exposed}`,
+      title: '明确暴露条目',
+      body: '已经具备更清晰证据支撑、值得优先查看的高风险问题。'
+    },
+    {
+      eyebrow: 'Investigating',
+      value: `${digest.exposure_summary.investigating}`,
+      title: '持续核查中',
+      body: '对仍在变化的议题保持开放状态，避免提前把讨论说死。'
+    },
+    {
+      eyebrow: 'Routes',
+      value: `${(digest.complaint_routes || []).length}`,
+      title: `${digest.exposure_summary.focus_topic || '当前'} 反馈路径`,
+      body: '曝光页不只告诉你问题，还会尽量给出可回到官方入口的处理路径。'
+    }
   ]);
 
   renderCommandDeck('exposureRiskBoard', (digest.exposure_case_library || []).slice(0, 3).map((item, index) => ({
@@ -2442,6 +2541,34 @@ function renderPolls(data) {
         <p style="margin-top:10px;">实时后端：${escapeHtml(backend.status_label || '未配置')}。微信登录：${escapeHtml(wechat.status_label || '未配置')}。</p>
       `;
     }
+
+    renderAuroraBoard('pollAuroraBoard', [
+      {
+        eyebrow: 'Survey Matrix',
+        value: `${surveys.length}`,
+        title: '可投题组总数',
+        body: '投票页先给出题组规模，让你一进来就知道当前民意面板覆盖了多大范围。',
+        note: `${topicsCovered} 个议题`
+      },
+      {
+        eyebrow: 'Pulse Sample',
+        value: `${totalBaseVotes}`,
+        title: '当前基础样本',
+        body: '这个样本量来自站内静态基数叠加当前浏览器的本机操作，方便观察偏好分布。'
+      },
+      {
+        eyebrow: 'Live Channel',
+        value: backend.enabled ? `${liveVoteCount}` : 'DEMO',
+        title: backend.enabled ? '实时写入票数' : '实时写入待接通',
+        body: '如果后端接通，这里会首先显示跨用户的实时票数变化。'
+      },
+      {
+        eyebrow: 'Suggestion Flow',
+        value: `${suggestionStore.length}`,
+        title: '本机建议存量',
+        body: '你可以先在本地整理建议，再挑重点发到正式讨论区或办事入口。'
+      }
+    ]);
 
     summaryGrid.innerHTML = [
       { label: '覆盖议题', value: `${topicsCovered}`, note: '教育、医疗、住房、就业、养老、食品、科技与综合民生' },

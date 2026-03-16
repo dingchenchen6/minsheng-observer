@@ -194,6 +194,64 @@ button, input, select, textarea { font: inherit; }
   border-width: 0 1px 1px 0;
 }
 .hero-brief-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 20px; }
+.aurora-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.aurora-panel {
+  position: relative;
+  min-height: 190px;
+  padding: 20px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(10, 22, 43, 0.92), rgba(9, 16, 34, 0.8)),
+    radial-gradient(circle at top right, rgba(109, 244, 255, 0.12), transparent 28%);
+  border: 1px solid rgba(109, 244, 255, 0.14);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.aurora-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, transparent 0%, rgba(109, 244, 255, 0.07) 42%, transparent 58%),
+    linear-gradient(0deg, transparent 0%, rgba(176, 136, 255, 0.08) 100%);
+  transform: translateX(-120%);
+  animation: hud-sweep 8.5s linear infinite;
+  pointer-events: none;
+}
+.aurora-panel.is-wide {
+  grid-column: span 2;
+}
+.aurora-panel small {
+  display: block;
+  color: #aef9ff;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.aurora-panel strong {
+  display: block;
+  margin-top: 10px;
+  font: 800 clamp(2rem, 4vw, 3rem)/1 "Orbitron", "Noto Sans SC", sans-serif;
+  color: #f8fdff;
+  text-shadow: 0 0 18px rgba(109, 244, 255, 0.16), 0 0 28px rgba(176, 136, 255, 0.12);
+}
+.aurora-panel h3 {
+  margin: 14px 0 10px;
+  font-size: 1.05rem;
+}
+.aurora-panel p {
+  color: #c7dbed;
+}
+.aurora-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(109, 244, 255, 0.12);
+  color: #e1f8ff;
+  font-size: 0.92rem;
+}
 .hero-diagnostics {
   display: flex;
   flex-wrap: wrap;
@@ -351,6 +409,39 @@ button, input, select, textarea { font: inherit; }
 }
 .nav-hub-card.is-core .nav-hub-footer strong {
   color: var(--amber);
+}
+body[data-page="trends"] .page-hero::before {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(109, 244, 255, 0.16), transparent 24%),
+    radial-gradient(circle at 78% 18%, rgba(176, 136, 255, 0.18), transparent 22%),
+    linear-gradient(135deg, rgba(149, 255, 214, 0.05), transparent 52%);
+}
+body[data-page="polls"] .page-hero::before {
+  background:
+    radial-gradient(circle at 18% 26%, rgba(149, 255, 214, 0.15), transparent 24%),
+    radial-gradient(circle at 78% 18%, rgba(109, 244, 255, 0.14), transparent 20%),
+    linear-gradient(135deg, rgba(176, 136, 255, 0.08), transparent 52%);
+}
+body[data-page="exposure"] .page-hero::before {
+  background:
+    radial-gradient(circle at 18% 28%, rgba(255, 151, 128, 0.14), transparent 24%),
+    radial-gradient(circle at 78% 18%, rgba(176, 136, 255, 0.16), transparent 22%),
+    linear-gradient(135deg, rgba(109, 244, 255, 0.07), transparent 54%);
+}
+body[data-page="trends"] .aurora-panel {
+  background:
+    linear-gradient(180deg, rgba(8, 24, 46, 0.92), rgba(8, 16, 35, 0.82)),
+    radial-gradient(circle at top right, rgba(109, 244, 255, 0.14), transparent 28%);
+}
+body[data-page="polls"] .aurora-panel {
+  background:
+    linear-gradient(180deg, rgba(11, 24, 43, 0.92), rgba(10, 18, 36, 0.82)),
+    radial-gradient(circle at top right, rgba(149, 255, 214, 0.14), transparent 28%);
+}
+body[data-page="exposure"] .aurora-panel {
+  background:
+    linear-gradient(180deg, rgba(18, 22, 42, 0.92), rgba(11, 16, 33, 0.82)),
+    radial-gradient(circle at top right, rgba(255, 151, 128, 0.14), transparent 28%);
 }
 .command-panel {
   position: relative;
@@ -711,7 +802,7 @@ p { margin: 0; color: var(--ink-soft); }
 [data-accent="orange"] { color: var(--orange); }
 [data-accent="pink"] { color: var(--pink); }
 @media (max-width: 980px) {
-  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid, .command-grid { grid-template-columns: 1fr; }
+  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid, .command-grid, .aurora-hero-grid { grid-template-columns: 1fr; }
   .center-nav-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -722,9 +813,11 @@ p { margin: 0; color: var(--ink-soft); }
       "lower-right";
   }
   .nav-hub-card,
-  .nav-hub-card.is-core {
+  .nav-hub-card.is-core,
+  .aurora-panel.is-wide {
     min-height: auto;
   }
+  .aurora-panel.is-wide { grid-column: span 1; }
   .indicator-grid { grid-template-columns: 1fr; }
   .search-panel { grid-template-columns: 1fr 1fr; }
   .hero-brief-grid { grid-template-columns: 1fr; }

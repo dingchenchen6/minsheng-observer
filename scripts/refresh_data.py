@@ -59,6 +59,14 @@ def average(values) -> float:
     return round(sum(values) / len(values), 1)
 
 
+def classify_theme(text: str, mapping: list[tuple[str, tuple[str, ...]]], default: str) -> str:
+    content = text.lower()
+    for label, keywords in mapping:
+        if any(keyword.lower() in content for keyword in keywords):
+            return label
+    return default
+
+
 def refresh_site_meta():
     meta = load_json('site_meta.json')
     meta['last_updated'] = iso_now()
@@ -178,6 +186,7 @@ def build_hotspot_analysis():
     evidence = load_json('evidence_records.json')
     discussions = load_json('discussion_archive.json')
     reports = load_json('reports.json')
+    polls = load_json('polls.json')
 
     current_by_topic = defaultdict(list)
     archive_by_topic = defaultdict(list)
@@ -198,6 +207,15 @@ def build_hotspot_analysis():
         discussions_by_topic[item['topic']] += 1
     for item in reports:
         reports_by_topic[item['topic']] += 1
+
+    suggestion_map = {item['topic']: item for item in polls.get('suggestion_boards', [])}
+    survey_by_topic = defaultdict(list)
+    for survey in polls.get('surveys', []):
+        survey_by_topic[survey['topic']].append(survey)
+
+    latest_evidence_by_topic = defaultdict(list)
+    for item in sorted(evidence, key=lambda row: row.get('published_at', ''), reverse=True):
+        latest_evidence_by_topic[item['topic']].append(item)
 
     topic_rankings = []
     for topic in topics:
@@ -328,6 +346,48 @@ def build_hotspot_analysis():
         ]
     }
 
+    opinion_overview = []
+    for item in topic_rankings[:6]:
+        board = suggestion_map.get(item['topic'], {})
+        surveys = survey_by_topic.get(item['topic'], [])
+        sample_total = 0
+        best_option = {'label': '', 'votes': 0}
+        for survey in surveys:
+            options = survey.get('options', [])
+            sample_total += sum(option.get('votes', 0) for option in options)
+            top_option = max(options, key=lambda option: option.get('votes', 0), default={'label': '', 'votes': 0})
+            if top_option.get('votes', 0) > best_option['votes']:
+                best_option = top_option
+        latest_exposure = next(
+            (
+                evidence_item for evidence_item in latest_evidence_by_topic.get(item['topic'], [])
+                if evidence_item.get('type') in {'exposed', 'investigating'}
+            ),
+            latest_evidence_by_topic.get(item['topic'], [None])[0]
+        )
+        opinion_overview.append({
+            'topic': item['topic'],
+            'label': item['label'],
+            'signal_label': item['signal_label'],
+            'combined_score': item['combined_score'],
+            'sample_total': sample_total,
+            'leading_option': best_option.get('label', ''),
+            'leading_votes': best_option.get('votes', 0),
+            'board_summary': board.get('summary', ''),
+            'key_suggestions': board.get('items', [])[:3],
+            'latest_exposure_title': latest_exposure.get('title', '') if latest_exposure else '',
+            'latest_exposure_verdict': latest_exposure.get('verdict', '') if latest_exposure else '',
+        })
+
+    signal_distribution = []
+    for label in ['显著升温', '持续高位', '结构性关注']:
+        members = [item for item in topic_rankings if item['signal_label'] == label]
+        signal_distribution.append({
+            'label': label,
+            'count': len(members),
+            'combined_score': round(sum(item['combined_score'] for item in members), 1),
+        })
+
     payload = {
         'updated_at': iso_now(),
         'summary_cards': summary_cards,
@@ -335,6 +395,8 @@ def build_hotspot_analysis():
         'weekly_report': weekly_report,
         'topic_rankings': topic_rankings,
         'platform_breakdown': platform_breakdown,
+        'signal_distribution': signal_distribution,
+        'opinion_overview': opinion_overview,
         'capture_overview': {
             'current_trend_count': len(current),
             'social_item_count': len(social.get('items', [])),
@@ -413,6 +475,150 @@ def build_hotspot_timeseries():
     })
 
 
+def build_insight_digest():
+    topics = load_json('topics.json')
+    topic_label_by_id = {item['id']: item['label'] for item in topics}
+    evidence = load_json('evidence_records.json')
+    polls = load_json('polls.json')
+    policy_links = load_json('policy_links.json')
+    suggestion_boards = polls.get('suggestion_boards', [])
+    surveys = polls.get('surveys', [])
+
+    exposure_theme_map = [
+        ('信息透明', ('透明', '标注', '告知', '公开', '规则')),
+        ('成本压力', ('成本', '租金', '房价', '费用', '报销', '价格')),
+        ('服务可及性', ('基层', '挂号', '通勤', '可达', '服务', '就近')),
+        ('就业门槛', ('就业', '岗位', '经验', '实习', '招聘', '转岗')),
+        ('照护养老', ('养老', '照护', '退休', '失能', '护理')),
+        ('技术治理', ('ai', '算法', '技术', '自动化', '任务')),
+    ]
+    guide_action_map = [
+        ('信息公开', ('透明', '公开', '说明', '规则', '告知')),
+        ('服务优化', ('流程', '体验', '排队', '挂号', '通勤', '就近')),
+        ('供给扩容', ('供给', '扩容', '增加', '布局', '首诊', '学位')),
+        ('权益保障', ('维权', '保障', '补贴', '赔付', '反馈', '投诉')),
+        ('能力建设', ('培训', '师资', '照护', '转岗', '职业', '基层')),
+    ]
+
+    exposure_topics = []
+    exposure_theme_breakdown = defaultdict(int)
+    policy_reference_ids = set()
+    for topic in topics:
+        topic_items = [item for item in evidence if item.get('topic') == topic['id']]
+        type_counts = defaultdict(int)
+        for item in topic_items:
+            type_counts[item.get('type', 'context')] += 1
+            policy_reference_ids.update(item.get('policy_link_ids', []))
+            theme = classify_theme(
+                f"{item.get('title', '')} {item.get('summary', '')} {item.get('verdict', '')}",
+                exposure_theme_map,
+                '其他结构性问题'
+            )
+            exposure_theme_breakdown[theme] += 1
+        exposure_topics.append({
+            'topic': topic['id'],
+            'label': topic['label'],
+            'exposed_count': type_counts['exposed'],
+            'investigating_count': type_counts['investigating'],
+            'context_count': type_counts['context'],
+            'latest_titles': [item['title'] for item in sorted(topic_items, key=lambda item: item['published_at'], reverse=True)[:3]],
+        })
+
+    exposure_timeline = sorted([
+        {
+            'id': item['id'],
+            'topic': item['topic'],
+            'type': item['type'],
+            'title': item['title'],
+            'summary': item['summary'],
+            'verdict': item['verdict'],
+            'published_at': item['published_at'],
+            'policy_link_ids': item.get('policy_link_ids', []),
+        }
+        for item in evidence
+    ], key=lambda item: item['published_at'], reverse=True)
+
+    survey_priority_map = {}
+    for survey in surveys:
+        ranked = sorted(survey.get('options', []), key=lambda option: option.get('votes', 0), reverse=True)
+        if not ranked:
+            continue
+        current = survey_priority_map.get(survey['topic'])
+        top_option = ranked[0]
+        if not current or top_option['votes'] > current['votes']:
+            survey_priority_map[survey['topic']] = {
+                'question': survey['question'],
+                'label': top_option['label'],
+                'votes': top_option['votes'],
+            }
+
+    guide_topics = []
+    guide_action_breakdown = defaultdict(int)
+    for board in suggestion_boards:
+        related_evidence = [item for item in evidence if item.get('topic') == board['topic']]
+        pitfalls = [item['title'] for item in related_evidence if item.get('type') in {'exposed', 'investigating'}][:3]
+        if not pitfalls:
+            pitfalls = [item['title'] for item in related_evidence[:2]]
+        for step in board.get('items', []):
+            action_type = classify_theme(step, guide_action_map, '综合治理')
+            guide_action_breakdown[action_type] += 1
+        guide_topics.append({
+            'topic': board['topic'],
+            'title': board['title'],
+            'summary': board['summary'],
+            'risk_points': pitfalls,
+            'safe_steps': board.get('items', []),
+            'policy_link_ids': board.get('policy_link_ids', []),
+            'discussion_ids': board.get('discussion_ids', []),
+            'priority_label': survey_priority_map.get(board['topic'], {}).get('label', ''),
+            'priority_votes': survey_priority_map.get(board['topic'], {}).get('votes', 0),
+        })
+
+    top_exposure_topic = max(exposure_topics, key=lambda item: (item['exposed_count'] + item['investigating_count'], item['context_count']), default=None)
+    top_priority_actions = sorted(guide_topics, key=lambda item: item.get('priority_votes', 0), reverse=True)[:6]
+
+    payload = {
+        'updated_at': iso_now(),
+        'exposure_summary': {
+            'total': len(evidence),
+            'exposed': sum(1 for item in evidence if item.get('type') == 'exposed'),
+            'investigating': sum(1 for item in evidence if item.get('type') == 'investigating'),
+            'latest_date': exposure_timeline[0]['published_at'] if exposure_timeline else '',
+            'covered_topics': len([item for item in exposure_topics if item['exposed_count'] or item['investigating_count'] or item['context_count']]),
+            'policy_refs': len([item for item in policy_links if item.get('id') in policy_reference_ids]),
+            'focus_topic': top_exposure_topic['label'] if top_exposure_topic else '',
+        },
+        'exposure_topics': exposure_topics,
+        'exposure_timeline': exposure_timeline,
+        'exposure_theme_breakdown': [
+            {'label': label, 'count': count}
+            for label, count in sorted(exposure_theme_breakdown.items(), key=lambda item: (-item[1], item[0]))
+        ],
+        'guide_summary': {
+            'topic_count': len(guide_topics),
+            'advice_count': sum(len(item.get('safe_steps', [])) for item in guide_topics),
+            'priority_count': len(survey_priority_map),
+            'action_type_count': len(guide_action_breakdown),
+        },
+        'guide_topics': guide_topics,
+        'guide_action_breakdown': [
+            {'label': label, 'count': count}
+            for label, count in sorted(guide_action_breakdown.items(), key=lambda item: (-item[1], item[0]))
+        ],
+        'guide_priority_actions': [
+            {
+                'topic': item['topic'],
+                'label': topic_label_by_id.get(item['topic'], item['topic']),
+                'priority_label': item['priority_label'],
+                'priority_votes': item['priority_votes'],
+                'summary': item['summary'],
+            }
+            for item in top_priority_actions
+        ],
+    }
+    save_json('insight_digest.json', payload)
+
+
 def refresh_social_topics():
     script = ROOT / 'scripts' / 'fetch_social_topics.py'
     try:
@@ -425,6 +631,7 @@ def main():
     refresh_social_topics()
     build_hotspot_analysis()
     build_hotspot_timeseries()
+    build_insight_digest()
     refresh_site_meta()
     refresh_sources()
     merge_current_trends_into_archive()

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>防踩坑经验 | 民声 2.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="guide">
+  <header class="site-header"><div class="shell nav-shell"><a class="brand" href="index.html"><span class="brand-mark">民声</span><span class="brand-sub">Minsheng Observer</span></a><button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button><nav class="site-nav" id="siteNav"><a href="index.html">首页</a><a href="analysis.html">议题分析</a><a href="trends.html">热点追踪</a><a href="evidence.html">证据库</a><a href="exposure.html">问题曝光</a><a href="guide.html" class="active">防踩坑</a><a href="discuss.html">讨论与弹幕</a><a href="archive.html">归档检索</a><a href="reports.html">报告库</a><a href="polls.html">轻投票</a><a href="methodology.html">方法说明</a></nav></div></header>
+  <main>
+    <section class="page-hero"><div class="shell narrow"><span class="eyebrow">防踩坑经验</span><h1>把高频建议、常见坑点和可执行动作整理成清单</h1><p>这不是空泛口号页，而是把站内投票、讨论和证据库里最常见的风险点与建议提炼成更具体的经验专题。</p></div></section>
+    <section class="section tone-paper"><div class="shell"><div class="card-grid" id="guideSummaryGrid"></div></div></section>
+    <section class="section tone-paper"><div class="shell split-grid"><article class="chart-wrap"><h3>最高票优先建议</h3><div style="height:320px"><canvas id="guidePriorityChart"></canvas></div></article><article class="chart-wrap"><h3>建议覆盖强度</h3><div style="height:320px"><canvas id="guideTopicChart"></canvas></div></article></div></section>
+    <section class="section tone-paper"><div class="shell split-grid"><article class="chart-wrap"><h3>建议动作类型</h3><div style="height:320px"><canvas id="guideActionCategoryChart"></canvas></div></article><article class="chart-wrap"><h3>坑点数量 vs 动作数量</h3><div style="height:320px"><canvas id="guideRiskActionChart"></canvas></div></article></div></section>
+    <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">本周最该做的事</span><h2>高优先建议摘要</h2></div><div class="stack-list" id="guideHighlightList"></div></div><div><div class="section-head compact"><span class="eyebrow">官方动作</span><h2>去哪里办、去哪里反馈</h2></div><div class="stack-list" id="guideActionGrid"></div></div></div></section>
+    <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">建议总表</span><h2>跨议题优先建议汇总</h2></div><div class="stack-list" id="guidePriorityList"></div></div><div><div class="section-head compact"><span class="eyebrow">阅读提示</span><h2>怎么把建议变成行动</h2></div><div class="stack-list" id="guideNarrativeList"></div></div></div></section>
+    <section class="section tone-paper"><div class="shell"><div class="section-head"><span class="eyebrow">议题清单</span><h2>按议题查看常见坑点和避坑动作</h2></div><div class="source-grid" id="guideTopicGrid"></div></div></section>
+  </main>
+  <footer class="site-footer" id="siteFooter"></footer><button class="backtop" id="backTop" aria-label="返回顶部">↑</button><script src="js/app.js"></script>
+</body>
+</html>

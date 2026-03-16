@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T13:09:52.107114+00:00",
+  "updated_at": "2026-03-16T13:40:15.671737+00:00",
   "summary_cards": [
     {
       "label": "监测议题",
@@ -226,6 +226,127 @@
       "average_heat": 89.3,
       "top_topic": "food",
       "note": "微博公开页触发访客系统或接口拒绝访问，保留最近一次成功或校准结果。"
+    }
+  ],
+  "signal_distribution": [
+    {
+      "label": "显著升温",
+      "count": 4,
+      "combined_score": 778
+    },
+    {
+      "label": "持续高位",
+      "count": 3,
+      "combined_score": 511
+    },
+    {
+      "label": "结构性关注",
+      "count": 1,
+      "combined_score": 57
+    }
+  ],
+  "opinion_overview": [
+    {
+      "topic": "food",
+      "label": "食品",
+      "signal_label": "显著升温",
+      "combined_score": 253,
+      "sample_total": 2122,
+      "leading_option": "标签透明和真实告知",
+      "leading_votes": 344,
+      "board_summary": "消费者最需要的不是口号，而是‘问题出现后能不能立刻知道、立刻投诉、立刻追责’。",
+      "key_suggestions": [
+        "强化预制菜、产地、配料和加工环节的前端标注。",
+        "提高抽检通报的及时性和问题产品追踪可读性。",
+        "让 12315 的处理进度、结果和赔付标准更透明。"
+      ],
+      "latest_exposure_title": "预制菜争议的核心不只是‘该不该吃’，而是‘是否充分告知’",
+      "latest_exposure_verdict": "更值得核查的是标注义务、责任归属和投诉处理效率。"
+    },
+    {
+      "topic": "employment",
+      "label": "就业",
+      "signal_label": "显著升温",
+      "combined_score": 206,
+      "sample_total": 2183,
+      "leading_option": "要求与经验门槛过高",
+      "leading_votes": 406,
+      "board_summary": "青年求职的真实焦虑集中在隐性门槛、岗位质量和转岗成本，而不只是失业率数字。",
+      "key_suggestions": [
+        "推动校招和初级岗位减少对高强度实习经历的隐性要求。",
+        "加强专业课程、职业教育与真实岗位技能的衔接。",
+        "把再培训和转岗支持做成可触达、可负担的公共服务。"
+      ],
+      "latest_exposure_title": "青年就业中的‘隐性经验门槛’确实存在",
+      "latest_exposure_verdict": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。"
+    },
+    {
+      "topic": "housing",
+      "label": "住房",
+      "signal_label": "持续高位",
+      "combined_score": 206,
+      "sample_total": 2126,
+      "leading_option": "通勤成本与地段可达性",
+      "leading_votes": 331,
+      "board_summary": "大家最关心的不是抽象的供给规模，而是能否住得起、住得稳、通勤可承受。",
+      "key_suggestions": [
+        "保障房布局尽量靠近就业密集区和公共交通节点。",
+        "公开资格审核、轮候顺序和退出机制，减少不透明感。",
+        "规范中介、二房东和租约管理，降低年轻租客的不稳定性。"
+      ],
+      "latest_exposure_title": "保障性住房扩容并不自动解决‘住得起、住得稳、通勤可承受’",
+      "latest_exposure_verdict": "真正影响获得感的还包括地段、交通、资格审核与长期租住成本。"
+    },
+    {
+      "topic": "elderly",
+      "label": "养老",
+      "signal_label": "显著升温",
+      "combined_score": 203,
+      "sample_total": 2019,
+      "leading_option": "失能照护服务不足",
+      "leading_votes": 327,
+      "board_summary": "养老意见最集中在照护可得性，而不只是养老金替代率。",
+      "key_suggestions": [
+        "把社区照护、居家支持和上门服务做成真正能用的基础设施。",
+        "为失能照护家庭提供更直接的时间支持和费用减负。",
+        "讨论延迟退休时同步说明不同职业、不同群体的差异化安排。"
+      ],
+      "latest_exposure_title": "养老压力不只在养老金账户，也在长期照护服务供给",
+      "latest_exposure_verdict": "更完整的观察框架应同时纳入健康寿命、家庭照护负担和社区长期照护服务。"
+    },
+    {
+      "topic": "healthcare",
+      "label": "医疗",
+      "signal_label": "持续高位",
+      "combined_score": 161,
+      "sample_total": 2014,
+      "leading_option": "医保报销与费用透明度",
+      "leading_votes": 351,
+      "board_summary": "多数意见并不只是要求‘花更少钱’，而是要求规则更清楚、流程更顺、基层更可用。",
+      "key_suggestions": [
+        "提高基层首诊能力，让常见病真正可以在家门口解决。",
+        "把门诊、异地就医和报销规则说明做得更易懂。",
+        "减少重复排队和检查，改善挂号、候诊和缴费体验。"
+      ],
+      "latest_exposure_title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
+      "latest_exposure_verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。"
+    },
+    {
+      "topic": "technology",
+      "label": "科技",
+      "signal_label": "持续高位",
+      "combined_score": 144,
+      "sample_total": 2104,
+      "leading_option": "任务被拆分、绩效更细化",
+      "leading_votes": 338,
+      "board_summary": "围绕 AI 的意见最集中在‘先改造了谁的任务、谁来承担再培训成本’。",
+      "key_suggestions": [
+        "把 AI 治理与劳动权益、绩效考核方式一起讨论。",
+        "支持企业和学校提供可验证的再培训路径。",
+        "在公共讨论中区分技术效率提升与就业替代风险，避免一刀切判断。"
+      ],
+      "latest_exposure_title": "AI 焦虑真正对应的是任务重组，而不是所有岗位同步消失",
+      "latest_exposure_verdict": "更有证据的说法是：岗位内部的可编码任务会先被拆分和自动化，替代与补充往往并存。"
     }
   ],
   "capture_overview": {

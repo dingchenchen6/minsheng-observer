@@ -15,6 +15,7 @@ const DATA_FILES = [
   'social_hot_topics',
   'hotspot_analysis',
   'hotspot_timeseries',
+  'insight_digest',
   'editorial_watchlist',
   'live_config',
   'reports'
@@ -369,6 +370,7 @@ function renderHome(data) {
   const topSignal = (((data || {}).hotspot_analysis || {}).topic_rankings || [])[0];
   const weeklyReport = ((data || {}).hotspot_analysis || {}).weekly_report || {};
   const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
+  const digest = data.insight_digest || {};
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -443,6 +445,31 @@ function renderHome(data) {
         <h3>${escapeHtml(status.label)}</h3>
         <p>${escapeHtml(status.note)}</p>
         <div class="meta-line"><span>最近尝试：${formatDate(status.last_attempt)}</span><span>${status.last_success ? `最近成功：${formatDate(status.last_success)}` : '暂无成功抓取'}</span></div>
+      </article>
+    `).join('');
+  }
+
+  const homeExposureHighlights = byId('homeExposureHighlights');
+  if (homeExposureHighlights && digest.exposure_timeline) {
+    homeExposureHighlights.innerHTML = digest.exposure_timeline
+      .filter((item) => ['exposed', 'investigating'].includes(item.type))
+      .slice(0, 4)
+      .map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(getTopicName(item.topic))} · ${escapeHtml(getTypeName(item.type))}</small>
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.verdict)}</p>
+        </article>
+      `).join('');
+  }
+
+  const homeGuideHighlights = byId('homeGuideHighlights');
+  if (homeGuideHighlights && digest.guide_priority_actions) {
+    homeGuideHighlights.innerHTML = digest.guide_priority_actions.slice(0, 4).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · 最高票 ${escapeHtml(item.priority_votes)}</small>
+        <h3>${escapeHtml(item.priority_label || '优先建议整理中')}</h3>
+        <p>${escapeHtml(item.summary)}</p>
       </article>
     `).join('');
   }
@@ -623,6 +650,8 @@ function renderTrendCharts(analysis) {
   window.__trendCharts = window.__trendCharts || {};
   const topicCanvas = byId('trendTopicChart');
   const platformCanvas = byId('trendPlatformChart');
+  const deltaCanvas = byId('trendDeltaChart');
+  const supportCanvas = byId('trendSupportChart');
   const ranking = (analysis.topic_rankings || []).slice(0, 6);
   const platforms = analysis.platform_breakdown || [];
 
@@ -654,6 +683,65 @@ function renderTrendCharts(analysis) {
         }]
       },
       options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  if (deltaCanvas) {
+    if (window.__trendCharts.delta) window.__trendCharts.delta.destroy();
+    window.__trendCharts.delta = new Chart(deltaCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ranking.map((item) => item.label),
+        datasets: [
+          {
+            label: '当前热度',
+            data: ranking.map((item) => item.current_heat),
+            backgroundColor: '#165dff'
+          },
+          {
+            label: '历史均值',
+            data: ranking.map((item) => item.archive_average_heat),
+            backgroundColor: '#c9d8ff'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: true } }
+      }
+    });
+  }
+
+  if (supportCanvas) {
+    if (window.__trendCharts.support) window.__trendCharts.support.destroy();
+    window.__trendCharts.support = new Chart(supportCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: ranking.map((item) => item.label),
+        datasets: [
+          {
+            label: '证据条目',
+            data: ranking.map((item) => item.evidence_count),
+            backgroundColor: '#b42318'
+          },
+          {
+            label: '讨论条目',
+            data: ranking.map((item) => item.discussion_count),
+            backgroundColor: '#216e39'
+          },
+          {
+            label: '报告入口',
+            data: ranking.map((item) => item.report_count),
+            backgroundColor: '#9a5b16'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: true } }
+      }
     });
   }
 }
@@ -744,6 +832,174 @@ function renderPollAttentionChart(topicSummary, analysis) {
       plugins: { legend: { display: true } }
     }
   });
+}
+
+function renderExposureCharts(digest) {
+  if (typeof Chart === 'undefined' || !digest) return;
+  const typeCanvas = byId('exposureTypeChart');
+  const topicCanvas = byId('exposureTopicChart');
+  const timelineCanvas = byId('exposureTimelineChart');
+  const themeCanvas = byId('exposureThemeChart');
+  window.__exposureCharts = window.__exposureCharts || {};
+
+  if (typeCanvas) {
+    if (window.__exposureCharts.type) window.__exposureCharts.type.destroy();
+    window.__exposureCharts.type = new Chart(typeCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['问题暴露', '调查中', '背景说明'],
+        datasets: [{
+          data: [digest.exposure_summary.exposed, digest.exposure_summary.investigating, digest.exposure_topics.reduce((sum, item) => sum + item.context_count, 0)],
+          backgroundColor: ['#b42318', '#9a5b16', '#165dff']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  if (topicCanvas) {
+    if (window.__exposureCharts.topic) window.__exposureCharts.topic.destroy();
+    window.__exposureCharts.topic = new Chart(topicCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: digest.exposure_topics.map((item) => item.label),
+        datasets: [
+          {
+            label: '问题暴露',
+            data: digest.exposure_topics.map((item) => item.exposed_count),
+            backgroundColor: '#b42318'
+          },
+          {
+            label: '调查中',
+            data: digest.exposure_topics.map((item) => item.investigating_count),
+            backgroundColor: '#9a5b16'
+          }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  if (timelineCanvas) {
+    if (window.__exposureCharts.timeline) window.__exposureCharts.timeline.destroy();
+    const recent = (digest.exposure_timeline || []).slice(0, 8).reverse();
+    window.__exposureCharts.timeline = new Chart(timelineCanvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: recent.map((item) => item.published_at),
+        datasets: [{
+          label: '近期曝光强度',
+          data: recent.map((item) => (item.type === 'exposed' ? 3 : item.type === 'investigating' ? 2 : 1)),
+          borderColor: '#b42318',
+          backgroundColor: 'rgba(180,35,24,0.14)',
+          tension: 0.3,
+          fill: true
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  if (themeCanvas) {
+    if (window.__exposureCharts.theme) window.__exposureCharts.theme.destroy();
+    const items = (digest.exposure_theme_breakdown || []).slice(0, 6);
+    window.__exposureCharts.theme = new Chart(themeCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: items.map((item) => item.label),
+        datasets: [{
+          label: '条目数',
+          data: items.map((item) => item.count),
+          backgroundColor: '#9a5b16'
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+}
+
+function renderGuideCharts(digest) {
+  if (typeof Chart === 'undefined' || !digest) return;
+  const priorityCanvas = byId('guidePriorityChart');
+  const topicCanvas = byId('guideTopicChart');
+  const actionCanvas = byId('guideActionCategoryChart');
+  const riskActionCanvas = byId('guideRiskActionChart');
+  window.__guideCharts = window.__guideCharts || {};
+
+  if (priorityCanvas) {
+    if (window.__guideCharts.priority) window.__guideCharts.priority.destroy();
+    const topTopics = digest.guide_topics.slice().sort((a, b) => b.priority_votes - a.priority_votes).slice(0, 6);
+    window.__guideCharts.priority = new Chart(priorityCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: topTopics.map((item) => getTopicName(item.topic)),
+        datasets: [{
+          label: '最高票优先建议',
+          data: topTopics.map((item) => item.priority_votes),
+          backgroundColor: '#165dff'
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  if (topicCanvas) {
+    if (window.__guideCharts.topic) window.__guideCharts.topic.destroy();
+    window.__guideCharts.topic = new Chart(topicCanvas.getContext('2d'), {
+      type: 'radar',
+      data: {
+        labels: digest.guide_topics.map((item) => getTopicName(item.topic)),
+        datasets: [{
+          label: '建议条数',
+          data: digest.guide_topics.map((item) => item.safe_steps.length),
+          backgroundColor: 'rgba(33,110,57,0.14)',
+          borderColor: '#216e39',
+          pointBackgroundColor: '#b42318'
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  if (actionCanvas) {
+    if (window.__guideCharts.action) window.__guideCharts.action.destroy();
+    const items = (digest.guide_action_breakdown || []).slice(0, 6);
+    window.__guideCharts.action = new Chart(actionCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: items.map((item) => item.label),
+        datasets: [{
+          data: items.map((item) => item.count),
+          backgroundColor: ['#165dff', '#216e39', '#b42318', '#9a5b16', '#6a31a6', '#146c94']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  if (riskActionCanvas) {
+    if (window.__guideCharts.riskAction) window.__guideCharts.riskAction.destroy();
+    const items = (digest.guide_topics || []).slice(0, 8);
+    window.__guideCharts.riskAction = new Chart(riskActionCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: items.map((item) => getTopicName(item.topic)),
+        datasets: [
+          {
+            label: '坑点数',
+            data: items.map((item) => item.risk_points.length),
+            backgroundColor: '#b42318'
+          },
+          {
+            label: '动作数',
+            data: items.map((item) => item.safe_steps.length),
+            backgroundColor: '#216e39'
+          }
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true } } }
+    });
+  }
 }
 
 function getActiveWatchWindows(watchlist) {
@@ -1022,6 +1278,35 @@ function renderTrends(data) {
     `).join('');
   }
 
+  const trendOpinionBoard = byId('trendOpinionBoard');
+  if (trendOpinionBoard) {
+    trendOpinionBoard.innerHTML = (analysis.opinion_overview || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · ${escapeHtml(item.signal_label)}</small>
+        <h3>${escapeHtml(item.leading_option || '主要诉求整理中')}</h3>
+        <p>${escapeHtml(item.board_summary || '正在整理站内建议摘要。')}</p>
+        <div class="meta-line">
+          <span>样本 ${escapeHtml(item.sample_total || 0)}</span>
+          <span>最高票 ${escapeHtml(item.leading_votes || 0)}</span>
+          <span>综合分 ${escapeHtml(item.combined_score)}</span>
+        </div>
+        ${item.key_suggestions && item.key_suggestions.length ? `<p>建议重点：${escapeHtml(item.key_suggestions.join('；'))}</p>` : ''}
+        ${item.latest_exposure_title ? `<p><strong>关联曝光：</strong>${escapeHtml(item.latest_exposure_title)}</p>` : ''}
+      </article>
+    `).join('');
+  }
+
+  const trendNarrativeBoard = byId('trendNarrativeBoard');
+  if (trendNarrativeBoard) {
+    const sections = ((analysis.weekly_report || {}).sections || []).slice(0, 4);
+    const distribution = (analysis.signal_distribution || []).map((item) => `${item.label} ${item.count} 个议题`).join('，');
+    trendNarrativeBoard.innerHTML = [
+      ...(sections.map((item) => `${item.label}：${item.summary} ${item.action}`)),
+      distribution ? `当前信号结构：${distribution}。` : '',
+      '阅读顺序建议：先看综合排序，再对照历史均值，最后核对证据、讨论和报告是否同步增长。'
+    ].filter(Boolean).slice(0, 5).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+
   byId('currentTrendGrid').innerHTML = data.trend_current.map((item) => {
     const ranking = rankingByTopic[item.topic];
     return html`
@@ -1185,6 +1470,153 @@ function renderEvidence(data) {
     });
   });
   draw();
+}
+
+function renderExposure(data) {
+  const digest = data.insight_digest;
+  const summaryGrid = byId('exposureSummaryGrid');
+  const topicList = byId('exposureTopicList');
+  const timeline = byId('exposureTimeline');
+  const caseGrid = byId('exposureCaseGrid');
+  const focusList = byId('exposureFocusList');
+  const adviceGrid = byId('exposureAdviceGrid');
+  if (!digest || !summaryGrid || !topicList || !timeline || !caseGrid) return;
+
+  summaryGrid.innerHTML = [
+    { label: '问题条目', value: `${digest.exposure_summary.total}`, note: '当前证据库中的全部记录，包含问题暴露、调查中与背景说明。' },
+    { label: '明确暴露', value: `${digest.exposure_summary.exposed}`, note: '站内已判断为高风险、强体验落差或明显制度问题的条目。' },
+    { label: '持续核查', value: `${digest.exposure_summary.investigating}`, note: '仍在动态演化、需要继续跟踪官方信息和公开讨论的条目。' },
+    { label: '最近更新', value: `${digest.exposure_summary.latest_date || '暂无'}`, note: '曝光页会优先展示最新整理的证据条目。' },
+    { label: '覆盖议题', value: `${digest.exposure_summary.covered_topics || 0}`, note: '不仅看单个事件，也看它牵动的是教育、医疗、住房还是消费治理。' },
+    { label: '关联入口', value: `${digest.exposure_summary.policy_refs || 0}`, note: `当前曝光页最该优先看的议题是“${digest.exposure_summary.focus_topic || '整理中'}”。` }
+  ].map(summaryCardMarkup).join('');
+
+  topicList.innerHTML = digest.exposure_topics.map((item) => html`
+    <article class="stack-card">
+      <small>${escapeHtml(item.label)}</small>
+      <h3>暴露 ${item.exposed_count} / 调查中 ${item.investigating_count}</h3>
+      <p>${escapeHtml(item.latest_titles[0] || '当前暂无最新条目。')}</p>
+    </article>
+  `).join('');
+
+  timeline.innerHTML = digest.exposure_timeline.slice(0, 10).map((item) => html`
+    <article class="timeline-item">
+      <div class="timeline-date">${escapeHtml(item.published_at)} · ${escapeHtml(getTopicName(item.topic))} · ${escapeHtml(getTypeName(item.type))}</div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.verdict)}</p>
+    </article>
+  `).join('');
+
+  caseGrid.innerHTML = digest.exposure_timeline.filter((item) => ['exposed', 'investigating'].includes(item.type)).slice(0, 8).map((item) => {
+    const policies = relatedLinks(item.policy_link_ids, data.policiesById);
+    return html`
+      <article class="evidence-card">
+        <div class="meta-line"><span>${escapeHtml(getTopicName(item.topic))}</span><span>${escapeHtml(getTypeName(item.type))}</span><span>${escapeHtml(item.published_at)}</span></div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <p><strong>站内判断：</strong>${escapeHtml(item.verdict)}</p>
+        <div class="topic-actions">${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}</div>
+      </article>
+    `;
+  }).join('');
+
+  if (focusList) {
+    focusList.innerHTML = (digest.exposure_theme_breakdown || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>问题族群</small>
+        <h3>${escapeHtml(item.label)}</h3>
+        <p>当前证据库中与这一类问题相关的条目有 ${escapeHtml(item.count)} 条，适合优先补公开口径和办事路径。</p>
+      </article>
+    `).join('');
+  }
+
+  if (adviceGrid) {
+    adviceGrid.innerHTML = (data.polls.action_cards || []).slice(0, 4).map((item) => html`
+      <article class="stack-card">
+        <small>应对动作</small>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.body)}</p>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+      </article>
+    `).join('');
+  }
+
+  renderExposureCharts(digest);
+}
+
+function renderGuide(data) {
+  const digest = data.insight_digest;
+  const summaryGrid = byId('guideSummaryGrid');
+  const highlightList = byId('guideHighlightList');
+  const guideGrid = byId('guideTopicGrid');
+  const actionGrid = byId('guideActionGrid');
+  const priorityList = byId('guidePriorityList');
+  const narrativeList = byId('guideNarrativeList');
+  if (!digest || !summaryGrid || !highlightList || !guideGrid || !actionGrid) return;
+
+  summaryGrid.innerHTML = [
+    { label: '议题覆盖', value: `${digest.guide_summary.topic_count}`, note: '每个议题都整理了高频建议、常见坑点和可执行动作。' },
+    { label: '建议总数', value: `${digest.guide_summary.advice_count}`, note: '来自投票建议板与站内编辑整理的可执行经验。' },
+    { label: '优先议题', value: `${digest.guide_summary.priority_count}`, note: '已根据投票最高票建议为每个议题标出最优先改进项。' },
+    { label: '动作类型', value: `${digest.guide_summary.action_type_count || 0}`, note: '建议已按信息公开、服务优化、供给扩容、权益保障等动作类型重组。' },
+    { label: '阅读方式', value: '先看坑点，再看动作', note: '先知道最容易踩哪里，再看怎么避坑、去哪投诉、去哪核查。' }
+  ].map(summaryCardMarkup).join('');
+
+  highlightList.innerHTML = digest.guide_topics.slice().sort((a, b) => b.priority_votes - a.priority_votes).slice(0, 6).map((item) => html`
+    <article class="stack-card">
+      <small>${escapeHtml(getTopicName(item.topic))}</small>
+      <h3>${escapeHtml(item.priority_label || item.safe_steps[0] || '优先建议整理中')}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+      <div class="meta-line"><span>最高票 ${item.priority_votes || 0}</span><span>${item.safe_steps.length} 条动作建议</span></div>
+    </article>
+  `).join('');
+
+  guideGrid.innerHTML = digest.guide_topics.map((item) => {
+    const policies = relatedLinks(item.policy_link_ids, data.policiesById);
+    const discussions = relatedLinks(item.discussion_ids, data.discussionsById);
+    return html`
+      <article class="source-card">
+        <small>${escapeHtml(getTopicName(item.topic))} · 防踩坑</small>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <p><strong>常见坑点：</strong>${escapeHtml(item.risk_points.join('；') || '正在整理')}</p>
+        <ul class="suggest-list">${item.safe_steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ul>
+        <div class="topic-actions">
+          ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
+          ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noreferrer">讨论区</a>`).join('')}
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  actionGrid.innerHTML = (data.polls.action_cards || []).map((item) => html`
+    <article class="stack-card">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.body)}</p>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+    </article>
+  `).join('');
+
+  if (priorityList) {
+    priorityList.innerHTML = (digest.guide_priority_actions || []).slice(0, 6).map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)} · 最高票 ${escapeHtml(item.priority_votes)}</small>
+        <h3>${escapeHtml(item.priority_label || '优先建议整理中')}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+      </article>
+    `).join('');
+  }
+
+  if (narrativeList) {
+    narrativeList.innerHTML = [
+      `当前共梳理出 ${(digest.guide_action_breakdown || []).length} 类动作建议，说明站内建议已不只停留在“吐槽”，而是开始转向更具体的治理动作。`,
+      '阅读建议：先看最高票建议，再看对应议题的坑点，最后跳转到办事入口或讨论区补充具体案例。',
+      '如果一个议题“坑点数”明显高于“动作数”，说明这个方向还需要补更细的流程建议和经验总结。',
+      '如果一个议题“动作数”很多但最高票不集中，通常意味着公众对改进方向仍存在分歧，适合继续观察。'
+    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+
+  renderGuideCharts(digest);
 }
 
 function renderDiscussion(data) {
@@ -1933,6 +2365,8 @@ async function init() {
     case 'analysis': renderAnalysis(data); break;
     case 'trends': renderTrends(data); break;
     case 'evidence': renderEvidence(data); break;
+    case 'exposure': renderExposure(data); break;
+    case 'guide': renderGuide(data); break;
     case 'discuss': renderDiscussion(data); break;
     case 'archive': renderArchive(data); break;
     case 'reports': renderReports(data); break;

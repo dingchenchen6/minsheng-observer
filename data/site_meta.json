@@ -43,11 +43,11 @@
     "留言区采用 GitHub Discussions/Giscus，站内弹幕只展示公开归档摘录。"
   ],
   "giscus": {
-    "enabled": false,
+    "enabled": true,
     "repo": "dingchenchen6/minsheng-observer",
-    "repo_id": "",
+    "repo_id": "R_kgDORoHGIw",
     "category": "General",
-    "category_id": "",
+    "category_id": "DIC_kwDORoHGI84C4fiP",
     "mapping": "pathname",
     "strict": "0",
     "reactions_enabled": "1",

@@ -12,10 +12,12 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / 'data'
 USER_AGENT = 'minsheng-observer/2.0 (+https://github.com/dingchenchen6/minsheng-observer)'
+CHINA_TZ = ZoneInfo('Asia/Shanghai')
 
 
 def load_json(name: str):
@@ -35,6 +37,22 @@ def iso_now() -> str:
 
 def label_now() -> str:
     return datetime.now().strftime('%Y年%m月%d日 %H:%M（本地构建时间）')
+
+
+def china_now() -> datetime:
+    return datetime.now(CHINA_TZ)
+
+
+def china_edition_label(now: datetime | None = None) -> dict[str, str]:
+    current = now or china_now()
+    slot = 'morning' if current.hour < 12 else 'evening'
+    slot_label = '早报' if slot == 'morning' else '晚报'
+    return {
+        'slot': slot,
+        'slot_label': slot_label,
+        'date_label': current.strftime(f'%Y年%m月%d日 {slot_label}'),
+        'timestamp_label': current.strftime('%Y年%m月%d日 %H:%M（北京时间）')
+    }
 
 
 def http_json(url: str):
@@ -187,6 +205,7 @@ def build_hotspot_analysis():
     discussions = load_json('discussion_archive.json')
     reports = load_json('reports.json')
     polls = load_json('polls.json')
+    edition = china_edition_label()
 
     current_by_topic = defaultdict(list)
     archive_by_topic = defaultdict(list)
@@ -388,10 +407,65 @@ def build_hotspot_analysis():
             'combined_score': round(sum(item['combined_score'] for item in members), 1),
         })
 
+    express_sections = []
+    for item in topic_rankings[:5]:
+        opinion = next((entry for entry in opinion_overview if entry['topic'] == item['topic']), None)
+        express_sections.append({
+            'topic': item['topic'],
+            'label': item['label'],
+            'headline': f"{item['label']}列入{edition['slot_label']}优先跟踪",
+            'summary': f"综合分 {item['combined_score']}，当前热度 {item['current_heat']}，社媒总热度 {item['social_total_heat']}，证据 {item['evidence_count']} 条，讨论 {item['discussion_count']} 条。",
+            'opinion_hint': opinion['leading_option'] if opinion else '',
+            'watch_reason': item['watch_reason'],
+        })
+
+    chart_takeaways = []
+    if len(topic_rankings) >= 2:
+        chart_takeaways.append(f"综合分前两位分别是“{topic_rankings[0]['label']}”和“{topic_rankings[1]['label']}”，说明当前讨论并非单点爆发。")
+    elif topic_rankings:
+        chart_takeaways.append(f"当前综合分最高的是“{topic_rankings[0]['label']}”，需要继续观察它是否演变成跨议题热点。")
+    if signal_distribution:
+        chart_takeaways.append('当前热点分层为：' + '，'.join(f"{item['label']} {item['count']} 个" for item in signal_distribution) + '。')
+    strongest_support_topics = sorted(
+        topic_rankings,
+        key=lambda item: item['evidence_count'] + item['discussion_count'] + item['report_count'],
+        reverse=True
+    )[:3]
+    if strongest_support_topics:
+        chart_takeaways.append('证据和报告支撑较厚的议题是：' + '、'.join(item['label'] for item in strongest_support_topics) + '。')
+    if restricted_platforms:
+        chart_takeaways.append('平台受限仍集中在 ' + '、'.join(platform.upper() for platform in restricted_platforms) + '，因此回退层仍需保留。')
+
+    watch_alerts = []
+    for item in opinion_overview[:4]:
+        alert = item['latest_exposure_title'] or item['leading_option'] or item['board_summary']
+        if not alert:
+            continue
+        watch_alerts.append({
+            'topic': item['topic'],
+            'label': item['label'],
+            'title': item['latest_exposure_title'] or item['leading_option'],
+            'detail': item['latest_exposure_verdict'] or item['board_summary'],
+        })
+
+    express_brief = {
+        'edition_slot': edition['slot'],
+        'edition_label': edition['slot_label'],
+        'edition_date_label': edition['date_label'],
+        'edition_timestamp_label': edition['timestamp_label'],
+        'headline': f"{edition['date_label']}重点关注“{top_topic['label']}”与“{rising_topic['label']}”" if top_topic and rising_topic else f"{edition['date_label']}热点快报生成中",
+        'summary': f"本站按{edition['slot_label']}节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。", 
+        'sections': express_sections,
+        'chart_takeaways': chart_takeaways,
+        'watch_alerts': watch_alerts,
+    }
+
     payload = {
         'updated_at': iso_now(),
+        'edition': edition,
         'summary_cards': summary_cards,
         'lead_brief': lead_brief,
+        'express_brief': express_brief,
         'weekly_report': weekly_report,
         'topic_rankings': topic_rankings,
         'platform_breakdown': platform_breakdown,
@@ -481,6 +555,7 @@ def build_insight_digest():
     evidence = load_json('evidence_records.json')
     polls = load_json('polls.json')
     policy_links = load_json('policy_links.json')
+    policy_by_id = {item['id']: item for item in policy_links}
     suggestion_boards = polls.get('suggestion_boards', [])
     surveys = polls.get('surveys', [])
 
@@ -576,6 +651,71 @@ def build_insight_digest():
 
     top_exposure_topic = max(exposure_topics, key=lambda item: (item['exposed_count'] + item['investigating_count'], item['context_count']), default=None)
     top_priority_actions = sorted(guide_topics, key=lambda item: item.get('priority_votes', 0), reverse=True)[:6]
+    route_templates = {
+        'education': ['先核对招生、学位或教育统计口径，再判断争议点是规则问题还是资源配置问题。', '保留通知、截图和费用记录，必要时向学校或主管部门正式反馈。', '如果讨论涉及长期结构性差距，可回到公报、调查报告和讨论区继续补充案例。'],
+        'healthcare': ['先确认就诊流程、医保报销规则和医院/基层机构说明，避免信息误解。', '保留挂号、缴费、报销和转诊记录，便于后续核查服务可及性问题。', '如果是制度体验差异，可同时参考卫生公报、政策口径和站内曝光条目。'],
+        'housing': ['先核对资格、租约、轮候或改造政策说明，明确问题发生在哪一层。', '保留租约、通知、通勤成本和沟通记录，方便后续维权或反馈。', '如涉及保障房、公租房或旧改争议，优先回到官方政策入口和公开规则。'],
+        'employment': ['先区分岗位数量问题、招聘门槛问题和劳动条件问题。', '保留岗位要求、沟通记录和合同信息，便于比较隐性门槛与实际条件。', '如果问题具有普遍性，可结合人社政策、讨论区和案例库继续跟踪。'],
+        'elderly': ['先核对养老金、照护服务或社区支持的正式规则与说明。', '保留照护服务、排队、价格和等待记录，帮助判断问题是供给不足还是信息不透明。', '涉及长期照护压力时，可同步查看统计公报与养老讨论串。'],
+        'food': ['先保留商品信息、标签、订单、聊天和问题页面截图。', '遇到具体消费纠纷，优先走 12315 或监管抽检入口，不要只停留在社交平台吐槽。', '如果是系统性问题，再结合曝光案例和站内讨论看是否属于高频共性争议。'],
+        'technology': ['先确认争议是技术本身、算法管理，还是劳动过程变化。', '保留绩效规则、岗位变更或培训要求等记录，帮助判断影响范围。', '如涉及 AI 与就业交叉问题，可同时查看科技和就业两个议题的案例。'],
+        'livelihood': ['先把问题落到具体支出、服务、保障或信息透明哪一类。', '保留成本变化、政策通知和办事体验记录，便于区分个体案例与结构问题。', '跨议题问题建议回到统计发布、长期调查和站内归档一起看。'],
+    }
+
+    exposure_case_library = []
+    for item in exposure_timeline:
+        if item.get('type') not in {'exposed', 'investigating'}:
+            continue
+        topic_meta = next((topic for topic in exposure_topics if topic['topic'] == item['topic']), None)
+        issue_count = (topic_meta.get('exposed_count', 0) + topic_meta.get('investigating_count', 0)) if topic_meta else 0
+        risk_level = '高风险' if item['type'] == 'exposed' or issue_count >= 2 else '持续观察'
+        policy_targets = [policy_by_id[policy_id] for policy_id in item.get('policy_link_ids', []) if policy_id in policy_by_id]
+        exposure_case_library.append({
+            'id': item['id'],
+            'topic': item['topic'],
+            'label': topic_label_by_id.get(item['topic'], item['topic']),
+            'title': item['title'],
+            'summary': item['summary'],
+            'verdict': item['verdict'],
+            'published_at': item['published_at'],
+            'risk_level': risk_level,
+            'risk_note': '建议优先保留凭证并回到官方入口核查。' if risk_level == '高风险' else '说明问题仍在演化，适合持续跟踪。', 
+            'policy_targets': [
+                {
+                    'label': target['label'],
+                    'url': target['url'],
+                    'source_name': target['source_name'],
+                }
+                for target in policy_targets
+            ],
+        })
+
+    complaint_routes = []
+    for board in suggestion_boards:
+        topic = board['topic']
+        related_topic = next((item for item in exposure_topics if item['topic'] == topic), None)
+        policy_targets = [policy_by_id[policy_id] for policy_id in board.get('policy_link_ids', []) if policy_id in policy_by_id]
+        primary_target = policy_targets[0] if policy_targets else None
+        complaint_routes.append({
+            'topic': topic,
+            'label': topic_label_by_id.get(topic, topic),
+            'risk_level': '高关注' if (related_topic and related_topic['exposed_count'] + related_topic['investigating_count'] > 0) else '常规关注',
+            'when_to_use': board.get('summary', ''),
+            'steps': route_templates.get(topic, route_templates['livelihood']),
+            'priority_action': survey_priority_map.get(topic, {}).get('label', ''),
+            'policy_targets': [
+                {
+                    'label': target['label'],
+                    'url': target['url'],
+                    'source_name': target['source_name'],
+                }
+                for target in policy_targets
+            ],
+            'primary_target': {
+                'label': primary_target['label'],
+                'url': primary_target['url'],
+            } if primary_target else None,
+        })
 
     payload = {
         'updated_at': iso_now(),
@@ -590,6 +730,8 @@ def build_insight_digest():
         },
         'exposure_topics': exposure_topics,
         'exposure_timeline': exposure_timeline,
+        'exposure_case_library': exposure_case_library[:8],
+        'complaint_routes': complaint_routes,
         'exposure_theme_breakdown': [
             {'label': label, 'count': count}
             for label, count in sorted(exposure_theme_breakdown.items(), key=lambda item: (-item[1], item[0]))

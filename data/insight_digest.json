@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-16T13:40:15.673037+00:00",
+  "updated_at": "2026-03-16T13:47:03.553973+00:00",
   "exposure_summary": {
     "total": 10,
     "exposed": 2,
@@ -216,6 +216,263 @@
         "service_12315",
         "policy_food"
       ]
+    }
+  ],
+  "exposure_case_library": [
+    {
+      "id": "evidence_001",
+      "topic": "food",
+      "label": "食品",
+      "title": "预制菜争议的核心不只是‘该不该吃’，而是‘是否充分告知’",
+      "summary": "食品安全监督抽检结果和 12315 投诉路径表明，信息透明和维权效率比单纯情绪对立更能解释公众不满。",
+      "verdict": "更值得核查的是标注义务、责任归属和投诉处理效率。",
+      "published_at": "2026-03-16",
+      "risk_level": "持续观察",
+      "risk_note": "说明问题仍在演化，适合持续跟踪。",
+      "policy_targets": [
+        {
+          "label": "查抽检结果",
+          "url": "https://www.samr.gov.cn/spcjs/xxfb/",
+          "source_name": "市场监管总局"
+        },
+        {
+          "label": "投诉举报入口",
+          "url": "https://www.12315.cn/",
+          "source_name": "全国 12315 平台"
+        }
+      ]
+    },
+    {
+      "id": "evidence_010",
+      "topic": "healthcare",
+      "label": "医疗",
+      "title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
+      "summary": "不同地区、不同收入群体对‘同一套制度’的体验可能完全不同，这也是医疗舆论分歧长期存在的原因。",
+      "verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。",
+      "published_at": "2026-03-16",
+      "risk_level": "高风险",
+      "risk_note": "建议优先保留凭证并回到官方入口核查。",
+      "policy_targets": [
+        {
+          "label": "查卫生公报",
+          "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm",
+          "source_name": "中国政府网 / 国家卫健委"
+        }
+      ]
+    },
+    {
+      "id": "evidence_003",
+      "topic": "employment",
+      "label": "就业",
+      "title": "青年就业中的‘隐性经验门槛’确实存在",
+      "summary": "即使全年新增就业保持增长，青年求职者面临的并不只是岗位总量问题。",
+      "verdict": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。",
+      "published_at": "2026-03-13",
+      "risk_level": "高风险",
+      "risk_note": "建议优先保留凭证并回到官方入口核查。",
+      "policy_targets": [
+        {
+          "label": "查就业政策",
+          "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/",
+          "source_name": "人社部"
+        }
+      ]
+    }
+  ],
+  "complaint_routes": [
+    {
+      "topic": "education",
+      "label": "教育",
+      "risk_level": "常规关注",
+      "when_to_use": "投票和讨论里最常见的诉求，是把‘总量增长’继续转化为真正可感知的公平。",
+      "steps": [
+        "先核对招生、学位或教育统计口径，再判断争议点是规则问题还是资源配置问题。",
+        "保留通知、截图和费用记录，必要时向学校或主管部门正式反馈。",
+        "如果讨论涉及长期结构性差距，可回到公报、调查报告和讨论区继续补充案例。"
+      ],
+      "priority_action": "区域与城乡资源差距",
+      "policy_targets": [
+        {
+          "label": "查教育公报",
+          "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html",
+          "source_name": "教育部"
+        }
+      ],
+      "primary_target": {
+        "label": "查教育公报",
+        "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html"
+      }
+    },
+    {
+      "topic": "healthcare",
+      "label": "医疗",
+      "risk_level": "高关注",
+      "when_to_use": "多数意见并不只是要求‘花更少钱’，而是要求规则更清楚、流程更顺、基层更可用。",
+      "steps": [
+        "先确认就诊流程、医保报销规则和医院/基层机构说明，避免信息误解。",
+        "保留挂号、缴费、报销和转诊记录，便于后续核查服务可及性问题。",
+        "如果是制度体验差异，可同时参考卫生公报、政策口径和站内曝光条目。"
+      ],
+      "priority_action": "医保报销与费用透明度",
+      "policy_targets": [
+        {
+          "label": "查卫生公报",
+          "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm",
+          "source_name": "中国政府网 / 国家卫健委"
+        }
+      ],
+      "primary_target": {
+        "label": "查卫生公报",
+        "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm"
+      }
+    },
+    {
+      "topic": "housing",
+      "label": "住房",
+      "risk_level": "常规关注",
+      "when_to_use": "大家最关心的不是抽象的供给规模，而是能否住得起、住得稳、通勤可承受。",
+      "steps": [
+        "先核对资格、租约、轮候或改造政策说明，明确问题发生在哪一层。",
+        "保留租约、通知、通勤成本和沟通记录，方便后续维权或反馈。",
+        "如涉及保障房、公租房或旧改争议，优先回到官方政策入口和公开规则。"
+      ],
+      "priority_action": "通勤成本与地段可达性",
+      "policy_targets": [
+        {
+          "label": "查住房政策",
+          "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm",
+          "source_name": "中国政府网"
+        }
+      ],
+      "primary_target": {
+        "label": "查住房政策",
+        "url": "https://www.gov.cn/zhengce/202501/content_6996418.htm"
+      }
+    },
+    {
+      "topic": "employment",
+      "label": "就业",
+      "risk_level": "高关注",
+      "when_to_use": "青年求职的真实焦虑集中在隐性门槛、岗位质量和转岗成本，而不只是失业率数字。",
+      "steps": [
+        "先区分岗位数量问题、招聘门槛问题和劳动条件问题。",
+        "保留岗位要求、沟通记录和合同信息，便于比较隐性门槛与实际条件。",
+        "如果问题具有普遍性，可结合人社政策、讨论区和案例库继续跟踪。"
+      ],
+      "priority_action": "要求与经验门槛过高",
+      "policy_targets": [
+        {
+          "label": "查就业政策",
+          "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/",
+          "source_name": "人社部"
+        }
+      ],
+      "primary_target": {
+        "label": "查就业政策",
+        "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/"
+      }
+    },
+    {
+      "topic": "elderly",
+      "label": "养老",
+      "risk_level": "常规关注",
+      "when_to_use": "养老意见最集中在照护可得性，而不只是养老金替代率。",
+      "steps": [
+        "先核对养老金、照护服务或社区支持的正式规则与说明。",
+        "保留照护服务、排队、价格和等待记录，帮助判断问题是供给不足还是信息不透明。",
+        "涉及长期照护压力时，可同步查看统计公报与养老讨论串。"
+      ],
+      "priority_action": "失能照护服务不足",
+      "policy_targets": [
+        {
+          "label": "查养老政策",
+          "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/",
+          "source_name": "人社部"
+        }
+      ],
+      "primary_target": {
+        "label": "查养老政策",
+        "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/shehuibaozhang/"
+      }
+    },
+    {
+      "topic": "food",
+      "label": "食品",
+      "risk_level": "高关注",
+      "when_to_use": "消费者最需要的不是口号，而是‘问题出现后能不能立刻知道、立刻投诉、立刻追责’。",
+      "steps": [
+        "先保留商品信息、标签、订单、聊天和问题页面截图。",
+        "遇到具体消费纠纷，优先走 12315 或监管抽检入口，不要只停留在社交平台吐槽。",
+        "如果是系统性问题，再结合曝光案例和站内讨论看是否属于高频共性争议。"
+      ],
+      "priority_action": "标签透明和真实告知",
+      "policy_targets": [
+        {
+          "label": "查抽检结果",
+          "url": "https://www.samr.gov.cn/spcjs/xxfb/",
+          "source_name": "市场监管总局"
+        },
+        {
+          "label": "投诉举报入口",
+          "url": "https://www.12315.cn/",
+          "source_name": "全国 12315 平台"
+        }
+      ],
+      "primary_target": {
+        "label": "查抽检结果",
+        "url": "https://www.samr.gov.cn/spcjs/xxfb/"
+      }
+    },
+    {
+      "topic": "technology",
+      "label": "科技",
+      "risk_level": "常规关注",
+      "when_to_use": "围绕 AI 的意见最集中在‘先改造了谁的任务、谁来承担再培训成本’。",
+      "steps": [
+        "先确认争议是技术本身、算法管理，还是劳动过程变化。",
+        "保留绩效规则、岗位变更或培训要求等记录，帮助判断影响范围。",
+        "如涉及 AI 与就业交叉问题，可同时查看科技和就业两个议题的案例。"
+      ],
+      "priority_action": "任务被拆分、绩效更细化",
+      "policy_targets": [
+        {
+          "label": "查互联网报告",
+          "url": "https://www.cnnic.cn/",
+          "source_name": "CNNIC"
+        },
+        {
+          "label": "查就业政策",
+          "url": "https://www.mohrss.gov.cn/SYrlzyhshbzb/zcjd/",
+          "source_name": "人社部"
+        }
+      ],
+      "primary_target": {
+        "label": "查互联网报告",
+        "url": "https://www.cnnic.cn/"
+      }
+    },
+    {
+      "topic": "livelihood",
+      "label": "民生",
+      "risk_level": "常规关注",
+      "when_to_use": "跨议题建议往往会回到收入、服务可及性和政策信息透明度这三根主线。",
+      "steps": [
+        "先把问题落到具体支出、服务、保障或信息透明哪一类。",
+        "保留成本变化、政策通知和办事体验记录，便于区分个体案例与结构问题。",
+        "跨议题问题建议回到统计发布、长期调查和站内归档一起看。"
+      ],
+      "priority_action": "提高收入与减轻生活成本",
+      "policy_targets": [
+        {
+          "label": "查统计发布",
+          "url": "https://www.stats.gov.cn/sj/zxfb/",
+          "source_name": "国家统计局"
+        }
+      ],
+      "primary_target": {
+        "label": "查统计发布",
+        "url": "https://www.stats.gov.cn/sj/zxfb/"
+      }
     }
   ],
   "exposure_theme_breakdown": [

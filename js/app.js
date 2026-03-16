@@ -652,6 +652,7 @@ function renderTrendCharts(analysis) {
   const platformCanvas = byId('trendPlatformChart');
   const deltaCanvas = byId('trendDeltaChart');
   const supportCanvas = byId('trendSupportChart');
+  const signalCanvas = byId('trendSignalChart');
   const ranking = (analysis.topic_rankings || []).slice(0, 6);
   const platforms = analysis.platform_breakdown || [];
 
@@ -742,6 +743,22 @@ function renderTrendCharts(analysis) {
         maintainAspectRatio: false,
         plugins: { legend: { display: true } }
       }
+    });
+  }
+
+  if (signalCanvas) {
+    if (window.__trendCharts.signal) window.__trendCharts.signal.destroy();
+    const items = analysis.signal_distribution || [];
+    window.__trendCharts.signal = new Chart(signalCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: items.map((item) => item.label),
+        datasets: [{
+          data: items.map((item) => item.count),
+          backgroundColor: ['#b42318', '#165dff', '#9a5b16']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
     });
   }
 }
@@ -1254,6 +1271,31 @@ function renderTrends(data) {
   const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
 
   renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
+  const trendEditionTitle = byId('trendEditionTitle');
+  if (trendEditionTitle && analysis.express_brief) {
+    trendEditionTitle.textContent = `${analysis.express_brief.edition_date_label}快报`;
+  }
+  const trendExpressBoard = byId('trendExpressBoard');
+  if (trendExpressBoard) {
+    const express = analysis.express_brief || {};
+    trendExpressBoard.innerHTML = [
+      express.headline ? html`
+        <article class="stack-card">
+          <small>${escapeHtml(express.edition_timestamp_label || '')}</small>
+          <h3>${escapeHtml(express.headline)}</h3>
+          <p>${escapeHtml(express.summary || '')}</p>
+        </article>
+      ` : '',
+      ...((express.sections || []).slice(0, 4).map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(item.label)} · ${escapeHtml(express.edition_label || '')}</small>
+          <h3>${escapeHtml(item.headline)}</h3>
+          <p>${escapeHtml(item.summary)}</p>
+          ${item.opinion_hint ? `<p><strong>当前最强诉求：</strong>${escapeHtml(item.opinion_hint)}</p>` : ''}
+        </article>
+      `))
+    ].join('');
+  }
   renderWatchlistCards('watchlistActiveGrid', activeWindows.length ? activeWindows : (data.editorial_watchlist.windows || []).slice(0, 2), true);
   renderWatchlistCards('watchlistCalendarGrid', (data.editorial_watchlist.windows || []), false);
 
@@ -1298,10 +1340,13 @@ function renderTrends(data) {
 
   const trendNarrativeBoard = byId('trendNarrativeBoard');
   if (trendNarrativeBoard) {
+    const express = analysis.express_brief || {};
     const sections = ((analysis.weekly_report || {}).sections || []).slice(0, 4);
     const distribution = (analysis.signal_distribution || []).map((item) => `${item.label} ${item.count} 个议题`).join('，');
     trendNarrativeBoard.innerHTML = [
+      ...((express.chart_takeaways || []).slice(0, 3)),
       ...(sections.map((item) => `${item.label}：${item.summary} ${item.action}`)),
+      ...((express.watch_alerts || []).slice(0, 2).map((item) => `${item.label}提醒：${item.title}。${item.detail}`)),
       distribution ? `当前信号结构：${distribution}。` : '',
       '阅读顺序建议：先看综合排序，再对照历史均值，最后核对证据、讨论和报告是否同步增长。'
     ].filter(Boolean).slice(0, 5).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
@@ -1480,6 +1525,8 @@ function renderExposure(data) {
   const caseGrid = byId('exposureCaseGrid');
   const focusList = byId('exposureFocusList');
   const adviceGrid = byId('exposureAdviceGrid');
+  const caseLibrary = byId('exposureCaseLibrary');
+  const routeTree = byId('exposureRouteTree');
   if (!digest || !summaryGrid || !topicList || !timeline || !caseGrid) return;
 
   summaryGrid.innerHTML = [
@@ -1537,6 +1584,41 @@ function renderExposure(data) {
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.body)}</p>
         <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+      </article>
+    `).join('');
+  }
+
+  if (caseLibrary) {
+    caseLibrary.innerHTML = (digest.exposure_case_library || []).slice(0, 8).map((item) => html`
+      <article class="evidence-card">
+        <div class="meta-line">
+          <span>${escapeHtml(item.label)}</span>
+          <span class="risk-badge ${item.risk_level === '高风险' ? 'is-high' : 'is-watch'}">${escapeHtml(item.risk_level)}</span>
+          <span>${escapeHtml(item.published_at)}</span>
+        </div>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.summary)}</p>
+        <p><strong>站内判断：</strong>${escapeHtml(item.verdict)}</p>
+        <p><strong>提醒：</strong>${escapeHtml(item.risk_note)}</p>
+        <div class="topic-actions">
+          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noreferrer">${escapeHtml(target.label)}</a>`).join('')}
+        </div>
+      </article>
+    `).join('');
+  }
+
+  if (routeTree) {
+    routeTree.innerHTML = (digest.complaint_routes || []).map((item) => html`
+      <article class="source-card route-card">
+        <small>${escapeHtml(item.label)} · ${escapeHtml(item.risk_level)}</small>
+        <h3>${escapeHtml(item.priority_action || `${item.label}处理路径`)}</h3>
+        <p>${escapeHtml(item.when_to_use)}</p>
+        <div class="route-steps">
+          ${(item.steps || []).map((step, index) => `<div class="route-step"><span>${index + 1}</span><p>${escapeHtml(step)}</p></div>`).join('')}
+        </div>
+        <div class="topic-actions">
+          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noreferrer">${escapeHtml(target.label)}</a>`).join('')}
+        </div>
       </article>
     `).join('');
   }

@@ -98,5 +98,35 @@
     "year": 2021,
     "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/indexch.htm",
     "summary": "人口结构、老龄化、城镇化、流动人口与家庭结构等议题的基础来源。"
+  },
+  {
+    "id": "report_chfs_home",
+    "topic": "housing",
+    "category": "academic-survey",
+    "title": "中国家庭金融调查（CHFS）项目主页",
+    "publisher": "西南财经大学中国家庭金融调查与研究中心",
+    "year": 2025,
+    "url": "https://chfs.swufe.edu.cn/index.htm",
+    "summary": "覆盖家庭资产、负债、住房、收入、支出与社会保障，是理解住房负担和家庭风险承受能力的重要调查。"
+  },
+  {
+    "id": "report_css_home",
+    "topic": "livelihood",
+    "category": "academic-survey",
+    "title": "中国社会状况综合调查（CSS）项目主页",
+    "publisher": "中国社会科学院社会学研究所",
+    "year": 2025,
+    "url": "https://css.cssn.cn/css_sy/",
+    "summary": "全国性、连续性社会调查项目，适合补充劳动就业、家庭生活、社会态度与公共服务评价等议题。"
+  },
+  {
+    "id": "report_class_home",
+    "topic": "elderly",
+    "category": "academic-survey",
+    "title": "中国老年社会追踪调查（CLASS）",
+    "publisher": "中国人民大学中国调查与数据中心",
+    "year": 2025,
+    "url": "https://class.ruc.edu.cn/",
+    "summary": "面向老龄化、养老保障、健康状况、家庭支持与社区照护的全国性追踪调查，是养老议题的重要底层资料。"
   }
 ]

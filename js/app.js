@@ -39,6 +39,13 @@ const TYPE_NAMES = {
   context: '背景说明',
   exposed: '问题暴露'
 };
+const REPORT_CATEGORY_NAMES = {
+  'official-data': '官方统计',
+  'official-yearbook': '统计年鉴',
+  'official-report': '官方报告',
+  'academic-survey': '学术调查',
+  'research-report': '研究项目'
+};
 const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
 const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 
@@ -65,6 +72,10 @@ function getTopicName(id) {
 
 function getTypeName(id) {
   return TYPE_NAMES[id] || id;
+}
+
+function getReportCategoryName(id) {
+  return REPORT_CATEGORY_NAMES[id] || id;
 }
 
 function byId(id) {
@@ -273,6 +284,74 @@ function renderDanmu(containerId, discussions, large = false) {
     `).join('');
     container.appendChild(track);
   }
+}
+
+function summaryCardMarkup(item) {
+  return html`
+    <article class="source-card">
+      <small>${escapeHtml(item.label)}</small>
+      <h3>${escapeHtml(item.value)}</h3>
+      <p>${escapeHtml(item.note)}</p>
+    </article>
+  `;
+}
+
+function renderSummaryGrid(containerId, items) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = items.map(summaryCardMarkup).join('');
+}
+
+function reportStackMarkup(report) {
+  return html`
+    <article class="stack-card">
+      <small>${escapeHtml(getTopicName(report.topic))} · ${escapeHtml(getReportCategoryName(report.category))}</small>
+      <h3>${escapeHtml(report.title)}</h3>
+      <div class="meta-line"><span>${escapeHtml(report.publisher)}</span><span>${escapeHtml(report.year)}</span></div>
+      <p>${escapeHtml(report.summary)}</p>
+      <div class="topic-actions">
+        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+        <a class="topic-link" href="archive.html?type=report&topic=${escapeHtml(report.topic)}">归档检索</a>
+      </div>
+    </article>
+  `;
+}
+
+function reportCardMarkup(report) {
+  return html`
+    <article class="source-card report-card" data-report-kind="${escapeHtml(report.category)}">
+      <small>${escapeHtml(getTopicName(report.topic))} · ${escapeHtml(getReportCategoryName(report.category))}</small>
+      <h3>${escapeHtml(report.title)}</h3>
+      <div class="meta-line"><span>${escapeHtml(report.publisher)}</span><span>${escapeHtml(report.year)}</span></div>
+      <p>${escapeHtml(report.summary)}</p>
+      <div class="topic-actions">
+        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+        <a class="topic-link" href="analysis.html#${escapeHtml(report.topic)}">关联议题</a>
+      </div>
+    </article>
+  `;
+}
+
+function pickFeaturedReports(data, topicIds = [], limit = 6) {
+  const preferredTopics = topicIds.length ? topicIds : data.topics.map((topic) => topic.id);
+  const featured = [];
+  const seen = new Set();
+
+  preferredTopics.forEach((topicId) => {
+    const report = data.reports.find((item) => item.topic === topicId && !seen.has(item.id));
+    if (report) {
+      featured.push(report);
+      seen.add(report.id);
+    }
+  });
+
+  data.reports.forEach((report) => {
+    if (featured.length >= limit || seen.has(report.id)) return;
+    featured.push(report);
+    seen.add(report.id);
+  });
+
+  return featured.slice(0, limit);
 }
 
 function renderHome(data) {
@@ -547,6 +626,34 @@ function renderAnalysis(data) {
   const sections = byId('analysisSections');
   if (!tabs || !sections) return;
 
+  renderSummaryGrid('analysisSummaryGrid', [
+    {
+      label: '议题覆盖',
+      value: `${data.topics.length} 个核心议题`,
+      note: '教育、医疗、住房、就业、养老、科技、食品与综合民生都在同一套分析框架里。'
+    },
+    {
+      label: '证据储备',
+      value: `${data.papers.length} 篇论文卡片`,
+      note: '论文卡片与政策、讨论、热点快照一起联动，避免只看单条社媒观点。'
+    },
+    {
+      label: '政策与办事',
+      value: `${data.policy_links.length} 个官方入口`,
+      note: '把国家统计局、部委、12315 等入口直接放进议题页，便于从讨论跳回办事路径。'
+    },
+    {
+      label: '延伸资料',
+      value: `${data.reports.length} 份报告与调查`,
+      note: '新增独立报告库后，议题页不只展示摘要，也能继续追到年鉴、调查与项目主页。'
+    }
+  ]);
+
+  const analysisReportGrid = byId('analysisReportGrid');
+  if (analysisReportGrid) {
+    analysisReportGrid.innerHTML = pickFeaturedReports(data, data.topics.map((topic) => topic.id), 6).map(reportStackMarkup).join('');
+  }
+
   tabs.innerHTML = `<div class="tab-row">${data.topics.map((topic, index) => `<button class="tab-button ${index === 0 ? 'active' : ''}" data-target="${escapeHtml(topic.id)}">${escapeHtml(topic.emoji)} ${escapeHtml(topic.label)}</button>`).join('')}</div>`;
   sections.innerHTML = data.topics.map((topic) => {
     const papers = relatedLinks(topic.paper_ids, data.papersById);
@@ -697,6 +804,37 @@ function renderEvidence(data) {
   const list = byId('evidenceList');
   const filters = byId('evidenceFilters');
   if (!list || !filters) return;
+
+  const evidenceTopics = [...new Set(data.evidence_records.map((item) => item.topic))];
+  const exposedCount = data.evidence_records.filter((item) => item.type === 'exposed').length;
+  const investigatingCount = data.evidence_records.filter((item) => item.type === 'investigating').length;
+  renderSummaryGrid('evidenceSummaryGrid', [
+    {
+      label: '证据条目',
+      value: `${data.evidence_records.length} 条`,
+      note: '每条记录都带有来源、结论、历史更新和关联政策入口。'
+    },
+    {
+      label: '问题暴露',
+      value: `${exposedCount} 条`,
+      note: '优先标注公众感知最强、制度体验差异最明显的议题。'
+    },
+    {
+      label: '持续核查',
+      value: `${investigatingCount} 条`,
+      note: '对仍在演变的争议点保留“调查中”状态，避免过度下结论。'
+    },
+    {
+      label: '覆盖广度',
+      value: `${evidenceTopics.length} 个议题`,
+      note: '证据库已经把食品、医疗、教育、住房、就业、养老、科技与综合民生串了起来。'
+    }
+  ]);
+
+  const evidenceReportGrid = byId('evidenceReportGrid');
+  if (evidenceReportGrid) {
+    evidenceReportGrid.innerHTML = pickFeaturedReports(data, evidenceTopics, 6).map(reportStackMarkup).join('');
+  }
 
   const topics = ['all', ...new Set(data.evidence_records.map((item) => item.topic))];
   const types = ['all', ...new Set(data.evidence_records.map((item) => item.type))];
@@ -875,6 +1013,43 @@ function renderArchive(data) {
   const sortInput = byId('searchSort');
   const results = byId('archiveResults');
   const meta = byId('archiveMeta');
+  const latestDoc = docs.slice().sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+  const reportCount = docs.filter((doc) => doc.type === 'report').length;
+  const discussionCount = docs.filter((doc) => doc.type === 'discussion').length;
+  const topicCount = new Set(docs.map((doc) => doc.topic)).size;
+
+  renderSummaryGrid('archiveSummaryGrid', [
+    {
+      label: '归档总量',
+      value: `${docs.length} 条`,
+      note: '热点快照、证据库、论文卡片、报告入口、社媒热榜和讨论摘录都可以一起检索。'
+    },
+    {
+      label: '报告入口',
+      value: `${reportCount} 份`,
+      note: '报告库已并入统一检索，找议题时不用再单独翻页面。'
+    },
+    {
+      label: '讨论摘录',
+      value: `${discussionCount} 条`,
+      note: '公开 Discussions 摘录会和议题页、弹幕墙同步，便于回看历史讨论。'
+    },
+    {
+      label: '最近记录',
+      value: latestDoc ? formatDate(latestDoc.date) : '暂无',
+      note: `当前可覆盖 ${topicCount} 个议题，支持通过 URL 参数直接分享筛选结果。`
+    }
+  ]);
+
+  const archiveTipCards = byId('archiveTipCards');
+  if (archiveTipCards) {
+    archiveTipCards.innerHTML = [
+      '如果你已经知道议题，但不确定从哪类材料入手，先筛“报告库”或“证据库”，再回看讨论摘录。',
+      '想找旧热点时，优先设定日期区间；想找结构性证据时，优先筛论文卡片与官方报告。',
+      '归档链接支持 `q`、`topic`、`type`、`from`、`to`、`sort` 参数，便于把固定检索条件直接分享给别人。',
+      '遇到结果很多时，可以先按议题缩窄，再改成“关键词优先”，会比全库模糊搜索更稳。'
+    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
 
   topicSelect.innerHTML = Object.entries(TOPIC_NAMES).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
   typeSelect.innerHTML = Object.entries(TYPE_NAMES).filter(([key]) => ['all', 'trend', 'evidence', 'paper', 'discussion', 'social', 'report'].includes(key)).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
@@ -937,6 +1112,79 @@ function renderArchive(data) {
     runSearch();
   });
   runSearch();
+}
+
+function renderReports(data) {
+  const summaryGrid = byId('reportSummaryGrid');
+  const filters = byId('reportFilters');
+  const list = byId('reportList');
+  if (!summaryGrid || !filters || !list) return;
+
+  const officialCount = data.reports.filter((item) => item.category.startsWith('official')).length;
+  const surveyCount = data.reports.filter((item) => item.category === 'academic-survey').length;
+  const latestYear = Math.max(...data.reports.map((item) => Number(item.year) || 0));
+  const topicsCovered = new Set(data.reports.map((item) => item.topic)).size;
+  let currentTopic = 'all';
+  let currentCategory = 'all';
+
+  renderSummaryGrid('reportSummaryGrid', [
+    {
+      label: '报告总量',
+      value: `${data.reports.length} 份`,
+      note: '把统计公报、统计年鉴、长期追踪调查和项目主页统一收到一个入口。'
+    },
+    {
+      label: '官方资料',
+      value: `${officialCount} 份`,
+      note: '适合快速建立总量、趋势与政策口径，优先回答“整体变化到哪里了”。'
+    },
+    {
+      label: '学术调查',
+      value: `${surveyCount} 个`,
+      note: '适合观察群体差异、代际变化与长期追踪结果，补足单年公报看不到的结构性信息。'
+    },
+    {
+      label: '覆盖范围',
+      value: `${topicsCovered} 个议题 · 至 ${latestYear} 年`,
+      note: '报告库会继续扩充统计报告、白皮书和全国性调查项目。'
+    }
+  ]);
+
+  function draw() {
+    const filtered = data.reports
+      .filter((item) => (currentTopic === 'all' || item.topic === currentTopic) && (currentCategory === 'all' || item.category === currentCategory))
+      .slice()
+      .sort((a, b) => Number(b.year) - Number(a.year) || a.title.localeCompare(b.title, 'zh-CN'));
+
+    list.innerHTML = filtered.length
+      ? filtered.map(reportCardMarkup).join('')
+      : '<div class="note-card">当前筛选条件下没有匹配的报告。</div>';
+
+    filters.innerHTML = html`
+      <div class="filter-row">
+        ${['all', ...data.topics.map((topic) => topic.id)].map((topic) => `
+          <button type="button" class="filter-pill${currentTopic === topic ? ' active' : ''}" data-kind="topic" data-value="${escapeHtml(topic)}">${escapeHtml(getTopicName(topic))}</button>
+        `).join('')}
+      </div>
+      <div class="filter-row">
+        ${['all', ...Object.keys(REPORT_CATEGORY_NAMES)].map((category) => `
+          <button type="button" class="filter-pill${currentCategory === category ? ' active' : ''}" data-kind="category" data-value="${escapeHtml(category)}">${escapeHtml(category === 'all' ? '全部类型' : getReportCategoryName(category))}</button>
+        `).join('')}
+      </div>
+    `;
+
+    filters.querySelectorAll('.filter-pill').forEach((button) => {
+      button.addEventListener('click', () => {
+        const kind = button.dataset.kind;
+        const value = button.dataset.value;
+        if (kind === 'topic') currentTopic = value;
+        if (kind === 'category') currentCategory = value;
+        draw();
+      });
+    });
+  }
+
+  draw();
 }
 
 function getVoteStore() {
@@ -1355,6 +1603,7 @@ async function init() {
     case 'evidence': renderEvidence(data); break;
     case 'discuss': renderDiscussion(data); break;
     case 'archive': renderArchive(data); break;
+    case 'reports': renderReports(data); break;
     case 'polls': renderPolls(data); break;
     case 'methodology': renderMethodology(data); break;
     default: break;

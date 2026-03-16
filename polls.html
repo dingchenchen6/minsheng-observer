@@ -5,6 +5,7 @@
   <title>轻投票 | 民声 2.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="polls">
@@ -17,6 +18,16 @@
         <div class="note-card strong" id="pollIntroNote"></div>
         <div class="card-grid" id="pollSummaryGrid"></div>
         <div class="feature-grid" style="margin-top:18px;" id="pollInsightGrid"></div>
+        <div class="feature-grid" style="margin-top:18px;">
+          <article class="chart-wrap">
+            <h3>议题优先诉求雷达</h3>
+            <div style="height:320px"><canvas id="pollRadarChart"></canvas></div>
+          </article>
+          <article class="chart-wrap">
+            <h3>样本分布与活跃度</h3>
+            <div style="height:320px"><canvas id="pollSampleChart"></canvas></div>
+          </article>
+        </div>
       </div>
     </section>
 

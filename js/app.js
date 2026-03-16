@@ -12,7 +12,8 @@ const DATA_FILES = [
   'discussion_archive',
   'evidence_records',
   'polls',
-  'social_hot_topics'
+  'social_hot_topics',
+  'live_config'
 ];
 const TOPIC_NAMES = {
   all: '全部议题',
@@ -83,7 +84,35 @@ async function loadData() {
   data.sourcesById = Object.fromEntries(data.sources.map((item) => [item.id, item]));
   data.discussionsById = Object.fromEntries(data.discussion_archive.map((item) => [item.id, item]));
   data.currentTrendById = Object.fromEntries(data.trend_current.map((item) => [item.id, item]));
+  data.liveRuntime = await fetchLiveRuntime(data.live_config);
   return data;
+}
+
+async function fetchLiveRuntime(config) {
+  const runtime = {
+    voteTotals: {},
+    comments: [],
+    bullets: [],
+    user: null,
+    status: 'demo',
+    error: ''
+  };
+  const backend = (config || {}).vote_backend || {};
+  if (!backend.enabled || !backend.read_url) return runtime;
+  try {
+    const response = await fetch(backend.read_url, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`live read failed: ${response.status}`);
+    const payload = await response.json();
+    runtime.voteTotals = payload.poll_totals || {};
+    runtime.comments = payload.comments || [];
+    runtime.bullets = payload.bullets || [];
+    runtime.user = payload.user || null;
+    runtime.status = 'live';
+  } catch (error) {
+    runtime.status = 'error';
+    runtime.error = error.message;
+  }
+  return runtime;
 }
 
 function initChrome() {
@@ -473,11 +502,18 @@ function renderEvidence(data) {
 }
 
 function renderDiscussion(data) {
+  const wechat = (data.live_config || {}).wechat_login || {};
+  const backend = (data.live_config || {}).vote_backend || {};
   byId('discussionIntro').innerHTML = html`
     <h3>为什么改用 GitHub Discussions？</h3>
     <p>因为 GitHub Pages 适合部署静态站，不适合承载匿名后端。将正式留言迁移到 Discussions 后，我们可以保留公开线程、可追溯链接和自动归档能力。</p>
+    <div class="stack-list" style="margin-top:16px;">
+      <div class="stack-card"><small>实时互动后端</small><p>${escapeHtml(backend.status_label || '未配置')}</p></div>
+      <div class="stack-card"><small>微信登录</small><p>${escapeHtml(wechat.status_label || '未配置')}</p></div>
+    </div>
     <div class="topic-actions" style="margin-top:16px;">
       <a class="button primary" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noreferrer">打开 Discussions</a>
+      ${wechat.enabled && wechat.login_url ? `<a class="button ghost" href="${escapeHtml(wechat.login_url)}">微信登录入口</a>` : ''}
       <a class="button ghost" href="archive.html?type=discussion">查看讨论归档</a>
     </div>
   `;
@@ -492,7 +528,12 @@ function renderDiscussion(data) {
     </article>
   `).join('');
 
-  renderDanmu('discussionDanmu', data.discussion_archive, true);
+  const liveBullets = ((data.liveRuntime || {}).bullets || []).map((item, index) => ({
+    id: item.id || `live_bullet_${index}`,
+    topic: item.topic || 'livelihood',
+    excerpt: item.excerpt || item.content || '',
+  })).filter((item) => item.excerpt);
+  renderDanmu('discussionDanmu', liveBullets.length ? liveBullets : data.discussion_archive, true);
   mountGiscus(data.site_meta);
 }
 
@@ -675,6 +716,48 @@ function setSuggestionStore(store) {
   localStorage.setItem(SUGGESTION_STORAGE_KEY, JSON.stringify(store));
 }
 
+function getLiveVoteCount(data, pollId, optionId) {
+  return ((((data || {}).liveRuntime || {}).voteTotals || {})[pollId] || {})[optionId] || 0;
+}
+
+async function submitLiveVote(data, poll, optionId) {
+  const backend = ((data || {}).live_config || {}).vote_backend || {};
+  if (!backend.enabled || !backend.write_url) return { ok: false, fallback: true };
+  const response = await fetch(backend.write_url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      poll_id: poll.id,
+      option_id: optionId,
+      topic: poll.topic,
+      created_at: new Date().toISOString(),
+      identity_provider: (((data || {}).live_config || {}).wechat_login || {}).enabled ? 'wechat' : 'web'
+    })
+  });
+  if (!response.ok) {
+    return { ok: false, fallback: true };
+  }
+  data.liveRuntime.voteTotals[poll.id] = data.liveRuntime.voteTotals[poll.id] || {};
+  data.liveRuntime.voteTotals[poll.id][optionId] = (data.liveRuntime.voteTotals[poll.id][optionId] || 0) + 1;
+  data.liveRuntime.status = 'live';
+  return { ok: true, fallback: false };
+}
+
+function upsertPollCharts(radarConfig, sampleConfig) {
+  if (typeof Chart === 'undefined') return;
+  window.__pollCharts = window.__pollCharts || {};
+  const radarCanvas = byId('pollRadarChart');
+  const sampleCanvas = byId('pollSampleChart');
+  if (radarCanvas) {
+    if (window.__pollCharts.radar) window.__pollCharts.radar.destroy();
+    window.__pollCharts.radar = new Chart(radarCanvas.getContext('2d'), radarConfig);
+  }
+  if (sampleCanvas) {
+    if (window.__pollCharts.sample) window.__pollCharts.sample.destroy();
+    window.__pollCharts.sample = new Chart(sampleCanvas.getContext('2d'), sampleConfig);
+  }
+}
+
 function getPollPayload(data) {
   if (Array.isArray(data.polls)) {
     return {
@@ -710,13 +793,13 @@ function renderPolls(data) {
 
   function getPollTotal(poll, store) {
     const pollState = store[poll.id];
-    return poll.options.reduce((sum, option) => sum + option.votes + ((pollState && pollState.counts && pollState.counts[option.id]) || 0), 0);
+    return poll.options.reduce((sum, option) => sum + option.votes + getLiveVoteCount(data, poll.id, option.id) + ((pollState && pollState.counts && pollState.counts[option.id]) || 0), 0);
   }
 
   function getTopOption(poll, store) {
     const total = getPollTotal(poll, store);
     const ranked = poll.options.map((option) => {
-      const count = option.votes + (((store[poll.id] || {}).counts || {})[option.id] || 0);
+      const count = option.votes + getLiveVoteCount(data, poll.id, option.id) + (((store[poll.id] || {}).counts || {})[option.id] || 0);
       return { ...option, count, percentage: total ? Math.round((count / total) * 100) : 0 };
     }).sort((a, b) => b.count - a.count);
     return { total, ranked, first: ranked[0], second: ranked[1] };
@@ -731,16 +814,23 @@ function renderPolls(data) {
     const totalBaseVotes = surveys.reduce((sum, poll) => sum + getPollTotal(poll, store), 0);
     const localVoteCount = Object.values(store).reduce((sum, item) => sum + Object.values((item && item.counts) || {}).reduce((acc, value) => acc + value, 0), 0);
     const topicsCovered = new Set(surveys.map((poll) => poll.topic)).size;
+    const liveVoteCount = surveys.reduce((sum, poll) => sum + Object.values((((data.liveRuntime || {}).voteTotals || {})[poll.id] || {})).reduce((acc, value) => acc + value, 0), 0);
+    const backend = (data.live_config || {}).vote_backend || {};
+    const wechat = (data.live_config || {}).wechat_login || {};
 
     if (introNote) {
-      introNote.textContent = payload.intro_note || '';
+      introNote.innerHTML = html`
+        <strong>${escapeHtml(payload.intro_note || '')}</strong>
+        <p style="margin-top:10px;">实时后端：${escapeHtml(backend.status_label || '未配置')}。微信登录：${escapeHtml(wechat.status_label || '未配置')}。</p>
+      `;
     }
 
     summaryGrid.innerHTML = [
       { label: '覆盖议题', value: `${topicsCovered}`, note: '教育、医疗、住房、就业、养老、食品、科技与综合民生' },
       { label: '调查题数', value: `${surveys.length}`, note: '每个议题至少有一条轻投票，支持快速查看偏好' },
       { label: '基础样本', value: `${totalBaseVotes}`, note: '静态基数与本机投票累计后的站内样本量' },
-      { label: '本机新增', value: `${localVoteCount}`, note: '你当前浏览器追加的投票，不会写回公共数据' },
+      { label: '实时写入', value: `${liveVoteCount}`, note: backend.enabled ? '来自外部投票后端的已同步票数' : '当前未接通实时后端，仍为 0' },
+      { label: '本机新增', value: `${localVoteCount}`, note: '你当前浏览器追加的投票；若未接通后端，不会写回公共数据' },
       { label: '本机建议', value: `${suggestionStore.length}`, note: '临时记录在当前浏览器，可整理后再发到 Discussions' }
     ].map((item) => html`
       <article class="stack-card">
@@ -763,6 +853,58 @@ function renderPolls(data) {
       `;
     }).join('');
 
+    const topicSummary = Object.values(filteredSurveys.reduce((acc, poll) => {
+      const result = getTopOption(poll, store);
+      if (!acc[poll.topic]) {
+        acc[poll.topic] = { topic: poll.topic, leading: 0, sample: 0, count: 0 };
+      }
+      acc[poll.topic].leading += result.first ? result.first.percentage : 0;
+      acc[poll.topic].sample += result.total;
+      acc[poll.topic].count += 1;
+      return acc;
+    }, {})).map((item) => ({
+      ...item,
+      leading: item.count ? Math.round(item.leading / item.count) : 0
+    }));
+    upsertPollCharts(
+      {
+        type: 'radar',
+        data: {
+          labels: topicSummary.map((item) => getTopicName(item.topic)),
+          datasets: [{
+            label: '领先选项占比',
+            data: topicSummary.map((item) => item.leading),
+            backgroundColor: 'rgba(22, 93, 255, 0.16)',
+            borderColor: '#165dff',
+            pointBackgroundColor: '#b42318',
+            pointRadius: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { suggestedMin: 0, suggestedMax: 100 } },
+          plugins: { legend: { display: false } }
+        }
+      },
+      {
+        type: 'bar',
+        data: {
+          labels: topicSummary.map((item) => getTopicName(item.topic)),
+          datasets: [{
+            label: '样本量',
+            data: topicSummary.map((item) => item.sample),
+            backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6', '#c04b00', '#9d174d']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      }
+    );
+
     topicFilters.innerHTML = ['all', ...Object.keys(TOPIC_NAMES).filter((key) => key !== 'all')].map((topic) => `
       <button class="filter-pill${currentTopic === topic ? ' active' : ''}" type="button" data-topic-filter="${escapeHtml(topic)}">${escapeHtml(getTopicName(topic))}</button>
     `).join('');
@@ -772,7 +914,8 @@ function renderPolls(data) {
       const total = getPollTotal(poll, store);
       const voted = Boolean(pollState && pollState.choice);
       const optionsHtml = poll.options.map((option) => {
-        const count = option.votes + ((pollState && pollState.counts && pollState.counts[option.id]) || 0);
+        const liveCount = getLiveVoteCount(data, poll.id, option.id);
+        const count = option.votes + liveCount + ((pollState && pollState.counts && pollState.counts[option.id]) || 0);
         const percentage = total ? Math.round((count / total) * 100) : 0;
         if (!voted) {
           return `<div class="poll-option"><button data-poll="${escapeHtml(poll.id)}" data-option="${escapeHtml(option.id)}">${escapeHtml(option.label)}</button></div>`;
@@ -821,7 +964,21 @@ function renderPolls(data) {
     }
 
     if (actionGrid) {
-      actionGrid.innerHTML = actionCards.map((item) => html`
+      const runtimeCards = [
+        {
+          title: '实时投票后端状态',
+          body: backend.note || '未配置说明。',
+          url: backend.read_url || 'methodology.html',
+          label: backend.enabled ? '查看后端入口' : '查看方法说明'
+        },
+        {
+          title: '微信登录接入状态',
+          body: wechat.note || '未配置说明。',
+          url: wechat.login_url || 'methodology.html',
+          label: wechat.enabled ? '打开微信登录' : '查看接入说明'
+        }
+      ];
+      actionGrid.innerHTML = [...runtimeCards, ...actionCards].map((item) => html`
         <article class="stack-card">
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.body)}</p>
@@ -838,14 +995,18 @@ function renderPolls(data) {
     });
 
     container.querySelectorAll('button[data-poll]').forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener('click', async () => {
         const pollId = button.dataset.poll;
         const optionId = button.dataset.option;
         const nextStore = getVoteStore();
         if (nextStore[pollId] && nextStore[pollId].choice) return;
+        const poll = surveys.find((item) => item.id === pollId);
+        const result = poll ? await submitLiveVote(data, poll, optionId) : { ok: false, fallback: true };
         if (!nextStore[pollId]) nextStore[pollId] = { choice: optionId, counts: {} };
         nextStore[pollId].choice = optionId;
-        nextStore[pollId].counts[optionId] = (nextStore[pollId].counts[optionId] || 0) + 1;
+        if (result.fallback) {
+          nextStore[pollId].counts[optionId] = (nextStore[pollId].counts[optionId] || 0) + 1;
+        }
         setVoteStore(nextStore);
         draw();
       });
@@ -908,6 +1069,10 @@ function renderMethodology(data) {
     {
       title: '轻投票边界',
       body: '投票和本机意见板只用于观察站内偏好与建议方向。投票写在本地浏览器，本机建议也不会自动公开发布。'
+    },
+    {
+      title: '实时投票与微信登录',
+      body: '站点已预留实时投票/评论后端和微信登录配置位，但当前公开 Pages 版本尚未接入外部服务。要启用微信用户登录，仍需要后端与合规回调域名。'
     },
     {
       title: '自动化工作流',

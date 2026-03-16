@@ -8,10 +8,26 @@
       "question": "你认为当前最该优先补齐的教育短板是什么？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "区域与城乡资源差距", "votes": 324 },
-        { "id": "b", "label": "升学竞争与内卷压力", "votes": 287 },
-        { "id": "c", "label": "高等教育与就业脱节", "votes": 191 },
-        { "id": "d", "label": "家庭教育成本过高", "votes": 166 }
+        {
+          "id": "a",
+          "label": "区域与城乡资源差距",
+          "votes": 324
+        },
+        {
+          "id": "b",
+          "label": "升学竞争与内卷压力",
+          "votes": 287
+        },
+        {
+          "id": "c",
+          "label": "高等教育与就业脱节",
+          "votes": 191
+        },
+        {
+          "id": "d",
+          "label": "家庭教育成本过高",
+          "votes": 166
+        }
       ]
     },
     {
@@ -21,10 +37,26 @@
       "question": "你最希望医疗改革优先改善什么？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "基层诊疗能力", "votes": 302 },
-        { "id": "b", "label": "医保报销与费用透明度", "votes": 351 },
-        { "id": "c", "label": "挂号与等待时间", "votes": 278 },
-        { "id": "d", "label": "医患沟通与体验", "votes": 94 }
+        {
+          "id": "a",
+          "label": "基层诊疗能力",
+          "votes": 302
+        },
+        {
+          "id": "b",
+          "label": "医保报销与费用透明度",
+          "votes": 351
+        },
+        {
+          "id": "c",
+          "label": "挂号与等待时间",
+          "votes": 278
+        },
+        {
+          "id": "d",
+          "label": "医患沟通与体验",
+          "votes": 94
+        }
       ]
     },
     {
@@ -34,10 +66,26 @@
       "question": "住房问题里你最希望优先被解决的是哪一项？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "租金与房价压力", "votes": 296 },
-        { "id": "b", "label": "保障房供给与资格透明", "votes": 268 },
-        { "id": "c", "label": "通勤成本与地段可达性", "votes": 331 },
-        { "id": "d", "label": "租住稳定性与中介规范", "votes": 157 }
+        {
+          "id": "a",
+          "label": "租金与房价压力",
+          "votes": 296
+        },
+        {
+          "id": "b",
+          "label": "保障房供给与资格透明",
+          "votes": 268
+        },
+        {
+          "id": "c",
+          "label": "通勤成本与地段可达性",
+          "votes": 331
+        },
+        {
+          "id": "d",
+          "label": "租住稳定性与中介规范",
+          "votes": 157
+        }
       ]
     },
     {
@@ -47,10 +95,26 @@
       "question": "青年就业难最主要的压力来自哪里？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "岗位数量不足", "votes": 318 },
-        { "id": "b", "label": "要求与经验门槛过高", "votes": 406 },
-        { "id": "c", "label": "专业与岗位错配", "votes": 233 },
-        { "id": "d", "label": "期望和现实不匹配", "votes": 119 }
+        {
+          "id": "a",
+          "label": "岗位数量不足",
+          "votes": 318
+        },
+        {
+          "id": "b",
+          "label": "要求与经验门槛过高",
+          "votes": 406
+        },
+        {
+          "id": "c",
+          "label": "专业与岗位错配",
+          "votes": 233
+        },
+        {
+          "id": "d",
+          "label": "期望和现实不匹配",
+          "votes": 119
+        }
       ]
     },
     {
@@ -60,10 +124,26 @@
       "question": "养老议题中你最担心的风险是什么？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "养老金可持续性", "votes": 241 },
-        { "id": "b", "label": "失能照护服务不足", "votes": 327 },
-        { "id": "c", "label": "延迟退休带来的代际压力", "votes": 288 },
-        { "id": "d", "label": "社区养老与机构养老选择有限", "votes": 154 }
+        {
+          "id": "a",
+          "label": "养老金可持续性",
+          "votes": 241
+        },
+        {
+          "id": "b",
+          "label": "失能照护服务不足",
+          "votes": 327
+        },
+        {
+          "id": "c",
+          "label": "延迟退休带来的代际压力",
+          "votes": 288
+        },
+        {
+          "id": "d",
+          "label": "社区养老与机构养老选择有限",
+          "votes": 154
+        }
       ]
     },
     {
@@ -73,10 +153,26 @@
       "question": "食品安全与消费维权里你最看重哪一点？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "标签透明和真实告知", "votes": 344 },
-        { "id": "b", "label": "抽检频率与公开速度", "votes": 209 },
-        { "id": "c", "label": "12315 处理效率", "votes": 296 },
-        { "id": "d", "label": "赔付与追责机制", "votes": 188 }
+        {
+          "id": "a",
+          "label": "标签透明和真实告知",
+          "votes": 344
+        },
+        {
+          "id": "b",
+          "label": "抽检频率与公开速度",
+          "votes": 209
+        },
+        {
+          "id": "c",
+          "label": "12315 处理效率",
+          "votes": 296
+        },
+        {
+          "id": "d",
+          "label": "赔付与追责机制",
+          "votes": 188
+        }
       ]
     },
     {
@@ -86,10 +182,26 @@
       "question": "谈到 AI 进入工作场景，你最在意什么？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "岗位被替代", "votes": 219 },
-        { "id": "b", "label": "任务被拆分、绩效更细化", "votes": 338 },
-        { "id": "c", "label": "技能再培训跟不上", "votes": 287 },
-        { "id": "d", "label": "算法考核与劳动强度上升", "votes": 196 }
+        {
+          "id": "a",
+          "label": "岗位被替代",
+          "votes": 219
+        },
+        {
+          "id": "b",
+          "label": "任务被拆分、绩效更细化",
+          "votes": 338
+        },
+        {
+          "id": "c",
+          "label": "技能再培训跟不上",
+          "votes": 287
+        },
+        {
+          "id": "d",
+          "label": "算法考核与劳动强度上升",
+          "votes": 196
+        }
       ]
     },
     {
@@ -99,10 +211,258 @@
       "question": "如果只能优先推动一项综合民生改进，你会选什么？",
       "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
       "options": [
-        { "id": "a", "label": "提高收入与减轻生活成本", "votes": 372 },
-        { "id": "b", "label": "提高公共服务可及性", "votes": 291 },
-        { "id": "c", "label": "扩大社会保障覆盖与公平性", "votes": 255 },
-        { "id": "d", "label": "增强政策信息透明度", "votes": 146 }
+        {
+          "id": "a",
+          "label": "提高收入与减轻生活成本",
+          "votes": 372
+        },
+        {
+          "id": "b",
+          "label": "提高公共服务可及性",
+          "votes": 291
+        },
+        {
+          "id": "c",
+          "label": "扩大社会保障覆盖与公平性",
+          "votes": 255
+        },
+        {
+          "id": "d",
+          "label": "增强政策信息透明度",
+          "votes": 146
+        }
+      ]
+    },
+    {
+      "id": "poll_education_2",
+      "topic": "education",
+      "tag": "政策偏好",
+      "question": "如果教育改革只能优先落地一项，你更支持什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "扩大优质公办学位供给",
+          "votes": 301
+        },
+        {
+          "id": "b",
+          "label": "推进教师跨区域流动",
+          "votes": 216
+        },
+        {
+          "id": "c",
+          "label": "减轻课外培训依赖",
+          "votes": 279
+        },
+        {
+          "id": "d",
+          "label": "增强职业教育吸引力",
+          "votes": 188
+        }
+      ]
+    },
+    {
+      "id": "poll_health_2",
+      "topic": "healthcare",
+      "tag": "基层就医",
+      "question": "什么原因最容易让你放弃基层首诊？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "担心诊疗水平不够",
+          "votes": 328
+        },
+        {
+          "id": "b",
+          "label": "药品和检查不全",
+          "votes": 266
+        },
+        {
+          "id": "c",
+          "label": "报销与转诊太麻烦",
+          "votes": 241
+        },
+        {
+          "id": "d",
+          "label": "就近也不一定更快",
+          "votes": 154
+        }
+      ]
+    },
+    {
+      "id": "poll_housing_2",
+      "topic": "housing",
+      "tag": "政策偏好",
+      "question": "住房政策更该优先补哪一块？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "保障房公平分配",
+          "votes": 274
+        },
+        {
+          "id": "b",
+          "label": "普通租赁市场稳定",
+          "votes": 302
+        },
+        {
+          "id": "c",
+          "label": "通勤与公共服务配套",
+          "votes": 317
+        },
+        {
+          "id": "d",
+          "label": "旧改与原住民安置透明",
+          "votes": 181
+        }
+      ]
+    },
+    {
+      "id": "poll_employment_2",
+      "topic": "employment",
+      "tag": "支持措施",
+      "question": "提升就业获得感，你更支持哪类措施？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "扩大初级岗位和见习机会",
+          "votes": 336
+        },
+        {
+          "id": "b",
+          "label": "降低招聘隐性门槛",
+          "votes": 352
+        },
+        {
+          "id": "c",
+          "label": "加强转岗培训补贴",
+          "votes": 248
+        },
+        {
+          "id": "d",
+          "label": "提高灵活就业保障",
+          "votes": 171
+        }
+      ]
+    },
+    {
+      "id": "poll_elderly_2",
+      "topic": "elderly",
+      "tag": "制度优先项",
+      "question": "养老政策最该优先补哪项制度？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "长期护理保险",
+          "votes": 312
+        },
+        {
+          "id": "b",
+          "label": "社区照护网络",
+          "votes": 285
+        },
+        {
+          "id": "c",
+          "label": "差异化退休安排",
+          "votes": 244
+        },
+        {
+          "id": "d",
+          "label": "养老金信息透明",
+          "votes": 168
+        }
+      ]
+    },
+    {
+      "id": "poll_food_2",
+      "topic": "food",
+      "tag": "公开信息",
+      "question": "食品纠纷中你最希望哪类信息被优先公开？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "问题批次和流向",
+          "votes": 293
+        },
+        {
+          "id": "b",
+          "label": "商家配料与产地信息",
+          "votes": 344
+        },
+        {
+          "id": "c",
+          "label": "投诉处理进度",
+          "votes": 251
+        },
+        {
+          "id": "d",
+          "label": "赔付和处罚结果",
+          "votes": 197
+        }
+      ]
+    },
+    {
+      "id": "poll_technology_2",
+      "topic": "technology",
+      "tag": "缓冲机制",
+      "question": "面对 AI 进入工作场景，最有效的缓冲机制是什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "雇主承担再培训成本",
+          "votes": 281
+        },
+        {
+          "id": "b",
+          "label": "明确算法管理边界",
+          "votes": 316
+        },
+        {
+          "id": "c",
+          "label": "公共培训券和转岗补贴",
+          "votes": 263
+        },
+        {
+          "id": "d",
+          "label": "岗位变更前的信息告知",
+          "votes": 204
+        }
+      ]
+    },
+    {
+      "id": "poll_livelihood_2",
+      "topic": "livelihood",
+      "tag": "透明度",
+      "question": "综合民生层面，你最希望哪类信息更透明？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        {
+          "id": "a",
+          "label": "公共资源分配规则",
+          "votes": 327
+        },
+        {
+          "id": "b",
+          "label": "社会保障待遇测算",
+          "votes": 248
+        },
+        {
+          "id": "c",
+          "label": "生活成本相关统计",
+          "votes": 295
+        },
+        {
+          "id": "d",
+          "label": "政策执行进度和结果",
+          "votes": 229
+        }
       ]
     }
   ],
@@ -116,8 +476,12 @@
         "把升学信息、学位供给和招生规则做得更透明，减少信息焦虑。",
         "把职业教育、普通教育和就业路径衔接得更顺，降低分流焦虑。"
       ],
-      "policy_link_ids": ["policy_edu"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2FO"]
+      "policy_link_ids": [
+        "policy_edu"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2FO"
+      ]
     },
     {
       "topic": "healthcare",
@@ -128,8 +492,12 @@
         "把门诊、异地就医和报销规则说明做得更易懂。",
         "减少重复排队和检查，改善挂号、候诊和缴费体验。"
       ],
-      "policy_link_ids": ["policy_health"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2Ex"]
+      "policy_link_ids": [
+        "policy_health"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2Ex"
+      ]
     },
     {
       "topic": "housing",
@@ -140,8 +508,12 @@
         "公开资格审核、轮候顺序和退出机制，减少不透明感。",
         "规范中介、二房东和租约管理，降低年轻租客的不稳定性。"
       ],
-      "policy_link_ids": ["policy_housing"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2Ey"]
+      "policy_link_ids": [
+        "policy_housing"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2Ey"
+      ]
     },
     {
       "topic": "employment",
@@ -152,8 +524,12 @@
         "加强专业课程、职业教育与真实岗位技能的衔接。",
         "把再培训和转岗支持做成可触达、可负担的公共服务。"
       ],
-      "policy_link_ids": ["policy_employment"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2Ew"]
+      "policy_link_ids": [
+        "policy_employment"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2Ew"
+      ]
     },
     {
       "topic": "elderly",
@@ -164,8 +540,12 @@
         "为失能照护家庭提供更直接的时间支持和费用减负。",
         "讨论延迟退休时同步说明不同职业、不同群体的差异化安排。"
       ],
-      "policy_link_ids": ["policy_aging"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2FP"]
+      "policy_link_ids": [
+        "policy_aging"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2FP"
+      ]
     },
     {
       "topic": "food",
@@ -176,8 +556,13 @@
         "提高抽检通报的及时性和问题产品追踪可读性。",
         "让 12315 的处理进度、结果和赔付标准更透明。"
       ],
-      "policy_link_ids": ["policy_food", "service_12315"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2Ez"]
+      "policy_link_ids": [
+        "policy_food",
+        "service_12315"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2Ez"
+      ]
     },
     {
       "topic": "technology",
@@ -188,8 +573,13 @@
         "支持企业和学校提供可验证的再培训路径。",
         "在公共讨论中区分技术效率提升与就业替代风险，避免一刀切判断。"
       ],
-      "policy_link_ids": ["policy_tech", "policy_employment"],
-      "discussion_ids": ["D_kwDORoHGI84Ak2E0"]
+      "policy_link_ids": [
+        "policy_tech",
+        "policy_employment"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak2E0"
+      ]
     },
     {
       "topic": "livelihood",
@@ -200,8 +590,12 @@
         "让统计、公报、政策解读和办事入口更容易被普通人找到。",
         "把教育、医疗、住房、就业等政策协同起来看，减少碎片化感受。"
       ],
-      "policy_link_ids": ["policy_livelihood"],
-      "discussion_ids": ["D_kwDORoHGI84Ak1-V"]
+      "policy_link_ids": [
+        "policy_livelihood"
+      ],
+      "discussion_ids": [
+        "D_kwDORoHGI84Ak1-V"
+      ]
     }
   ],
   "action_cards": [

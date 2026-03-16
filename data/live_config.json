@@ -1,0 +1,31 @@
+{
+  "vote_backend": {
+    "enabled": false,
+    "mode": "demo",
+    "provider": "custom-api",
+    "read_url": "",
+    "write_url": "",
+    "comment_url": "",
+    "bullet_url": "",
+    "status_label": "未接通实时后端",
+    "note": "当前仍以静态样本和本机临时记录为主。若接入外部数据库或 API，可切换为跨设备真实投票、评论和弹幕。",
+    "requirements": [
+      "提供可公开读取的聚合结果接口",
+      "提供可写入投票/评论/弹幕的安全接口",
+      "服务端负责防刷、限流和身份校验"
+    ]
+  },
+  "wechat_login": {
+    "enabled": false,
+    "provider": "wechat-open-platform",
+    "login_url": "",
+    "status_label": "未配置微信登录",
+    "note": "要启用微信用户登录，需要微信开放平台网站应用登录、已备案可回调域名，以及服务端完成 code 换 token 和用户态校验。GitHub Pages 单独无法安全闭环。",
+    "requirements": [
+      "微信开放平台 AppID",
+      "授权回调域名",
+      "服务端 token 交换接口",
+      "与投票/评论后端打通的用户会话"
+    ]
+  }
+}

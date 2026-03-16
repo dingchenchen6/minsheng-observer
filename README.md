@@ -28,6 +28,7 @@
 - `social_hot_topics.json`
 - `evidence_records.json`
 - `polls.json`
+- `live_config.json`
 - `site_meta.json`
 
 ## 自动化
@@ -42,8 +43,15 @@
 ## 轻投票
 
 - `data/polls.json`: 存放多议题轻投票、高频建议板和正式反馈入口卡片
+- `data/live_config.json`: 存放实时投票/评论后端与微信登录的接入配置位
 - 浏览器投票与“本机意见板”都只保存在本地 `localStorage`
 - 若希望建议进入站内公开归档，请发到 GitHub Discussions
+
+## 实时互动与微信登录
+
+- 接入说明见 [`docs/live-vote-wechat-setup.md`](docs/live-vote-wechat-setup.md)
+- 当前公开 Pages 版本已经预留实时投票、实时弹幕和微信登录配置位
+- 但若没有外部后端与微信开放平台参数，公开站点仍会保持 `demo` / `未配置` 状态
 
 ## 本地预览
 

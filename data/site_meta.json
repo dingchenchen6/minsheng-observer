@@ -2,8 +2,8 @@
   "site_name": "民声 2.0",
   "site_subtitle": "数据新闻与公共议题研究实验站",
   "description": "围绕教育、医疗、住房、就业、养老、食品、科技与综合民生议题，连接权威统计、政策入口、论文证据与公共讨论。",
-  "last_updated": "2026-03-16T08:01:52.404212+00:00",
-  "last_updated_label": "2026年03月16日 09:01（本地构建时间）",
+  "last_updated": "2026-03-16T09:52:57.629526+00:00",
+  "last_updated_label": "2026年03月16日 10:52（本地构建时间）",
   "project_site": "https://dingchenchen6.github.io/minsheng-observer/",
   "repository": {
     "owner": "dingchenchen6",
@@ -42,7 +42,8 @@
     "最新年度数值仅在能对齐到公开公报或部委发布时更新；拿不稳口径时保留旧值并明确给出最新官方入口。",
     "Giscus 已写入 repo_id 和 category_id；如浏览器首次提示安装或授权，需要对 giscus GitHub App 做一次仓库授权。",
     "知乎与微博热榜采用尽力抓取策略；若遇到鉴权、访客系统或公开接口失效，则保留最近一次成功或校准结果并公开显示受限状态。",
-    "轻投票和本机意见板用于观察站内偏好与建议方向；正式公开反馈请使用 GitHub Discussions 或官方办事入口。"
+    "轻投票和本机意见板用于观察站内偏好与建议方向；正式公开反馈请使用 GitHub Discussions 或官方办事入口。",
+    "实时投票、弹幕与微信登录已预留配置位；若未接通外部后端与微信开放平台参数，站点会保持 demo 状态并继续使用公开归档。"
   ],
   "giscus": {
     "enabled": true,

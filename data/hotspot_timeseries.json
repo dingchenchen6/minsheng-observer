@@ -1,0 +1,224 @@
+{
+  "updated_at": "2026-03-16T13:09:52.107883+00:00",
+  "topics": [
+    {
+      "topic": "education",
+      "label": "教育",
+      "heat_series": {
+        "labels": [
+          "2025-06-11",
+          "2026-03-16"
+        ],
+        "values": [
+          77.0,
+          76.0
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2025-06-11",
+          "2026-03-10",
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          0,
+          1,
+          1
+        ],
+        "discussion_values": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "topic": "healthcare",
+      "label": "医疗",
+      "heat_series": {
+        "labels": [
+          "2025-12-02",
+          "2026-03-16"
+        ],
+        "values": [
+          78.0,
+          81.3
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2025-12-02",
+          "2026-03-14",
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          0,
+          1,
+          2
+        ],
+        "discussion_values": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "topic": "housing",
+      "label": "住房",
+      "heat_series": {
+        "labels": [
+          "2025-01-06",
+          "2026-03-16"
+        ],
+        "values": [
+          72.0,
+          86.0
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2025-01-06",
+          "2026-03-11",
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          0,
+          1,
+          1
+        ],
+        "discussion_values": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "topic": "technology",
+      "label": "科技",
+      "heat_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "values": [
+          80.0
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          1
+        ],
+        "discussion_values": [
+          1
+        ]
+      }
+    },
+    {
+      "topic": "elderly",
+      "label": "养老",
+      "heat_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "values": [
+          90.0
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          1
+        ],
+        "discussion_values": [
+          1
+        ]
+      }
+    },
+    {
+      "topic": "food",
+      "label": "食品",
+      "heat_series": {
+        "labels": [
+          "2025-03-14",
+          "2026-03-16"
+        ],
+        "values": [
+          74.0,
+          88.2
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2025-03-14",
+          "2026-03-09",
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          0,
+          1,
+          2
+        ],
+        "discussion_values": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "topic": "employment",
+      "label": "就业",
+      "heat_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "values": [
+          94.5
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2026-03-13",
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          1,
+          1
+        ],
+        "discussion_values": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "topic": "livelihood",
+      "label": "民生",
+      "heat_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "values": [
+          98.0
+        ]
+      },
+      "evidence_series": {
+        "labels": [
+          "2026-03-16"
+        ],
+        "evidence_values": [
+          1
+        ],
+        "discussion_values": [
+          1
+        ]
+      }
+    }
+  ]
+}

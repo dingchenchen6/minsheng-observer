@@ -48,6 +48,126 @@
           "url": "https://www.12315.cn/"
         }
       ]
+    },
+    {
+      "id": "annual_chunyun",
+      "label": "春运与返乡流动",
+      "start_mmdd": "01-15",
+      "end_mmdd": "02-20",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "春运返乡、票务与县城消费变化",
+          "summary": "春运期间，返乡流动、交通承载、县域消费和务工流动会一起升温。",
+          "topic": "livelihood",
+          "heat": 92,
+          "url": "https://www.gov.cn/"
+        },
+        {
+          "platform": "weibo",
+          "title": "春节返乡与出行高峰中的交通和民生成本",
+          "summary": "公众会集中讨论出行票务、返乡成本、县城消费和基层服务承接能力。",
+          "topic": "livelihood",
+          "heat": 90,
+          "url": "https://www.gov.cn/"
+        }
+      ]
+    },
+    {
+      "id": "annual_gaokao",
+      "label": "高考与升学季",
+      "start_mmdd": "06-01",
+      "end_mmdd": "06-30",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "高考、志愿填报与教育资源公平",
+          "summary": "每年 6 月高考与志愿填报阶段，教育公平、专业选择和信息不对称都会快速升温。",
+          "topic": "education",
+          "heat": 96,
+          "url": "https://www.moe.gov.cn/"
+        },
+        {
+          "platform": "weibo",
+          "title": "高考出分、志愿填报和县中机会差距",
+          "summary": "微博会集中讨论考试公平、志愿填报服务、县中支持和家庭教育成本。",
+          "topic": "education",
+          "heat": 94,
+          "url": "https://www.moe.gov.cn/"
+        }
+      ]
+    },
+    {
+      "id": "annual_graduate_job",
+      "label": "毕业求职季",
+      "start_mmdd": "06-15",
+      "end_mmdd": "07-31",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "毕业季求职、实习门槛与岗位质量",
+          "summary": "毕业离校与招聘高峰叠加时，青年就业、实习转正和岗位质量是高频议题。",
+          "topic": "employment",
+          "heat": 97,
+          "url": "https://www.mohrss.gov.cn/"
+        },
+        {
+          "platform": "weibo",
+          "title": "毕业生就业去向、签约率与求职焦虑",
+          "summary": "微博会集中讨论 offer 缩减、慢就业、考公考研和校招门槛。",
+          "topic": "employment",
+          "heat": 95,
+          "url": "https://www.mohrss.gov.cn/"
+        }
+      ]
+    },
+    {
+      "id": "annual_back_to_school",
+      "label": "开学季",
+      "start_mmdd": "08-20",
+      "end_mmdd": "09-15",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "开学季里的教育支出、校外服务与学位焦虑",
+          "summary": "每年秋季开学前后，教育支出、学校资源和家庭负担会集中回到讨论中心。",
+          "topic": "education",
+          "heat": 91,
+          "url": "https://www.moe.gov.cn/"
+        },
+        {
+          "platform": "weibo",
+          "title": "开学准备、托管服务和家庭教育成本",
+          "summary": "家长群体会集中讨论校服、午托、课后服务和新学期支出压力。",
+          "topic": "education",
+          "heat": 89,
+          "url": "https://www.moe.gov.cn/"
+        }
+      ]
+    },
+    {
+      "id": "annual_double11",
+      "label": "双11与平台消费治理",
+      "start_mmdd": "11-01",
+      "end_mmdd": "11-15",
+      "items": [
+        {
+          "platform": "zhihu",
+          "title": "双11促销规则、退货体验与平台责任",
+          "summary": "大促期间，消费透明、算法推荐、售后规则和维权成本会快速升温。",
+          "topic": "technology",
+          "heat": 93,
+          "url": "https://www.12315.cn/"
+        },
+        {
+          "platform": "weibo",
+          "title": "双11价格机制、直播带货和消费维权",
+          "summary": "微博会集中讨论先涨后降、直播促销、售后拉扯和消费投诉。",
+          "topic": "food",
+          "heat": 92,
+          "url": "https://www.12315.cn/"
+        }
+      ]
     }
   ]
 }

@@ -14,6 +14,8 @@ const DATA_FILES = [
   'polls',
   'social_hot_topics',
   'hotspot_analysis',
+  'hotspot_timeseries',
+  'editorial_watchlist',
   'live_config',
   'reports'
 ];
@@ -104,6 +106,7 @@ async function loadData() {
   data.sourcesById = Object.fromEntries(data.sources.map((item) => [item.id, item]));
   data.discussionsById = Object.fromEntries(data.discussion_archive.map((item) => [item.id, item]));
   data.currentTrendById = Object.fromEntries(data.trend_current.map((item) => [item.id, item]));
+  data.timeseriesByTopic = Object.fromEntries(((data.hotspot_timeseries || {}).topics || []).map((item) => [item.topic, item]));
   data.liveRuntime = await fetchLiveRuntime(data.live_config);
   return data;
 }
@@ -365,6 +368,7 @@ function renderHome(data) {
   const heroBriefGrid = byId('heroBriefGrid');
   const topSignal = (((data || {}).hotspot_analysis || {}).topic_rankings || [])[0];
   const weeklyReport = ((data || {}).hotspot_analysis || {}).weekly_report || {};
+  const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -378,6 +382,15 @@ function renderHome(data) {
   const homeWeeklyList = byId('homeWeeklyList');
   if (homeWeeklyList) {
     homeWeeklyList.innerHTML = (weeklyReport.editor_notes || []).map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+  renderWatchlistCards('homeWatchlistGrid', activeWindows.length ? activeWindows : (data.editorial_watchlist.windows || []).slice(0, 2), true);
+  const homeWatchlistNotes = byId('homeWatchlistNotes');
+  if (homeWatchlistNotes) {
+    homeWatchlistNotes.innerHTML = [
+      activeWindows.length ? `当前处于激活状态的时令监测窗口有 ${activeWindows.length} 个。` : '当前没有命中时令监测窗口，页面展示的是全年长期议题。',
+      '时令窗口的作用是：即使平台接口受限，像两会、3·15、高考、毕业季这样的全国性热点也不会漏掉。',
+      '热点排序仍然会综合历史档案、证据库、讨论摘录和报告入口，不会只靠白名单本身。'
+    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
   }
 
   if (heroBriefGrid) {
@@ -733,6 +746,98 @@ function renderPollAttentionChart(topicSummary, analysis) {
   });
 }
 
+function getActiveWatchWindows(watchlist) {
+  const now = new Date();
+  const current = `${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  return (watchlist.windows || []).filter((window) => {
+    if (window.start_mmdd <= window.end_mmdd) {
+      return window.start_mmdd <= current && current <= window.end_mmdd;
+    }
+    return current >= window.start_mmdd || current <= window.end_mmdd;
+  });
+}
+
+function renderWatchlistCards(containerId, windows, includeItems = false) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = windows.map((window) => html`
+    <article class="stack-card">
+      <small>${escapeHtml(window.label)} · ${escapeHtml(window.start_mmdd)} - ${escapeHtml(window.end_mmdd)}</small>
+      <h3>${escapeHtml(window.label)}</h3>
+      ${includeItems ? (window.items || []).map((item) => `<p>${escapeHtml(item.title)}</p>`).join('') : `<p>当前窗口会优先把相关公共议题注入热点池，即使平台接口受限也不至于漏掉全国性议程。</p>`}
+    </article>
+  `).join('');
+}
+
+function createTopicHistoryCharts(topicId, data) {
+  if (typeof Chart === 'undefined') return;
+  const series = (data.timeseriesByTopic || {})[topicId];
+  if (!series) return;
+
+  const heatCanvas = byId(`heat_${topicId}`);
+  const evidenceCanvas = byId(`evidence_${topicId}`);
+  window.__topicHistoryCharts = window.__topicHistoryCharts || {};
+
+  if (heatCanvas) {
+    const key = `heat_${topicId}`;
+    if (window.__topicHistoryCharts[key]) window.__topicHistoryCharts[key].destroy();
+    window.__topicHistoryCharts[key] = new Chart(heatCanvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: series.heat_series.labels,
+        datasets: [{
+          label: '综合热度',
+          data: series.heat_series.values,
+          borderColor: '#165dff',
+          backgroundColor: 'rgba(22,93,255,0.14)',
+          tension: 0.35,
+          fill: true,
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  if (evidenceCanvas) {
+    const key = `evidence_${topicId}`;
+    if (window.__topicHistoryCharts[key]) window.__topicHistoryCharts[key].destroy();
+    window.__topicHistoryCharts[key] = new Chart(evidenceCanvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: series.evidence_series.labels,
+        datasets: [
+          {
+            label: '证据累计',
+            data: series.evidence_series.evidence_values,
+            borderColor: '#b42318',
+            backgroundColor: 'rgba(180,35,24,0.12)',
+            tension: 0.25,
+            pointRadius: 3
+          },
+          {
+            label: '讨论累计',
+            data: series.evidence_series.discussion_values,
+            borderColor: '#216e39',
+            backgroundColor: 'rgba(33,110,57,0.10)',
+            tension: 0.25,
+            pointRadius: 3
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: true } }
+      }
+    });
+  }
+}
+
 function relatedLinks(ids, lookup) {
   return (ids || []).map((id) => lookup[id]).filter(Boolean);
 }
@@ -808,6 +913,8 @@ function renderAnalysis(data) {
     const policies = relatedLinks(topic.policy_link_ids, data.policiesById);
     const discussions = relatedLinks(topic.discussion_ids, data.discussionsById);
     const chartId = `chart_${topic.id}`;
+    const heatChartId = `heat_${topic.id}`;
+    const evidenceChartId = `evidence_${topic.id}`;
     return html`
       <article class="analysis-section" id="${escapeHtml(topic.id)}">
         <div class="analysis-header">
@@ -857,12 +964,23 @@ function renderAnalysis(data) {
               ${topic.takeaways.map((item) => `<div class="stack-card"><p>${escapeHtml(item)}</p></div>`).join('')}
             </div>
           </div>
+          <div class="feature-grid" style="margin-top:18px;">
+            <article class="chart-wrap">
+              <h3>热度变化趋势线</h3>
+              <div style="height:220px"><canvas id="${heatChartId}"></canvas></div>
+            </article>
+            <article class="chart-wrap">
+              <h3>证据积累曲线</h3>
+              <div style="height:220px"><canvas id="${evidenceChartId}"></canvas></div>
+            </article>
+          </div>
         </div>
       </article>
     `;
   }).join('');
 
   data.topics.forEach((topic) => createTopicChart(`chart_${topic.id}`, topic));
+  data.topics.forEach((topic) => createTopicHistoryCharts(topic.id, data));
 
   tabs.querySelectorAll('.tab-button').forEach((button) => {
     button.addEventListener('click', () => {
@@ -877,8 +995,11 @@ function renderAnalysis(data) {
 function renderTrends(data) {
   const analysis = data.hotspot_analysis || {};
   const rankingByTopic = Object.fromEntries((analysis.topic_rankings || []).map((item) => [item.topic, item]));
+  const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
 
   renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
+  renderWatchlistCards('watchlistActiveGrid', activeWindows.length ? activeWindows : (data.editorial_watchlist.windows || []).slice(0, 2), true);
+  renderWatchlistCards('watchlistCalendarGrid', (data.editorial_watchlist.windows || []), false);
 
   const trendSignalNotes = byId('trendSignalNotes');
   if (trendSignalNotes) {

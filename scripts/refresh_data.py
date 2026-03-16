@@ -346,6 +346,73 @@ def build_hotspot_analysis():
     save_json('hotspot_analysis.json', payload)
 
 
+def build_hotspot_timeseries():
+    topics = load_json('topics.json')
+    archive = load_json('trend_archive.json')
+    current = load_json('trend_current.json')
+    social = load_json('social_hot_topics.json')
+    evidence = load_json('evidence_records.json')
+    discussions = load_json('discussion_archive.json')
+
+    topic_series = []
+
+    for topic in topics:
+        topic_id = topic['id']
+        heat_by_date = defaultdict(list)
+        evidence_dates = []
+        discussion_dates = []
+
+        for item in archive:
+            if item.get('topic') == topic_id:
+                heat_by_date[item['snapshot_date']].append(float(item.get('heat_score', 0)))
+        for item in current:
+            if item.get('topic') == topic_id:
+                heat_by_date[item['snapshot_date']].append(float(item.get('heat_score', 0)))
+        for item in social.get('items', []):
+            if item.get('topic') == topic_id:
+                heat_by_date[item['snapshot_date']].append(float(item.get('heat', 0)))
+        for item in evidence:
+            if item.get('topic') == topic_id:
+                evidence_dates.append(item['published_at'])
+        for item in discussions:
+            if item.get('topic') == topic_id:
+                discussion_dates.append(item['created_at'][:10])
+
+        all_dates = sorted(set(heat_by_date.keys()) | set(evidence_dates) | set(discussion_dates))
+        heat_labels = sorted(heat_by_date.keys())[-6:]
+        heat_values = [round(sum(heat_by_date[label]) / len(heat_by_date[label]), 1) for label in heat_labels]
+
+        evidence_total = 0
+        discussion_total = 0
+        cumulative_labels = all_dates[-8:]
+        evidence_values = []
+        discussion_values = []
+        for label in cumulative_labels:
+            evidence_total += evidence_dates.count(label)
+            discussion_total += discussion_dates.count(label)
+            evidence_values.append(evidence_total)
+            discussion_values.append(discussion_total)
+
+        topic_series.append({
+            'topic': topic_id,
+            'label': topic['label'],
+            'heat_series': {
+                'labels': heat_labels,
+                'values': heat_values,
+            },
+            'evidence_series': {
+                'labels': cumulative_labels,
+                'evidence_values': evidence_values,
+                'discussion_values': discussion_values,
+            }
+        })
+
+    save_json('hotspot_timeseries.json', {
+        'updated_at': iso_now(),
+        'topics': topic_series,
+    })
+
+
 def refresh_social_topics():
     script = ROOT / 'scripts' / 'fetch_social_topics.py'
     try:
@@ -357,6 +424,7 @@ def refresh_social_topics():
 def main():
     refresh_social_topics()
     build_hotspot_analysis()
+    build_hotspot_timeseries()
     refresh_site_meta()
     refresh_sources()
     merge_current_trends_into_archive()

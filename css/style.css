@@ -222,6 +222,77 @@ button, input, select, textarea { font: inherit; }
   font-size: 1rem;
   letter-spacing: 0.08em;
 }
+.command-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.command-panel {
+  position: relative;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(8, 17, 35, 0.92), rgba(9, 20, 44, 0.7));
+  border: 1px solid rgba(0, 217, 255, 0.16);
+  box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.08), 0 14px 34px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+.command-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 79, 216, 0.05) 40%, transparent 60%);
+  transform: translateX(-120%);
+  animation: hud-sweep 8s linear infinite;
+  pointer-events: none;
+}
+.command-panel small {
+  display: block;
+  color: #7be8ff;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.command-panel h3 {
+  margin: 8px 0 10px;
+}
+.command-panel p {
+  margin-bottom: 14px;
+}
+.signal-meter {
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+.signal-meter-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+}
+.signal-meter-top span {
+  color: #c9e9ff;
+  font-size: 0.9rem;
+}
+.signal-meter-top strong {
+  color: var(--cyan);
+  font-size: 0.96rem;
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.24);
+}
+.signal-meter small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+.signal-meter-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+.signal-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+  box-shadow: 0 0 14px rgba(0, 217, 255, 0.2);
+}
 .hero-brief-card {
   padding: 14px 16px;
   border-radius: 18px;
@@ -515,7 +586,7 @@ p { margin: 0; color: var(--ink-soft); }
 [data-accent="orange"] { color: var(--orange); }
 [data-accent="pink"] { color: var(--pink); }
 @media (max-width: 980px) {
-  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid { grid-template-columns: 1fr; }
+  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid, .command-grid { grid-template-columns: 1fr; }
   .indicator-grid { grid-template-columns: 1fr; }
   .search-panel { grid-template-columns: 1fr 1fr; }
   .hero-brief-grid { grid-template-columns: 1fr; }

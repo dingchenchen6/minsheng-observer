@@ -118,6 +118,36 @@ function renderDiagnosticChips(containerId, items) {
   `).join('');
 }
 
+function renderSignalMeters(items) {
+  return items.map((item) => {
+    const rawValue = Number(item.value ?? 0);
+    const percent = Math.max(6, Math.min(100, rawValue));
+    return html`
+      <div class="signal-meter">
+        <div class="signal-meter-top">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${escapeHtml(item.display ?? rawValue)}</strong>
+        </div>
+        <div class="signal-meter-bar"><div class="signal-meter-fill" style="width:${percent}%"></div></div>
+        ${item.note ? `<small>${escapeHtml(item.note)}</small>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderCommandDeck(containerId, panels) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = panels.map((panel) => html`
+    <article class="command-panel">
+      <small>${escapeHtml(panel.eyebrow)}</small>
+      <h3>${escapeHtml(panel.title)}</h3>
+      <p>${escapeHtml(panel.body)}</p>
+      ${panel.html || ''}
+    </article>
+  `).join('');
+}
+
 function configureChartDefaults() {
   if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
 
@@ -504,6 +534,44 @@ function renderHome(data) {
     { label: 'TRACK', value: `${data.trend_current.length} HOT` },
     { label: 'ARCHIVE', value: `${data.trend_archive.length} LOGS` },
     { label: 'MODE', value: 'CYBER DESK' }
+  ]);
+
+  const topSignals = ((data.hotspot_analysis || {}).topic_rankings || []).slice(0, 4);
+  const platformStatusEntries = Object.entries((data.social_hot_topics || {}).platform_status || {});
+  renderCommandDeck('homeCommandDeck', [
+    {
+      eyebrow: 'Signal Queue',
+      title: '高优先信号通道',
+      body: '把综合分最高的议题压缩成一组控制台信号条，方便一眼判断今天站点最该盯什么。',
+      html: renderSignalMeters(topSignals.map((item) => ({
+        label: item.label,
+        value: item.combined_score / 3,
+        display: `${item.combined_score}`,
+        note: `${item.signal_label} · ${item.current_heat} 热度`
+      })))
+    },
+    {
+      eyebrow: 'Platform Gate',
+      title: '平台入口状态',
+      body: '公开入口的限制情况会直接影响热榜解释方式，所以这里单独显示。',
+      html: renderSignalMeters(platformStatusEntries.map(([platform, status]) => ({
+        label: platform.toUpperCase(),
+        value: status.status === 'ok' ? 100 : status.status === 'rsshub' ? 72 : 34,
+        display: status.label,
+        note: status.note
+      })))
+    },
+    {
+      eyebrow: 'Archive Pulse',
+      title: '站内归档脉冲',
+      body: '把热点、证据、讨论和报告的体量放到一张控制板里，快速看站点的信息厚度。',
+      html: renderSignalMeters([
+        { label: 'Trend', value: data.trend_archive.length * 4, display: `${data.trend_archive.length}`, note: '历史热点快照' },
+        { label: 'Evidence', value: data.evidence_records.length * 8, display: `${data.evidence_records.length}`, note: '证据库条目' },
+        { label: 'Discussion', value: data.discussion_archive.length * 9, display: `${data.discussion_archive.length}`, note: '讨论摘录' },
+        { label: 'Reports', value: data.reports.length * 7, display: `${data.reports.length}`, note: '报告与调查入口' }
+      ])
+    }
   ]);
 
   byId('trendTape').innerHTML = data.trend_current.map((item) => html`
@@ -1374,6 +1442,18 @@ function renderTrends(data) {
     { label: 'WATCH', value: `${activeWindows.length || ((data.editorial_watchlist || {}).windows || []).length} WINDOWS` }
   ]);
 
+  renderCommandDeck('trendSignalMatrix', (analysis.topic_rankings || []).slice(0, 3).map((item, index) => ({
+    eyebrow: `Lane 0${index + 1}`,
+    title: `${item.label} / ${item.signal_label}`,
+    body: item.watch_reason,
+    html: renderSignalMeters([
+      { label: 'Score', value: item.combined_score / 3, display: `${item.combined_score}`, note: '综合分' },
+      { label: 'Current', value: item.current_heat, display: `${item.current_heat}`, note: '当前热度' },
+      { label: 'Social', value: item.social_average_heat, display: `${item.social_average_heat}`, note: '社媒均值' },
+      { label: 'Support', value: (item.evidence_count + item.discussion_count + item.report_count) * 18, display: `${item.evidence_count + item.discussion_count + item.report_count}`, note: '证据+讨论+报告' }
+    ])
+  })));
+
   renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
   const trendEditionTitle = byId('trendEditionTitle');
   if (trendEditionTitle && analysis.express_brief) {
@@ -1639,6 +1719,17 @@ function renderExposure(data) {
     { label: 'ROUTES', value: `${(digest.complaint_routes || []).length}` },
     { label: 'STATUS', value: 'RISK MAP' }
   ]);
+
+  renderCommandDeck('exposureRiskBoard', (digest.exposure_case_library || []).slice(0, 3).map((item, index) => ({
+    eyebrow: `Risk 0${index + 1}`,
+    title: `${item.label} / ${item.risk_level}`,
+    body: item.verdict,
+    html: renderSignalMeters([
+      { label: 'Level', value: item.risk_level === '高风险' ? 92 : 64, display: item.risk_level, note: '风险等级' },
+      { label: 'Routes', value: ((item.policy_targets || []).length || 1) * 28, display: `${(item.policy_targets || []).length}`, note: '可用官方入口' },
+      { label: 'Status', value: item.risk_level === '高风险' ? 88 : 58, display: item.risk_note, note: '处理提示' }
+    ])
+  })));
 
   summaryGrid.innerHTML = [
     { label: '问题条目', value: `${digest.exposure_summary.total}`, note: '当前证据库中的全部记录，包含问题暴露、调查中与背景说明。' },

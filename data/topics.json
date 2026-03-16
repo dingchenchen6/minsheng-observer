@@ -66,13 +66,14 @@
       "教育公平讨论常常与住房、人口流动和地区财政能力相互勾连。"
     ],
     "paper_ids": [
-      "paper_education_01"
+      "paper_education_01",
+      "paper_education_02"
     ],
     "policy_link_ids": [
       "policy_edu"
     ],
     "discussion_ids": [
-      "discussion_002"
+      "D_kwDORoHGI84Ak2FO"
     ]
   },
   {
@@ -138,13 +139,14 @@
       "基层医疗能力不足会放大公众对支付制度调整的不满。"
     ],
     "paper_ids": [
-      "paper_health_01"
+      "paper_health_01",
+      "paper_health_02"
     ],
     "policy_link_ids": [
       "policy_health"
     ],
     "discussion_ids": [
-      "discussion_001"
+      "D_kwDORoHGI84Ak2Ex"
     ]
   },
   {
@@ -214,13 +216,14 @@
       "保障性住房的公众感知与分配透明度、地段和通勤成本高度相关。"
     ],
     "paper_ids": [
-      "paper_housing_01"
+      "paper_housing_01",
+      "paper_housing_02"
     ],
     "policy_link_ids": [
       "policy_housing"
     ],
     "discussion_ids": [
-      "discussion_003"
+      "D_kwDORoHGI84Ak2Ey"
     ]
   },
   {
@@ -290,13 +293,14 @@
       "AI 对岗位的影响更适合拆解到任务层面而不是岗位名义层面。"
     ],
     "paper_ids": [
-      "paper_tech_01"
+      "paper_tech_01",
+      "paper_tech_02"
     ],
     "policy_link_ids": [
       "policy_tech"
     ],
     "discussion_ids": [
-      "discussion_005"
+      "D_kwDORoHGI84Ak2E0"
     ]
   },
   {
@@ -364,12 +368,15 @@
       "不同职业群体对延迟退休的承受能力差异很大。"
     ],
     "paper_ids": [
-      "paper_aging_01"
+      "paper_aging_01",
+      "paper_aging_02"
     ],
     "policy_link_ids": [
       "policy_aging"
     ],
-    "discussion_ids": []
+    "discussion_ids": [
+      "D_kwDORoHGI84Ak2FP"
+    ]
   },
   {
     "id": "food",
@@ -436,14 +443,15 @@
       "食品议题特别适合和 12315 办事入口一起展示。"
     ],
     "paper_ids": [
-      "paper_food_01"
+      "paper_food_01",
+      "paper_food_02"
     ],
     "policy_link_ids": [
       "policy_food",
       "service_12315"
     ],
     "discussion_ids": [
-      "discussion_004"
+      "D_kwDORoHGI84Ak2Ez"
     ]
   },
   {
@@ -513,13 +521,14 @@
       "就业议题与教育扩张、AI 替代和城市生活成本高度联动。"
     ],
     "paper_ids": [
-      "paper_employment_01"
+      "paper_employment_01",
+      "paper_tech_02"
     ],
     "policy_link_ids": [
       "policy_employment"
     ],
     "discussion_ids": [
-      "discussion_002"
+      "D_kwDORoHGI84Ak2Ew"
     ]
   },
   {
@@ -601,11 +610,14 @@
       "综合民生模块适合作为跨议题入口，把多种压力并排展示。"
     ],
     "paper_ids": [
-      "paper_livelihood_01"
+      "paper_livelihood_01",
+      "paper_livelihood_02"
     ],
     "policy_link_ids": [
       "policy_livelihood"
     ],
-    "discussion_ids": []
+    "discussion_ids": [
+      "D_kwDORoHGI84Ak1-V"
+    ]
   }
 ]

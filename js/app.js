@@ -37,6 +37,7 @@ const TYPE_NAMES = {
   exposed: '问题暴露'
 };
 const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
+const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 
 const html = String.raw;
 
@@ -370,7 +371,7 @@ function renderTrends(data) {
     </article>
   `).join('');
 
-  const trendSources = data.sources.filter((item) => item.category === 'public-link' || item.id === 'gov-cn');
+  const trendSources = data.sources.filter((item) => item.category === 'public-link' || item.category === 'feed-proxy' || item.id === 'gov-cn');
   byId('trendSourceLinks').innerHTML = trendSources.map((source) => html`
     <article class="source-card">
       <small>${escapeHtml(source.category)}</small>
@@ -382,6 +383,8 @@ function renderTrends(data) {
 
   const socialTrendGrid = byId('socialTrendGrid');
   const socialPlatformStatus = byId('socialPlatformStatus');
+  const socialStrategyCards = byId('socialStrategyCards');
+  const socialReviewQueue = byId('socialReviewQueue');
   if (socialTrendGrid && socialPlatformStatus) {
     socialTrendGrid.innerHTML = data.social_hot_topics.items.map((item) => html`
       <article class="trend-card">
@@ -398,6 +401,27 @@ function renderTrends(data) {
         <h3>${escapeHtml(status.label)}</h3>
         <p>${escapeHtml(status.note)}</p>
         <div class="meta-line"><span>最近尝试：${formatDate(status.last_attempt)}</span><span>${status.last_success ? `最近成功：${formatDate(status.last_success)}` : '暂无成功抓取'}</span></div>
+      </article>
+    `).join('');
+  }
+  if (socialStrategyCards) {
+    socialStrategyCards.innerHTML = data.social_hot_topics.strategy_layers.map((layer) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(layer.id)}</small>
+        <h3>${escapeHtml(layer.title)}</h3>
+        <p>${escapeHtml(layer.detail)}</p>
+        <div class="meta-line"><span>状态：${escapeHtml(layer.label)}</span></div>
+      </article>
+    `).join('');
+  }
+  if (socialReviewQueue) {
+    socialReviewQueue.innerHTML = data.social_hot_topics.review_pool.map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.platform)} · ${escapeHtml(getTopicName(item.topic))}</small>
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.reason)}</p>
+        <div class="meta-line"><span>${escapeHtml(item.status)}</span></div>
+        <p>${escapeHtml(item.action)}</p>
       </article>
     `).join('');
   }
@@ -639,15 +663,113 @@ function setVoteStore(store) {
   localStorage.setItem(VOTE_STORAGE_KEY, JSON.stringify(store));
 }
 
+function getSuggestionStore() {
+  try {
+    return JSON.parse(localStorage.getItem(SUGGESTION_STORAGE_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function setSuggestionStore(store) {
+  localStorage.setItem(SUGGESTION_STORAGE_KEY, JSON.stringify(store));
+}
+
+function getPollPayload(data) {
+  if (Array.isArray(data.polls)) {
+    return {
+      intro_note: '站内轻投票用于观察关注方向，不代表科学抽样意义上的总体民意。',
+      surveys: data.polls,
+      suggestion_boards: [],
+      action_cards: []
+    };
+  }
+  return data.polls;
+}
+
 function renderPolls(data) {
+  const payload = getPollPayload(data);
+  const surveys = payload.surveys || [];
+  const suggestionBoards = payload.suggestion_boards || [];
+  const actionCards = payload.action_cards || [];
   const container = byId('pollGrid');
-  if (!container) return;
+  const introNote = byId('pollIntroNote');
+  const summaryGrid = byId('pollSummaryGrid');
+  const insightGrid = byId('pollInsightGrid');
+  const suggestionGrid = byId('pollSuggestionGrid');
+  const topicFilters = byId('pollTopicFilters');
+  const suggestionForm = byId('pollSuggestionForm');
+  const suggestionTopic = byId('pollSuggestionTopic');
+  const suggestionText = byId('pollSuggestionText');
+  const localSuggestionList = byId('localSuggestionList');
+  const actionGrid = byId('pollActionCards');
+  const resetButton = byId('pollResetButton');
+  if (!container || !summaryGrid || !insightGrid || !suggestionGrid || !topicFilters) return;
+
+  let currentTopic = 'all';
+
+  function getPollTotal(poll, store) {
+    const pollState = store[poll.id];
+    return poll.options.reduce((sum, option) => sum + option.votes + ((pollState && pollState.counts && pollState.counts[option.id]) || 0), 0);
+  }
+
+  function getTopOption(poll, store) {
+    const total = getPollTotal(poll, store);
+    const ranked = poll.options.map((option) => {
+      const count = option.votes + (((store[poll.id] || {}).counts || {})[option.id] || 0);
+      return { ...option, count, percentage: total ? Math.round((count / total) * 100) : 0 };
+    }).sort((a, b) => b.count - a.count);
+    return { total, ranked, first: ranked[0], second: ranked[1] };
+  }
 
   function draw() {
     const store = getVoteStore();
-    container.innerHTML = data.polls.map((poll) => {
+    const suggestionStore = getSuggestionStore();
+    const filteredSurveys = surveys.filter((poll) => currentTopic === 'all' || poll.topic === currentTopic);
+    const filteredBoards = suggestionBoards.filter((item) => currentTopic === 'all' || item.topic === currentTopic);
+    const localByTopic = suggestionStore.filter((item) => currentTopic === 'all' || item.topic === currentTopic);
+    const totalBaseVotes = surveys.reduce((sum, poll) => sum + getPollTotal(poll, store), 0);
+    const localVoteCount = Object.values(store).reduce((sum, item) => sum + Object.values((item && item.counts) || {}).reduce((acc, value) => acc + value, 0), 0);
+    const topicsCovered = new Set(surveys.map((poll) => poll.topic)).size;
+
+    if (introNote) {
+      introNote.textContent = payload.intro_note || '';
+    }
+
+    summaryGrid.innerHTML = [
+      { label: '覆盖议题', value: `${topicsCovered}`, note: '教育、医疗、住房、就业、养老、食品、科技与综合民生' },
+      { label: '调查题数', value: `${surveys.length}`, note: '每个议题至少有一条轻投票，支持快速查看偏好' },
+      { label: '基础样本', value: `${totalBaseVotes}`, note: '静态基数与本机投票累计后的站内样本量' },
+      { label: '本机新增', value: `${localVoteCount}`, note: '你当前浏览器追加的投票，不会写回公共数据' },
+      { label: '本机建议', value: `${suggestionStore.length}`, note: '临时记录在当前浏览器，可整理后再发到 Discussions' }
+    ].map((item) => html`
+      <article class="stack-card">
+        <small>${escapeHtml(item.label)}</small>
+        <h3>${escapeHtml(item.value)}</h3>
+        <p>${escapeHtml(item.note)}</p>
+      </article>
+    `).join('');
+
+    insightGrid.innerHTML = filteredSurveys.map((poll) => {
+      const { total, first, second } = getTopOption(poll, store);
+      const gap = first && second ? first.percentage - second.percentage : first ? first.percentage : 0;
+      return html`
+        <article class="stack-card">
+          <small>${escapeHtml(getTopicName(poll.topic))} · ${escapeHtml(poll.tag || '轻投票')}</small>
+          <h3>${escapeHtml(first ? first.label : '暂无结果')}</h3>
+          <p>${escapeHtml(poll.question)}</p>
+          <div class="meta-line"><span>当前领先 ${first ? first.percentage : 0}%</span><span>领先差 ${gap}%</span><span>${total} 份样本</span></div>
+        </article>
+      `;
+    }).join('');
+
+    topicFilters.innerHTML = ['all', ...Object.keys(TOPIC_NAMES).filter((key) => key !== 'all')].map((topic) => `
+      <button class="filter-pill${currentTopic === topic ? ' active' : ''}" type="button" data-topic-filter="${escapeHtml(topic)}">${escapeHtml(getTopicName(topic))}</button>
+    `).join('');
+
+    container.innerHTML = filteredSurveys.map((poll) => {
       const pollState = store[poll.id];
-      const total = poll.options.reduce((sum, option) => sum + option.votes + ((pollState && pollState.counts && pollState.counts[option.id]) || 0), 0);
+      const total = getPollTotal(poll, store);
       const voted = Boolean(pollState && pollState.choice);
       const optionsHtml = poll.options.map((option) => {
         const count = option.votes + ((pollState && pollState.counts && pollState.counts[option.id]) || 0);
@@ -655,31 +777,106 @@ function renderPolls(data) {
         if (!voted) {
           return `<div class="poll-option"><button data-poll="${escapeHtml(poll.id)}" data-option="${escapeHtml(option.id)}">${escapeHtml(option.label)}</button></div>`;
         }
-        return html`<div class="poll-result"><div class="poll-result-fill" style="width:${percentage}%"></div><div class="poll-result-body"><span>${escapeHtml(option.label)}</span><span>${percentage}%</span></div></div>`;
+        return html`<div class="poll-result"><div class="poll-result-fill" style="width:${percentage}%"></div><div class="poll-result-body"><span>${escapeHtml(option.label)}</span><span>${percentage}% · ${count}票</span></div></div>`;
       }).join('');
       return html`
         <article class="poll-card">
-          <small>${escapeHtml(getTopicName(poll.topic))}</small>
+          <small>${escapeHtml(getTopicName(poll.topic))} · ${escapeHtml(poll.tag || '轻投票')}</small>
           <h3>${escapeHtml(poll.question)}</h3>
           <p>${escapeHtml(poll.note)}</p>
           <div>${optionsHtml}</div>
-          <div class="meta-line" style="margin-top:12px;"><span>${total} 份站内样本</span><span>${voted ? '你已投票' : '匿名本地投票'}</span></div>
+          <div class="meta-line" style="margin-top:12px;"><span>${total} 份站内样本</span><span>${voted ? '你已投票，正在显示结果' : '匿名本地投票'}</span></div>
         </article>
       `;
-    }).join('');
+    }).join('') || '<div class="note-card">当前筛选下没有对应投票。</div>';
+
+    suggestionGrid.innerHTML = filteredBoards.map((board) => {
+      const policies = relatedLinks(board.policy_link_ids, data.policiesById);
+      const discussions = relatedLinks(board.discussion_ids, data.discussionsById);
+      return html`
+        <article class="stack-card">
+          <small>${escapeHtml(getTopicName(board.topic))}</small>
+          <h3>${escapeHtml(board.title)}</h3>
+          <p>${escapeHtml(board.summary)}</p>
+          <ul class="suggest-list">${board.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+          <div class="topic-actions">
+            ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
+            ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noreferrer">进入讨论</a>`).join('')}
+          </div>
+        </article>
+      `;
+    }).join('') || '<div class="note-card">当前筛选下没有建议板。</div>';
+
+    if (suggestionTopic) {
+      suggestionTopic.innerHTML = Object.entries(TOPIC_NAMES).filter(([key]) => key !== 'all').map(([value, label]) => `<option value="${escapeHtml(value)}" ${currentTopic === value ? 'selected' : ''}>${escapeHtml(label)}</option>`).join('');
+    }
+
+    if (localSuggestionList) {
+      localSuggestionList.innerHTML = localByTopic.length ? localByTopic.slice().reverse().map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(getTopicName(item.topic))} · 仅本机可见 · ${escapeHtml(formatDate(item.created_at))}</small>
+          <p>${escapeHtml(item.text)}</p>
+        </article>
+      `).join('') : '<div class="note-card">你还没有在本机保存建议。需要公开展示时，请发到 GitHub Discussions。</div>';
+    }
+
+    if (actionGrid) {
+      actionGrid.innerHTML = actionCards.map((item) => html`
+        <article class="stack-card">
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.body)}</p>
+          <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+        </article>
+      `).join('');
+    }
+
+    topicFilters.querySelectorAll('button[data-topic-filter]').forEach((button) => {
+      button.addEventListener('click', () => {
+        currentTopic = button.dataset.topicFilter;
+        draw();
+      });
+    });
 
     container.querySelectorAll('button[data-poll]').forEach((button) => {
       button.addEventListener('click', () => {
         const pollId = button.dataset.poll;
         const optionId = button.dataset.option;
-        const store = getVoteStore();
-        if (store[pollId] && store[pollId].choice) return;
-        if (!store[pollId]) store[pollId] = { choice: optionId, counts: {} };
-        store[pollId].choice = optionId;
-        store[pollId].counts[optionId] = (store[pollId].counts[optionId] || 0) + 1;
-        setVoteStore(store);
+        const nextStore = getVoteStore();
+        if (nextStore[pollId] && nextStore[pollId].choice) return;
+        if (!nextStore[pollId]) nextStore[pollId] = { choice: optionId, counts: {} };
+        nextStore[pollId].choice = optionId;
+        nextStore[pollId].counts[optionId] = (nextStore[pollId].counts[optionId] || 0) + 1;
+        setVoteStore(nextStore);
         draw();
       });
+    });
+  }
+
+  if (suggestionForm && suggestionTopic && suggestionText) {
+    suggestionForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const topic = suggestionTopic.value;
+      const text = suggestionText.value.trim();
+      if (!topic || !text) return;
+      const store = getSuggestionStore();
+      store.push({
+        id: `local_${Date.now()}`,
+        topic,
+        text,
+        created_at: new Date().toISOString()
+      });
+      setSuggestionStore(store);
+      suggestionText.value = '';
+      draw();
+    });
+  }
+
+  if (resetButton) {
+    resetButton.addEventListener('click', () => {
+      if (!window.confirm('确定要清空当前浏览器里的本机投票和本机建议吗？')) return;
+      localStorage.removeItem(VOTE_STORAGE_KEY);
+      localStorage.removeItem(SUGGESTION_STORAGE_KEY);
+      draw();
     });
   }
 
@@ -701,8 +898,16 @@ function renderMethodology(data) {
       body: '热点页展示的是公开热榜入口与站内快照。我们不宣称掌握平台内部热度数据，也不做高频自动抓取。'
     },
     {
+      title: '社媒三层策略',
+      body: '知乎、微博优先走公开入口直抓；受限时回退到 RSSHub/代理订阅层；仍失败时展示人工审核池和最近一次成功快照。'
+    },
+    {
       title: '讨论与审核边界',
       body: '正式留言通过 GitHub Discussions 公开保存。站内弹幕只展示公开归档摘录，不提供匿名即时发言。'
+    },
+    {
+      title: '轻投票边界',
+      body: '投票和本机意见板只用于观察站内偏好与建议方向。投票写在本地浏览器，本机建议也不会自动公开发布。'
     },
     {
       title: '自动化工作流',

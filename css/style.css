@@ -170,13 +170,25 @@ p { margin: 0; color: var(--ink-soft); }
 .archive-results { display: grid; gap: 14px; }
 .archive-card h3 { margin-bottom: 8px; }
 .archive-card .archive-type { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue); font-weight: 800; }
+.suggest-form { display: grid; gap: 12px; }
+.suggest-form select, .suggest-form textarea {
+  width: 100%; border-radius: 14px; border: 1px solid rgba(21,21,21,0.12); background: rgba(255,255,255,0.84);
+  padding: 12px 14px;
+}
+.suggest-form textarea { min-height: 120px; resize: vertical; }
+.form-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.suggest-list { margin: 14px 0 0; padding-left: 18px; color: var(--ink-soft); display: grid; gap: 8px; }
+.suggest-list li { padding-left: 2px; }
 .poll-option { margin-top: 10px; }
 .poll-option button {
   width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; background: rgba(255,255,255,0.76); border: 1px solid rgba(21,21,21,0.08); cursor: pointer;
 }
+.poll-option button:hover { transform: translateY(-1px); border-color: rgba(21,21,21,0.18); }
 .poll-result { position: relative; margin-top: 10px; border-radius: 14px; background: rgba(21,21,21,0.05); overflow: hidden; }
 .poll-result-fill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, var(--blue), var(--red)); opacity: 0.85; }
 .poll-result-body { position: relative; z-index: 1; padding: 12px 14px; display: flex; justify-content: space-between; gap: 12px; color: #fff; font-weight: 700; mix-blend-mode: difference; }
+.poll-card h3 { margin: 8px 0 10px; }
+.poll-card p { min-height: 54px; }
 .discussion-shell #giscusContainer { margin-top: 18px; }
 .redirect-body { display: grid; min-height: 100vh; place-items: center; }
 [data-accent="blue"] { color: var(--blue); }

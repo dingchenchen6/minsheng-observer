@@ -55,6 +55,23 @@ def refresh_site_meta():
     meta = load_json('site_meta.json')
     meta['last_updated'] = iso_now()
     meta['last_updated_label'] = label_now()
+    topic_count = len(load_json('topics.json'))
+    source_count = len(load_json('sources.json'))
+    archive_total = (
+        len(load_json('trend_archive.json'))
+        + len(load_json('evidence_records.json'))
+        + len(load_json('papers.json'))
+        + len(load_json('discussion_archive.json'))
+        + len(load_json('social_hot_topics.json').get('items', []))
+    )
+    for item in meta.get('hero_stats', []):
+        if item.get('label') == '重点议题':
+            item['value'] = str(topic_count)
+        elif item.get('label') == '权威入口':
+            item['value'] = str(source_count)
+        elif item.get('label') == '归档条目':
+            item['value'] = str(archive_total)
+            item['note'] = '热点快照、证据库、论文卡片、讨论摘录与社媒热榜均可检索'
     save_json('site_meta.json', meta)
 
 

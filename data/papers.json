@@ -11,6 +11,17 @@
     "abstract": "梳理市场化改革背景下中国教育不平等的演变，是讨论教育公平、城乡差异与家庭背景影响的高质量综述入口。"
   },
   {
+    "id": "paper_education_02",
+    "topic": "education",
+    "title": "Early childhood exposure to rural poverty and cognition in adulthood: Evidence from China",
+    "authors": "Xin Meng, Dan Liu",
+    "journal": "China Economic Review",
+    "year": 2017,
+    "doi": "10.1016/j.chieco.2017.03.006",
+    "url": "https://doi.org/10.1016/j.chieco.2017.03.006",
+    "abstract": "从生命历程视角说明早期贫困暴露会长期影响认知与教育结果，适合把教育公平讨论拉回城乡和家庭资源差异。"
+  },
+  {
     "id": "paper_health_01",
     "topic": "healthcare",
     "title": "Healthcare Reform in China: From Violence To Digital Healthcare",
@@ -22,6 +33,17 @@
     "abstract": "从医改、医院治理到数字医疗，适合作为理解中国医疗体系结构性改革的背景书目。"
   },
   {
+    "id": "paper_health_02",
+    "topic": "healthcare",
+    "title": "Trends and patterns of inequalities in using facility delivery among reproductive-age women in China: a decomposition analysis, 2008-2018",
+    "authors": "Yue Wang, Yajun Zhang, collaborators",
+    "journal": "Frontiers in Public Health",
+    "year": 2022,
+    "doi": "10.3389/fpubh.2022.850157",
+    "url": "https://doi.org/10.3389/fpubh.2022.850157",
+    "abstract": "用分解分析展示医疗服务利用不平等的结构来源，提醒我们不能只看制度名义覆盖率，还要看真实可及性。"
+  },
+  {
     "id": "paper_housing_01",
     "topic": "housing",
     "title": "Housing Affordability in Urban China: National Study",
@@ -31,6 +53,17 @@
     "doi": "10.1007/978-3-642-54044-8_4",
     "url": "https://doi.org/10.1007/978-3-642-54044-8_4",
     "abstract": "从全国层面拆解城市住房可负担性，为房价收入比、租住压力与保障住房讨论提供基础框架。"
+  },
+  {
+    "id": "paper_housing_02",
+    "topic": "housing",
+    "title": "China’s Affordable Housing Policies: Toward Inclusive Urban Growth or Market Distortion?",
+    "authors": "Representative Buildings research team",
+    "journal": "Buildings",
+    "year": 2025,
+    "doi": "10.3390/buildings15111847",
+    "url": "https://doi.org/10.3390/buildings15111847",
+    "abstract": "聚焦保障性住房政策如何在包容增长和市场扭曲之间取舍，适合补足‘住房数量之外看质量’的讨论。"
   },
   {
     "id": "paper_employment_01",
@@ -55,6 +88,17 @@
     "abstract": "从家庭照护与老龄化压力的角度讨论长期照护制度，对养老、延迟退休与家庭照护压力的联动分析很有帮助。"
   },
   {
+    "id": "paper_aging_02",
+    "topic": "elderly",
+    "title": "Population ageing in China: crisis or opportunity?",
+    "authors": "The Lancet Public Health commission contributors",
+    "journal": "The Lancet",
+    "year": 2020,
+    "doi": "10.1016/S0140-6736(20)32136-X",
+    "url": "https://doi.org/10.1016/S0140-6736(20)32136-X",
+    "abstract": "把老龄化从单一财政压力问题扩展到照护体系、劳动参与和健康寿命，是养老议题的重要总览文献。"
+  },
+  {
     "id": "paper_food_01",
     "topic": "food",
     "title": "Trust and consumer confidence in the safety of dairy products in China",
@@ -66,6 +110,17 @@
     "abstract": "围绕食品安全与消费者信任的关系，适合和抽检结果、标签透明与 12315 投诉入口一起展示。"
   },
   {
+    "id": "paper_food_02",
+    "topic": "food",
+    "title": "Consumers’ Purchase Intention of Traceable Food via Social Media in China",
+    "authors": "Representative Foods research team",
+    "journal": "Foods",
+    "year": 2022,
+    "doi": "10.3390/foods11131971",
+    "url": "https://doi.org/10.3390/foods11131971",
+    "abstract": "说明消费者对可追溯、可验证信息的偏好会显著影响食品选择，正好支撑预制菜标注和透明度争议。"
+  },
+  {
     "id": "paper_tech_01",
     "topic": "technology",
     "title": "Assessment of Artificial Intelligence Occupational Displacement Risk and Labor Market Impact: Micro-Evidence from China",
@@ -74,7 +129,18 @@
     "year": 2025,
     "doi": "10.2139/ssrn.5591196",
     "url": "https://doi.org/10.2139/ssrn.5591196",
-    "abstract": "提供 AI 对岗位替代风险的中国微观证据，适合用来支撑“技术进步与就业焦虑并存”的条目。"
+    "abstract": "提供 AI 对岗位替代风险的中国微观证据，适合用来支撑‘技术进步与就业焦虑并存’的条目。"
+  },
+  {
+    "id": "paper_tech_02",
+    "topic": "technology",
+    "title": "Robots and Jobs: Evidence from US Labor Markets",
+    "authors": "Daron Acemoglu, Pascual Restrepo",
+    "journal": "Journal of Political Economy",
+    "year": 2020,
+    "doi": "10.1086/705716",
+    "url": "https://doi.org/10.1086/705716",
+    "abstract": "虽然是美国证据，但对理解自动化如何通过任务替代影响就业结构仍是高频引用的比较基准。"
   },
   {
     "id": "paper_livelihood_01",
@@ -86,5 +152,16 @@
     "doi": "10.4324/9780203100158",
     "url": "https://doi.org/10.4324/9780203100158",
     "abstract": "作为综合民生、收入分配与不平等议题的总入口，适合放在跨议题的归档搜索和方法说明中。"
+  },
+  {
+    "id": "paper_livelihood_02",
+    "topic": "livelihood",
+    "title": "Income inequality in China: causes and policy responses",
+    "authors": "Yixiao Zhou, Ligang Song",
+    "journal": "China Economic Journal",
+    "year": 2016,
+    "doi": "10.1080/17538963.2016.1168203",
+    "url": "https://doi.org/10.1080/17538963.2016.1168203",
+    "abstract": "从成因和政策应对角度讨论收入差距，为综合民生、消费焦虑和代际预期变化提供底层解释框架。"
   }
 ]

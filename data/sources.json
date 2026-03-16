@@ -72,6 +72,15 @@
     "note": "作为 Crossref 的补充来源，用于论文摘要、期刊与作者信息兜底。"
   },
   {
+    "id": "rsshub",
+    "name": "RSSHub",
+    "category": "feed-proxy",
+    "authority_level": "C",
+    "url": "https://docs.rsshub.app/",
+    "last_checked": "2026-03-16",
+    "note": "作为公开网页的订阅代理和回退层使用，不替代原始平台或官方来源。"
+  },
+  {
     "id": "weibo-hot",
     "name": "微博热搜",
     "category": "public-link",

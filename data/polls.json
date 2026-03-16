@@ -1,38 +1,233 @@
-[
-  {
-    "id": "poll_education_1",
-    "topic": "education",
-    "question": "你认为当前最该优先补齐的教育短板是什么？",
-    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
-    "options": [
-      { "id": "a", "label": "区域与城乡资源差距", "votes": 324 },
-      { "id": "b", "label": "升学竞争与内卷压力", "votes": 287 },
-      { "id": "c", "label": "高等教育与就业脱节", "votes": 191 },
-      { "id": "d", "label": "家庭教育成本过高", "votes": 166 }
-    ]
-  },
-  {
-    "id": "poll_health_1",
-    "topic": "healthcare",
-    "question": "你最希望医疗改革优先改善什么？",
-    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
-    "options": [
-      { "id": "a", "label": "基层诊疗能力", "votes": 302 },
-      { "id": "b", "label": "医保报销与费用透明度", "votes": 351 },
-      { "id": "c", "label": "挂号与等待时间", "votes": 278 },
-      { "id": "d", "label": "医患沟通与体验", "votes": 94 }
-    ]
-  },
-  {
-    "id": "poll_employment_1",
-    "topic": "employment",
-    "question": "青年就业难最主要的压力来自哪里？",
-    "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
-    "options": [
-      { "id": "a", "label": "岗位数量不足", "votes": 318 },
-      { "id": "b", "label": "要求与经验门槛过高", "votes": 406 },
-      { "id": "c", "label": "专业与岗位错配", "votes": 233 },
-      { "id": "d", "label": "期望和现实不匹配", "votes": 119 }
-    ]
-  }
-]
+{
+  "intro_note": "站内轻投票用于观察关注重心、意见分歧和政策偏好，不代表科学抽样意义上的总体民意。正式公开反馈请使用 GitHub Discussions 或官方办事入口。",
+  "surveys": [
+    {
+      "id": "poll_education_1",
+      "topic": "education",
+      "tag": "优先改革项",
+      "question": "你认为当前最该优先补齐的教育短板是什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "区域与城乡资源差距", "votes": 324 },
+        { "id": "b", "label": "升学竞争与内卷压力", "votes": 287 },
+        { "id": "c", "label": "高等教育与就业脱节", "votes": 191 },
+        { "id": "d", "label": "家庭教育成本过高", "votes": 166 }
+      ]
+    },
+    {
+      "id": "poll_health_1",
+      "topic": "healthcare",
+      "tag": "体验改进",
+      "question": "你最希望医疗改革优先改善什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "基层诊疗能力", "votes": 302 },
+        { "id": "b", "label": "医保报销与费用透明度", "votes": 351 },
+        { "id": "c", "label": "挂号与等待时间", "votes": 278 },
+        { "id": "d", "label": "医患沟通与体验", "votes": 94 }
+      ]
+    },
+    {
+      "id": "poll_housing_1",
+      "topic": "housing",
+      "tag": "居住负担",
+      "question": "住房问题里你最希望优先被解决的是哪一项？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "租金与房价压力", "votes": 296 },
+        { "id": "b", "label": "保障房供给与资格透明", "votes": 268 },
+        { "id": "c", "label": "通勤成本与地段可达性", "votes": 331 },
+        { "id": "d", "label": "租住稳定性与中介规范", "votes": 157 }
+      ]
+    },
+    {
+      "id": "poll_employment_1",
+      "topic": "employment",
+      "tag": "求职门槛",
+      "question": "青年就业难最主要的压力来自哪里？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "岗位数量不足", "votes": 318 },
+        { "id": "b", "label": "要求与经验门槛过高", "votes": 406 },
+        { "id": "c", "label": "专业与岗位错配", "votes": 233 },
+        { "id": "d", "label": "期望和现实不匹配", "votes": 119 }
+      ]
+    },
+    {
+      "id": "poll_elderly_1",
+      "topic": "elderly",
+      "tag": "养老压力",
+      "question": "养老议题中你最担心的风险是什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "养老金可持续性", "votes": 241 },
+        { "id": "b", "label": "失能照护服务不足", "votes": 327 },
+        { "id": "c", "label": "延迟退休带来的代际压力", "votes": 288 },
+        { "id": "d", "label": "社区养老与机构养老选择有限", "votes": 154 }
+      ]
+    },
+    {
+      "id": "poll_food_1",
+      "topic": "food",
+      "tag": "消费安全",
+      "question": "食品安全与消费维权里你最看重哪一点？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "标签透明和真实告知", "votes": 344 },
+        { "id": "b", "label": "抽检频率与公开速度", "votes": 209 },
+        { "id": "c", "label": "12315 处理效率", "votes": 296 },
+        { "id": "d", "label": "赔付与追责机制", "votes": 188 }
+      ]
+    },
+    {
+      "id": "poll_technology_1",
+      "topic": "technology",
+      "tag": "技术影响",
+      "question": "谈到 AI 进入工作场景，你最在意什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "岗位被替代", "votes": 219 },
+        { "id": "b", "label": "任务被拆分、绩效更细化", "votes": 338 },
+        { "id": "c", "label": "技能再培训跟不上", "votes": 287 },
+        { "id": "d", "label": "算法考核与劳动强度上升", "votes": 196 }
+      ]
+    },
+    {
+      "id": "poll_livelihood_1",
+      "topic": "livelihood",
+      "tag": "综合民生",
+      "question": "如果只能优先推动一项综合民生改进，你会选什么？",
+      "note": "站内样本，不代表总体民意，仅用于观察讨论方向。",
+      "options": [
+        { "id": "a", "label": "提高收入与减轻生活成本", "votes": 372 },
+        { "id": "b", "label": "提高公共服务可及性", "votes": 291 },
+        { "id": "c", "label": "扩大社会保障覆盖与公平性", "votes": 255 },
+        { "id": "d", "label": "增强政策信息透明度", "votes": 146 }
+      ]
+    }
+  ],
+  "suggestion_boards": [
+    {
+      "topic": "education",
+      "title": "教育议题高频建议",
+      "summary": "投票和讨论里最常见的诉求，是把‘总量增长’继续转化为真正可感知的公平。",
+      "items": [
+        "优先补县中、薄弱学校和城乡接合部学校的师资与课程供给。",
+        "把升学信息、学位供给和招生规则做得更透明，减少信息焦虑。",
+        "把职业教育、普通教育和就业路径衔接得更顺，降低分流焦虑。"
+      ],
+      "policy_link_ids": ["policy_edu"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2FO"]
+    },
+    {
+      "topic": "healthcare",
+      "title": "医疗议题高频建议",
+      "summary": "多数意见并不只是要求‘花更少钱’，而是要求规则更清楚、流程更顺、基层更可用。",
+      "items": [
+        "提高基层首诊能力，让常见病真正可以在家门口解决。",
+        "把门诊、异地就医和报销规则说明做得更易懂。",
+        "减少重复排队和检查，改善挂号、候诊和缴费体验。"
+      ],
+      "policy_link_ids": ["policy_health"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2Ex"]
+    },
+    {
+      "topic": "housing",
+      "title": "住房议题高频建议",
+      "summary": "大家最关心的不是抽象的供给规模，而是能否住得起、住得稳、通勤可承受。",
+      "items": [
+        "保障房布局尽量靠近就业密集区和公共交通节点。",
+        "公开资格审核、轮候顺序和退出机制，减少不透明感。",
+        "规范中介、二房东和租约管理，降低年轻租客的不稳定性。"
+      ],
+      "policy_link_ids": ["policy_housing"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2Ey"]
+    },
+    {
+      "topic": "employment",
+      "title": "就业议题高频建议",
+      "summary": "青年求职的真实焦虑集中在隐性门槛、岗位质量和转岗成本，而不只是失业率数字。",
+      "items": [
+        "推动校招和初级岗位减少对高强度实习经历的隐性要求。",
+        "加强专业课程、职业教育与真实岗位技能的衔接。",
+        "把再培训和转岗支持做成可触达、可负担的公共服务。"
+      ],
+      "policy_link_ids": ["policy_employment"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2Ew"]
+    },
+    {
+      "topic": "elderly",
+      "title": "养老议题高频建议",
+      "summary": "养老意见最集中在照护可得性，而不只是养老金替代率。",
+      "items": [
+        "把社区照护、居家支持和上门服务做成真正能用的基础设施。",
+        "为失能照护家庭提供更直接的时间支持和费用减负。",
+        "讨论延迟退休时同步说明不同职业、不同群体的差异化安排。"
+      ],
+      "policy_link_ids": ["policy_aging"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2FP"]
+    },
+    {
+      "topic": "food",
+      "title": "食品与维权高频建议",
+      "summary": "消费者最需要的不是口号，而是‘问题出现后能不能立刻知道、立刻投诉、立刻追责’。",
+      "items": [
+        "强化预制菜、产地、配料和加工环节的前端标注。",
+        "提高抽检通报的及时性和问题产品追踪可读性。",
+        "让 12315 的处理进度、结果和赔付标准更透明。"
+      ],
+      "policy_link_ids": ["policy_food", "service_12315"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2Ez"]
+    },
+    {
+      "topic": "technology",
+      "title": "科技议题高频建议",
+      "summary": "围绕 AI 的意见最集中在‘先改造了谁的任务、谁来承担再培训成本’。",
+      "items": [
+        "把 AI 治理与劳动权益、绩效考核方式一起讨论。",
+        "支持企业和学校提供可验证的再培训路径。",
+        "在公共讨论中区分技术效率提升与就业替代风险，避免一刀切判断。"
+      ],
+      "policy_link_ids": ["policy_tech", "policy_employment"],
+      "discussion_ids": ["D_kwDORoHGI84Ak2E0"]
+    },
+    {
+      "topic": "livelihood",
+      "title": "综合民生高频建议",
+      "summary": "跨议题建议往往会回到收入、服务可及性和政策信息透明度这三根主线。",
+      "items": [
+        "优先减轻高频刚性支出对家庭预算的挤压。",
+        "让统计、公报、政策解读和办事入口更容易被普通人找到。",
+        "把教育、医疗、住房、就业等政策协同起来看，减少碎片化感受。"
+      ],
+      "policy_link_ids": ["policy_livelihood"],
+      "discussion_ids": ["D_kwDORoHGI84Ak1-V"]
+    }
+  ],
+  "action_cards": [
+    {
+      "title": "去 Discussions 提交公开建议",
+      "body": "如果你希望建议被站内自动归档并进入弹幕/讨论模块，请直接发到 GitHub Discussions。",
+      "url": "https://github.com/dingchenchen6/minsheng-observer/discussions",
+      "label": "打开讨论区"
+    },
+    {
+      "title": "查权威统计与政策",
+      "body": "遇到观点分歧时，先回到统计公报、政策原文和部委入口，再判断讨论落点。",
+      "url": "archive.html?type=evidence",
+      "label": "查看证据库"
+    },
+    {
+      "title": "食品/消费问题直接办事",
+      "body": "如果问题已经进入具体消费纠纷、商品质量或服务投诉层面，建议直接使用官方办事入口。",
+      "url": "https://www.12315.cn/",
+      "label": "打开 12315"
+    },
+    {
+      "title": "回看热点与旧记录",
+      "body": "投票反映的是站内偏好，热点页和归档页可以帮助你把意见放回更长的时间轴里看。",
+      "url": "archive.html?sort=date_desc",
+      "label": "查看归档"
+    }
+  ]
+}

@@ -3,25 +3,15 @@
     "id": "evidence_001",
     "topic": "food",
     "type": "investigating",
-    "title": "预制菜争议的核心不只是“该不该吃”，而是“是否充分告知”",
-    "claim": "社交讨论常把预制菜问题简化为“全面禁止”或“消费者矫情”。",
+    "title": "预制菜争议的核心不只是‘该不该吃’，而是‘是否充分告知’",
+    "claim": "社交讨论常把预制菜问题简化为‘全面禁止’或‘消费者矫情’。",
     "verdict": "更值得核查的是标注义务、责任归属和投诉处理效率。",
     "published_at": "2026-03-16",
     "summary": "食品安全监督抽检结果和 12315 投诉路径表明，信息透明和维权效率比单纯情绪对立更能解释公众不满。",
-    "source_ids": [
-      "samr",
-      "12315"
-    ],
-    "policy_link_ids": [
-      "policy_food",
-      "service_12315"
-    ],
-    "paper_ids": [
-      "paper_food_01"
-    ],
-    "related_trend_ids": [
-      "trend_004"
-    ],
+    "source_ids": ["samr", "12315"],
+    "policy_link_ids": ["policy_food", "service_12315"],
+    "paper_ids": ["paper_food_01", "paper_food_02"],
+    "related_trend_ids": ["trend_004"],
     "history": [
       "2025-03-14：根据食品安全监督抽检结果补入监管背景。",
       "2026-03-16：将争议焦点明确调整为标签透明与维权效率。"
@@ -32,50 +22,32 @@
     "topic": "healthcare",
     "type": "context",
     "title": "医保体验不佳，不一定等于医保制度本身失败",
-    "claim": "一些舆论会把挂号难、报销感受差和基层就诊体验都统一归因于“医保改革失败”。",
+    "claim": "一些舆论会把挂号难、报销感受差和基层就诊体验都统一归因于‘医保改革失败’。",
     "verdict": "更准确的分析方式是区分支付制度、基层承接能力和患者体验三个层面。",
     "published_at": "2026-03-14",
     "summary": "卫健委 2024 公报解读说明基层诊疗量在增长，但这并不自动转化为高质量就医体验。",
-    "source_ids": [
-      "nhc",
-      "gov-cn"
-    ],
-    "policy_link_ids": [
-      "policy_health"
-    ],
-    "paper_ids": [
-      "paper_health_01"
-    ],
-    "related_trend_ids": [
-      "trend_006"
-    ],
+    "source_ids": ["nhc", "gov-cn"],
+    "policy_link_ids": ["policy_health"],
+    "paper_ids": ["paper_health_01", "paper_health_02"],
+    "related_trend_ids": ["trend_006"],
     "history": [
       "2025-12-02：依据卫生健康公报解读建立背景条目。",
-      "2026-03-14：补充“支付制度和服务供给要分开讨论”的提示。"
+      "2026-03-14：补充‘支付制度和服务供给要分开讨论’的提示。"
     ]
   },
   {
     "id": "evidence_003",
     "topic": "employment",
     "type": "exposed",
-    "title": "青年就业中的“隐性经验门槛”确实存在",
+    "title": "青年就业中的‘隐性经验门槛’确实存在",
     "claim": "企业常声称校招岗位不设实质性门槛，只看潜力。",
     "verdict": "真实讨论与岗位反馈显示，高强度实习、院校筛选和隐性经历要求仍是高频问题。",
     "published_at": "2026-03-13",
     "summary": "即使全年新增就业保持增长，青年求职者面临的并不只是岗位总量问题。",
-    "source_ids": [
-      "stats",
-      "mohrss"
-    ],
-    "policy_link_ids": [
-      "policy_employment"
-    ],
-    "paper_ids": [
-      "paper_employment_01"
-    ],
-    "related_trend_ids": [
-      "trend_001"
-    ],
+    "source_ids": ["stats", "mohrss"],
+    "policy_link_ids": ["policy_employment"],
+    "paper_ids": ["paper_employment_01", "paper_tech_02"],
+    "related_trend_ids": ["trend_001"],
     "history": [
       "2026-03-13：由讨论归档整理为证据库条目。"
     ]
@@ -84,23 +56,15 @@
     "id": "evidence_004",
     "topic": "housing",
     "type": "context",
-    "title": "保障性住房扩容并不自动解决“住得起、住得稳、通勤可承受”",
+    "title": "保障性住房扩容并不自动解决‘住得起、住得稳、通勤可承受’",
     "claim": "舆论中常把保障房供给扩张等同于住房难题已经被有效破解。",
     "verdict": "真正影响获得感的还包括地段、交通、资格审核与长期租住成本。",
     "published_at": "2026-03-11",
     "summary": "中国政府网对 2025 年城中村和危旧房改造政策的解读，为站点补充了规模之外看质量的分析框架。",
-    "source_ids": [
-      "gov-cn"
-    ],
-    "policy_link_ids": [
-      "policy_housing"
-    ],
-    "paper_ids": [
-      "paper_housing_01"
-    ],
-    "related_trend_ids": [
-      "trend_003"
-    ],
+    "source_ids": ["gov-cn"],
+    "policy_link_ids": ["policy_housing"],
+    "paper_ids": ["paper_housing_01", "paper_housing_02"],
+    "related_trend_ids": ["trend_003"],
     "history": [
       "2025-01-06：以政策解读为基础建立住房背景条目。",
       "2026-03-11：补充地段与通勤可达性维度。"
@@ -114,21 +78,14 @@
     "claim": "高等教育毛入学率和义务教育巩固率持续提升，说明教育公平问题已基本解决。",
     "verdict": "总量指标改善值得肯定，但区域差距、优质资源分布和家庭教育成本仍是核心矛盾。",
     "published_at": "2026-03-10",
-    "summary": "教育部 2024 统计公报让教育“总量改善”更清晰，也提醒我们继续观察结构性不平等。",
-    "source_ids": [
-      "moe"
-    ],
-    "policy_link_ids": [
-      "policy_edu"
-    ],
-    "paper_ids": [
-      "paper_education_01"
-    ],
-    "related_trend_ids": [
-      "archive_trend_008"
-    ],
+    "summary": "教育部 2024 统计公报让教育‘总量改善’更清晰，也提醒我们继续观察结构性不平等。",
+    "source_ids": ["moe"],
+    "policy_link_ids": ["policy_edu"],
+    "paper_ids": ["paper_education_01", "paper_education_02"],
+    "related_trend_ids": [],
     "history": [
-      "2025-06-11：根据教育部公报建立背景条目。"
+      "2025-06-11：根据教育部公报建立背景条目。",
+      "2026-03-16：补充早期贫困与长期教育结果的研究证据。"
     ]
   },
   {
@@ -139,23 +96,81 @@
     "claim": "消费者维权平台只是情绪宣泄口，对治理改进帮助有限。",
     "verdict": "当投诉、举报、咨询被持续记录时，它们会成为治理侧识别高频问题的重要入口。",
     "published_at": "2026-03-09",
-    "summary": "站点把 12315 放在食品和消费维权模块的核心位置，是为了让“办事路径”与“议题讨论”直接连接。",
-    "source_ids": [
-      "12315",
-      "samr"
-    ],
-    "policy_link_ids": [
-      "service_12315",
-      "policy_food"
-    ],
-    "paper_ids": [
-      "paper_food_01"
-    ],
-    "related_trend_ids": [
-      "archive_trend_009"
-    ],
+    "summary": "站点把 12315 放在食品和消费维权模块的核心位置，是为了让‘办事路径’与‘议题讨论’直接连接。",
+    "source_ids": ["12315", "samr"],
+    "policy_link_ids": ["service_12315", "policy_food"],
+    "paper_ids": ["paper_food_01", "paper_food_02"],
+    "related_trend_ids": [],
     "history": [
-      "2026-03-09：新增“办事入口也是证据链的一部分”说明。"
+      "2026-03-09：新增‘办事入口也是证据链的一部分’说明。"
+    ]
+  },
+  {
+    "id": "evidence_007",
+    "topic": "elderly",
+    "type": "context",
+    "title": "养老压力不只在养老金账户，也在长期照护服务供给",
+    "claim": "社交平台对养老议题的讨论常被压缩成‘延迟退休赞成还是反对’。",
+    "verdict": "更完整的观察框架应同时纳入健康寿命、家庭照护负担和社区长期照护服务。",
+    "published_at": "2026-03-16",
+    "summary": "统计公报中的老龄人口占比上升，与照护制度和家庭时间成本一起，构成养老议题真正的压力面。",
+    "source_ids": ["stats", "mohrss"],
+    "policy_link_ids": ["policy_aging"],
+    "paper_ids": ["paper_aging_01", "paper_aging_02"],
+    "related_trend_ids": ["trend_002"],
+    "history": [
+      "2026-03-16：将养老议题从退休年龄争论扩展为养老金与照护双重压力。"
+    ]
+  },
+  {
+    "id": "evidence_008",
+    "topic": "technology",
+    "type": "context",
+    "title": "AI 焦虑真正对应的是任务重组，而不是所有岗位同步消失",
+    "claim": "只要 AI 继续迭代，现有白领岗位会被整体替代。",
+    "verdict": "更有证据的说法是：岗位内部的可编码任务会先被拆分和自动化，替代与补充往往并存。",
+    "published_at": "2026-03-16",
+    "summary": "站内把科技议题与就业议题交叉展示，是因为公众最在意的并不是技术本身，而是劳动过程如何变化。",
+    "source_ids": ["cnnic", "mohrss"],
+    "policy_link_ids": ["policy_tech", "policy_employment"],
+    "paper_ids": ["paper_tech_01", "paper_tech_02"],
+    "related_trend_ids": ["trend_005", "trend_001"],
+    "history": [
+      "2026-03-16：补入自动化替代与任务拆分的比较研究框架。"
+    ]
+  },
+  {
+    "id": "evidence_009",
+    "topic": "livelihood",
+    "type": "context",
+    "title": "收入与财富差距仍是多项民生焦虑的底层变量",
+    "claim": "只要总量增长继续，教育、住房、消费和养老焦虑会自然缓和。",
+    "verdict": "总量增长重要，但如果收入、财富和公共服务可及性差距继续存在，跨议题焦虑不会自动消散。",
+    "published_at": "2026-03-16",
+    "summary": "把综合民生单列为议题，是为了提醒读者：许多分散问题最终仍会回到分配结构和获得感的差异上。",
+    "source_ids": ["stats", "gov-cn"],
+    "policy_link_ids": ["policy_livelihood"],
+    "paper_ids": ["paper_livelihood_01", "paper_livelihood_02"],
+    "related_trend_ids": [],
+    "history": [
+      "2026-03-16：新增综合民生条目，用于连接收入差距与多议题焦虑。"
+    ]
+  },
+  {
+    "id": "evidence_010",
+    "topic": "healthcare",
+    "type": "exposed",
+    "title": "医疗获得感差异经常发生在地区和群体之间，而不只是医院之间",
+    "claim": "只要继续扩建大医院、增加设备，就能明显改善医疗满意度。",
+    "verdict": "真正的差异往往来自基层承接力、流动人口与弱势群体的服务可及性，以及报销理解成本。",
+    "published_at": "2026-03-16",
+    "summary": "不同地区、不同收入群体对‘同一套制度’的体验可能完全不同，这也是医疗舆论分歧长期存在的原因。",
+    "source_ids": ["nhc", "gov-cn"],
+    "policy_link_ids": ["policy_health"],
+    "paper_ids": ["paper_health_01", "paper_health_02"],
+    "related_trend_ids": ["trend_006"],
+    "history": [
+      "2026-03-16：把医疗议题中的地区与群体不平等显性化。"
     ]
   }
 ]

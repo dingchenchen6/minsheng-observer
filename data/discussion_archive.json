@@ -1,5 +1,16 @@
 [
   {
+    "id": "D_kwDORoHGI84Ak1-V",
+    "source_type": "featured",
+    "title": "欢迎来到民声 2.0：这里可以留言、提交线索与建议",
+    "excerpt": "这是仓库的首条公开讨论线程，欢迎提交议题观察、政策入口、研究论文和站点功能建议。",
+    "topic": "livelihood",
+    "created_at": "2026-03-16T06:03:10Z",
+    "url": "https://github.com/dingchenchen6/minsheng-observer/discussions/1",
+    "likes": 1,
+    "featured": true
+  },
+  {
     "id": "discussion_001",
     "source_type": "featured",
     "title": "医疗讨论摘录",

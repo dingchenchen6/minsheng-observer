@@ -63,6 +63,7 @@ def refresh_site_meta():
         + len(load_json('papers.json'))
         + len(load_json('discussion_archive.json'))
         + len(load_json('social_hot_topics.json').get('items', []))
+        + len(load_json('reports.json'))
     )
     for item in meta.get('hero_stats', []):
         if item.get('label') == '重点议题':
@@ -71,7 +72,7 @@ def refresh_site_meta():
             item['value'] = str(source_count)
         elif item.get('label') == '归档条目':
             item['value'] = str(archive_total)
-            item['note'] = '热点快照、证据库、论文卡片、讨论摘录与社媒热榜均可检索'
+            item['note'] = '热点快照、证据库、论文卡片、报告入口、讨论摘录与社媒热榜均可检索'
     save_json('site_meta.json', meta)
 
 

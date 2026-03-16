@@ -2,8 +2,8 @@
   "site_name": "民声 2.0",
   "site_subtitle": "数据新闻与公共议题研究实验站",
   "description": "围绕教育、医疗、住房、就业、养老、食品、科技与综合民生议题，连接权威统计、政策入口、论文证据与公共讨论。",
-  "last_updated": "2026-03-16T09:52:57.629526+00:00",
-  "last_updated_label": "2026年03月16日 10:52（本地构建时间）",
+  "last_updated": "2026-03-16T10:09:50.123298+00:00",
+  "last_updated_label": "2026年03月16日 11:09（本地构建时间）",
   "project_site": "https://dingchenchen6.github.io/minsheng-observer/",
   "repository": {
     "owner": "dingchenchen6",
@@ -23,8 +23,8 @@
     },
     {
       "label": "归档条目",
-      "value": "51",
-      "note": "热点快照、证据库、论文卡片、讨论摘录与社媒热榜均可检索"
+      "value": "61",
+      "note": "热点快照、证据库、论文卡片、报告入口、讨论摘录与社媒热榜均可检索"
     },
     {
       "label": "自动化链路",

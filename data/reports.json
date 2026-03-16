@@ -1,0 +1,102 @@
+[
+  {
+    "id": "report_stats_yearbook_2025",
+    "topic": "livelihood",
+    "category": "official-yearbook",
+    "title": "中国统计年鉴 2025",
+    "publisher": "国家统计局",
+    "year": 2025,
+    "url": "https://www.stats.gov.cn/sj/ndsj/",
+    "summary": "国家统计局年鉴入口，适合系统查找人口、就业、收入、教育、卫生、房地产等年度指标。"
+  },
+  {
+    "id": "report_stats_communique_2025",
+    "topic": "livelihood",
+    "category": "official-data",
+    "title": "2025年国民经济和社会发展统计公报",
+    "publisher": "国家统计局",
+    "year": 2026,
+    "url": "https://www.stats.gov.cn/sj/zxfb/",
+    "summary": "宏观总览型公报，可快速定位 GDP、人口、就业、收入、消费、教育、卫生等年度关键口径。"
+  },
+  {
+    "id": "report_edu_2024",
+    "topic": "education",
+    "category": "official-data",
+    "title": "2024年全国教育事业发展统计公报",
+    "publisher": "教育部",
+    "year": 2025,
+    "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/202506/t20250611_1193760.html",
+    "summary": "教育总量、毛入学率、学校数、专任教师等教育议题基础口径。"
+  },
+  {
+    "id": "report_health_2024",
+    "topic": "healthcare",
+    "category": "official-data",
+    "title": "2024年我国卫生健康事业发展统计公报解读",
+    "publisher": "中国政府网 / 国家卫健委",
+    "year": 2025,
+    "url": "https://www.gov.cn/zhengce/202512/content_7050025.htm",
+    "summary": "适合查阅人均预期寿命、医疗机构、卫生人员和基层卫生服务等口径。"
+  },
+  {
+    "id": "report_cnnic_56",
+    "topic": "technology",
+    "category": "official-report",
+    "title": "第56次《中国互联网络发展状况统计报告》",
+    "publisher": "CNNIC",
+    "year": 2025,
+    "url": "https://www.cnnic.net/n4/2025/0721/c326-11327.html",
+    "summary": "数字社会、互联网普及率、网民规模和数字应用趋势的重要官方报告。"
+  },
+  {
+    "id": "report_cgps_2023",
+    "topic": "livelihood",
+    "category": "academic-survey",
+    "title": "中国综合社会调查（CGSS）项目主页与数据发布",
+    "publisher": "中国人民大学",
+    "year": 2025,
+    "url": "https://cgss.ruc.edu.cn/",
+    "summary": "全国性、综合性、连续性学术调查平台，常用于研究社会态度、阶层流动、信任和公共服务评价。"
+  },
+  {
+    "id": "report_cfps_open",
+    "topic": "livelihood",
+    "category": "academic-survey",
+    "title": "中国家庭追踪调查（CFPS）公开数据入口",
+    "publisher": "北京大学中国社会科学调查中心",
+    "year": 2025,
+    "url": "https://www.isss.pku.edu.cn/cfps/sjzx/gksj/index.htm",
+    "summary": "长期追踪家庭、教育、收入、健康与代际流动，是综合民生研究的重要底层数据库。"
+  },
+  {
+    "id": "report_charls_home",
+    "topic": "elderly",
+    "category": "academic-survey",
+    "title": "中国健康与养老追踪调查（CHARLS）",
+    "publisher": "北京大学 / 武汉大学",
+    "year": 2025,
+    "url": "https://charls.pku.edu.cn/",
+    "summary": "老龄化、退休、养老金、健康和照护议题的核心数据来源之一。"
+  },
+  {
+    "id": "report_ceps_home",
+    "topic": "education",
+    "category": "academic-survey",
+    "title": "中国教育追踪调查（CEPS）",
+    "publisher": "中国人民大学中国调查与数据中心",
+    "year": 2025,
+    "url": "https://ceps.ruc.edu.cn/",
+    "summary": "家庭、学校和社区如何共同影响教育结果，是教育公平和分层研究的重要调查项目。"
+  },
+  {
+    "id": "report_population_census",
+    "topic": "livelihood",
+    "category": "official-data",
+    "title": "第七次全国人口普查资料入口",
+    "publisher": "国家统计局相关发布",
+    "year": 2021,
+    "url": "https://www.stats.gov.cn/sj/pcsj/rkpc/7rp/indexch.htm",
+    "summary": "人口结构、老龄化、城镇化、流动人口与家庭结构等议题的基础来源。"
+  }
+]

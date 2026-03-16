@@ -31,6 +31,9 @@
       </nav>
     </div>
   </header>
+  <div class="live-info-bar">
+    <div class="shell live-info-shell" id="liveInfoBar"></div>
+  </div>
 
   <main>
     <section class="hero news-hero">
@@ -39,6 +42,7 @@
           <span class="eyebrow">数据新闻与公共议题研究实验站</span>
           <h1>把热点、数据、政策与研究<br>放进同一条证据链</h1>
           <p class="hero-copy">民声 2.0 以静态站的稳定性承载动态公共议题：一边接权威统计、部委政策与论文 DOI，一边把网络热议、讨论摘录和历史快照做成可追溯的归档。</p>
+          <div class="hero-brief-grid" id="heroBriefGrid"></div>
           <div class="hero-actions">
             <a class="button primary" href="analysis.html">查看议题分析</a>
             <a class="button ghost" href="discuss.html">进入讨论区</a>
@@ -73,6 +77,31 @@
             <h2>最近更新</h2>
           </div>
           <div class="timeline-list" id="updateTimeline"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tone-paper">
+      <div class="shell">
+        <div class="section-head">
+          <span class="eyebrow">数据仪表盘</span>
+          <h2>关键议题分布与样本结构</h2>
+          <p>把热点热度、站内调查和来源分布放在同一屏里看，能更快判断讨论重心和证据密度。</p>
+        </div>
+        <div class="feature-grid dashboard-grid">
+          <article class="chart-wrap dashboard-card">
+            <h3>热点热度对比</h3>
+            <div style="height:320px"><canvas id="homeTrendChart"></canvas></div>
+          </article>
+          <article class="chart-wrap dashboard-card">
+            <h3>站内调查样本分布</h3>
+            <div style="height:320px"><canvas id="homePollChart"></canvas></div>
+          </article>
+          <article class="chart-wrap dashboard-card">
+            <h3>来源类型结构</h3>
+            <div style="height:320px"><canvas id="homeSourceChart"></canvas></div>
+          </article>
+          <article class="stack-list dashboard-card" id="dashboardNotes"></article>
         </div>
       </div>
     </section>
@@ -117,6 +146,26 @@
             <h2>可直接跳转的证据卡片</h2>
           </div>
           <div class="stack-list" id="paperPolicyCards"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tone-paper">
+      <div class="shell split-grid">
+        <div>
+          <div class="section-head compact">
+            <span class="eyebrow">统计与调查报告</span>
+            <h2>可直接打开的报告库</h2>
+            <p>把官方统计公报、年鉴、长期追踪调查和研究项目入口集中放在一起，减少来回搜索成本。</p>
+          </div>
+          <div class="source-grid" id="reportGrid"></div>
+        </div>
+        <div>
+          <div class="section-head compact">
+            <span class="eyebrow">编辑建议</span>
+            <h2>如何使用这些报告</h2>
+          </div>
+          <div class="stack-list" id="reportTips"></div>
         </div>
       </div>
     </section>

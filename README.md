@@ -4,7 +4,7 @@
 
 ## 站点结构
 
-- `index.html`: 首页，总览热点、来源入口、研究卡片和弹幕墙
+- `index.html`: 首页，总览热点、来源入口、研究卡片、仪表盘图表、报告库和弹幕墙
 - `analysis.html`: 八大议题分析页
 - `trends.html`: 热点追踪与历史快照
 - `evidence.html`: 证据库 / 辟谣与背景说明
@@ -22,6 +22,7 @@
 - `trend_current.json`
 - `trend_archive.json`
 - `papers.json`
+- `reports.json`
 - `sources.json`
 - `policy_links.json`
 - `discussion_archive.json`
@@ -52,6 +53,11 @@
 - 接入说明见 [`docs/live-vote-wechat-setup.md`](docs/live-vote-wechat-setup.md)
 - 当前公开 Pages 版本已经预留实时投票、实时弹幕和微信登录配置位
 - 但若没有外部后端与微信开放平台参数，公开站点仍会保持 `demo` / `未配置` 状态
+
+## 报告与实时信息
+
+- `data/reports.json`: 统一登记官方统计公报、统计年鉴、长期追踪调查和研究项目入口
+- 页面顶部显示浏览器本地实时日期时间，并尝试通过 Open-Meteo 拉取天气信息
 
 ## 本地预览
 

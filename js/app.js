@@ -13,7 +13,8 @@ const DATA_FILES = [
   'evidence_records',
   'polls',
   'social_hot_topics',
-  'live_config'
+  'live_config',
+  'reports'
 ];
 const TOPIC_NAMES = {
   all: '全部议题',
@@ -33,6 +34,7 @@ const TYPE_NAMES = {
   paper: '论文卡片',
   discussion: '讨论摘录',
   social: '社媒热榜',
+  report: '报告库',
   investigating: '调查中',
   context: '背景说明',
   exposed: '问题暴露'
@@ -115,6 +117,112 @@ async function fetchLiveRuntime(config) {
   return runtime;
 }
 
+function ensureLiveInfoBar() {
+  let bar = byId('liveInfoBar');
+  if (bar) return bar;
+  const header = document.querySelector('.site-header');
+  if (!header || !header.parentNode) return null;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'live-info-bar';
+  wrapper.innerHTML = '<div class="shell live-info-shell" id="liveInfoBar"></div>';
+  header.insertAdjacentElement('afterend', wrapper);
+  return byId('liveInfoBar');
+}
+
+function formatClock(date = new Date()) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    weekday: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).format(date);
+}
+
+function weatherText(code) {
+  const mapping = {
+    0: '晴',
+    1: '大部晴朗',
+    2: '多云',
+    3: '阴',
+    45: '雾',
+    48: '冻雾',
+    51: '毛毛雨',
+    53: '小雨',
+    55: '中雨',
+    61: '小雨',
+    63: '中雨',
+    65: '大雨',
+    71: '小雪',
+    73: '中雪',
+    75: '大雪',
+    80: '阵雨',
+    81: '较强阵雨',
+    82: '强阵雨',
+    95: '雷暴'
+  };
+  return mapping[code] || '天气更新中';
+}
+
+async function initLiveInfoBar() {
+  const bar = ensureLiveInfoBar();
+  if (!bar) return;
+  const state = {
+    time: formatClock(),
+    weather: '天气加载中',
+    location: '本地时间',
+    source: '浏览器时钟'
+  };
+
+  function draw() {
+    bar.innerHTML = html`
+      <div class="live-info-badge"><strong>实时日期时间</strong><span>${escapeHtml(state.time)}</span></div>
+      <div class="live-info-badge"><strong>天气</strong><span>${escapeHtml(state.weather)}</span></div>
+      <div class="live-info-badge"><strong>定位</strong><span>${escapeHtml(state.location)}</span></div>
+      <div class="live-info-badge"><strong>说明</strong><span>${escapeHtml(state.source)}</span></div>
+    `;
+  }
+
+  draw();
+  window.setInterval(() => {
+    state.time = formatClock();
+    draw();
+  }, 1000);
+
+  const fallback = { latitude: 39.9042, longitude: 116.4074, label: '北京（默认）' };
+  const coords = await new Promise((resolve) => {
+    if (!navigator.geolocation) return resolve(fallback);
+    navigator.geolocation.getCurrentPosition(
+      (position) => resolve({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        label: '本地定位'
+      }),
+      () => resolve(fallback),
+      { timeout: 6000, maximumAge: 600000 }
+    );
+  });
+
+  try {
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`;
+    const response = await fetch(weatherUrl);
+    if (!response.ok) throw new Error('weather request failed');
+    const payload = await response.json();
+    const current = payload.current || {};
+    state.weather = `${weatherText(current.weather_code)} ${Math.round(current.temperature_2m)}°C / 风速 ${Math.round(current.wind_speed_10m || 0)} km/h`;
+    state.location = coords.label;
+    state.source = 'Open-Meteo 实时天气';
+    draw();
+  } catch {
+    state.weather = '天气暂不可用';
+    state.location = coords.label;
+    state.source = '天气接口未返回';
+    draw();
+  }
+}
+
 function initChrome() {
   const toggle = byId('navToggle');
   const nav = byId('siteNav');
@@ -168,6 +276,7 @@ function renderDanmu(containerId, discussions, large = false) {
 }
 
 function renderHome(data) {
+  const heroBriefGrid = byId('heroBriefGrid');
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -177,6 +286,19 @@ function renderHome(data) {
   `).join('');
 
   byId('weeklyChanges').innerHTML = data.site_meta.weekly_changes.map((item) => `<div class="bullet-item">${escapeHtml(item)}</div>`).join('');
+
+  if (heroBriefGrid) {
+    heroBriefGrid.innerHTML = [
+      { title: '最新更新时间', body: data.site_meta.last_updated_label },
+      { title: '当前归档规模', body: `${data.trend_archive.length + data.evidence_records.length + data.papers.length + data.discussion_archive.length + data.reports.length} 条可检索记录` },
+      { title: '报告与调查入口', body: `${data.reports.length} 个官方/学术报告入口` }
+    ].map((item) => html`
+      <div class="hero-brief-card">
+        <strong>${escapeHtml(item.title)}</strong>
+        <span>${escapeHtml(item.body)}</span>
+      </div>
+    `).join('');
+  }
 
   byId('trendTape').innerHTML = data.trend_current.map((item) => html`
     <article class="heat-item">
@@ -268,8 +390,123 @@ function renderHome(data) {
     </article>
   `).join('');
 
+  const reportGrid = byId('reportGrid');
+  const reportTips = byId('reportTips');
+  if (reportGrid && reportTips) {
+    reportGrid.innerHTML = data.reports.slice(0, 8).map((report) => html`
+      <article class="source-card report-card" data-report-kind="${escapeHtml(report.category)}">
+        <small>${escapeHtml(report.publisher)} · ${escapeHtml(report.year)} · ${escapeHtml(report.category)}</small>
+        <h3>${escapeHtml(report.title)}</h3>
+        <p>${escapeHtml(report.summary)}</p>
+        <div class="topic-actions">
+          <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+          <a class="topic-link" href="archive.html?type=report&topic=${escapeHtml(report.topic)}">关联归档</a>
+        </div>
+      </article>
+    `).join('');
+
+    reportTips.innerHTML = [
+      '先看统计公报和年鉴，建立总量与趋势的底图，再看调查和研究解释差异。',
+      '长期追踪调查更适合回答“哪些群体差异更大”，官方公报更适合回答“整体变化到哪里了”。',
+      '把报告入口和议题页、证据库、讨论区联动使用，能避免只看单一热词做判断。',
+      '如果某个议题争议很大，优先回到原始报告和项目主页，而不是二手转述。'
+    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
+
+  renderHomeCharts(data);
+
   byId('methodHighlights').innerHTML = `<div class="stack-list">${data.site_meta.methodology_highlights.map((item) => `<div class="stack-card"><p>${escapeHtml(item)}</p></div>`).join('')}</div>`;
   renderDanmu('danmuStage', data.discussion_archive.slice(0, 5));
+}
+
+function renderHomeCharts(data) {
+  if (typeof Chart === 'undefined') return;
+  window.__homeCharts = window.__homeCharts || {};
+
+  const trendCanvas = byId('homeTrendChart');
+  const pollCanvas = byId('homePollChart');
+  const sourceCanvas = byId('homeSourceChart');
+  const notes = byId('dashboardNotes');
+
+  const trendLabels = data.trend_current.map((item) => getTopicName(item.topic));
+  const trendValues = data.trend_current.map((item) => item.heat_score);
+
+  const pollPayload = getPollPayload(data);
+  const topicTotals = Object.values((pollPayload.surveys || []).reduce((acc, poll) => {
+    if (!acc[poll.topic]) acc[poll.topic] = { topic: poll.topic, total: 0 };
+    acc[poll.topic].total += poll.options.reduce((sum, option) => sum + option.votes, 0);
+    return acc;
+  }, {}));
+
+  const sourceGroups = Object.entries(data.sources.reduce((acc, source) => {
+    acc[source.category] = (acc[source.category] || 0) + 1;
+    return acc;
+  }, {}));
+
+  if (trendCanvas) {
+    if (window.__homeCharts.trend) window.__homeCharts.trend.destroy();
+    window.__homeCharts.trend = new Chart(trendCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: trendLabels,
+        datasets: [{
+          label: '热度分值',
+          data: trendValues,
+          backgroundColor: ['#165dff', '#b42318', '#9a5b16', '#216e39', '#146c94', '#6a31a6']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  if (pollCanvas) {
+    if (window.__homeCharts.poll) window.__homeCharts.poll.destroy();
+    window.__homeCharts.poll = new Chart(pollCanvas.getContext('2d'), {
+      type: 'radar',
+      data: {
+        labels: topicTotals.map((item) => getTopicName(item.topic)),
+        datasets: [{
+          label: '基础样本量',
+          data: topicTotals.map((item) => item.total),
+          backgroundColor: 'rgba(180, 35, 24, 0.14)',
+          borderColor: '#b42318',
+          pointBackgroundColor: '#165dff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  if (sourceCanvas) {
+    if (window.__homeCharts.source) window.__homeCharts.source.destroy();
+    window.__homeCharts.source = new Chart(sourceCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: sourceGroups.map(([label]) => label),
+        datasets: [{
+          data: sourceGroups.map(([, value]) => value),
+          backgroundColor: ['#165dff', '#b42318', '#216e39', '#9a5b16', '#6a31a6']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  if (notes) {
+    const highestTrend = data.trend_current[0];
+    const largestPoll = topicTotals.slice().sort((a, b) => b.total - a.total)[0];
+    const largestSource = sourceGroups.slice().sort((a, b) => b[1] - a[1])[0];
+    notes.innerHTML = [
+      `当前热点强度最高的是“${highestTrend ? highestTrend.title : '暂无'}”。`,
+      `基础样本量最高的调查议题是“${largestPoll ? getTopicName(largestPoll.topic) : '暂无'}”。`,
+      `站内来源类型中占比最高的是“${largestSource ? largestSource[0] : '暂无'}”。`,
+      `报告库已经把官方统计、年鉴和长期追踪调查放到同一层入口。`
+    ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+  }
 }
 
 function relatedLinks(ids, lookup) {
@@ -614,7 +851,17 @@ function buildArchiveIndex(data) {
     url: item.url,
     keywords: `${item.title} ${item.summary} ${item.platform}`
   }));
-  return [...trendDocs, ...evidenceDocs, ...paperDocs, ...discussionDocs, ...socialDocs];
+  const reportDocs = data.reports.map((item) => ({
+    id: item.id,
+    type: 'report',
+    topic: item.topic,
+    title: item.title,
+    summary: item.summary,
+    date: `${item.year}-01-01`,
+    url: item.url,
+    keywords: `${item.title} ${item.publisher} ${item.category} ${item.summary}`
+  }));
+  return [...trendDocs, ...evidenceDocs, ...paperDocs, ...discussionDocs, ...socialDocs, ...reportDocs];
 }
 
 function renderArchive(data) {
@@ -630,7 +877,7 @@ function renderArchive(data) {
   const meta = byId('archiveMeta');
 
   topicSelect.innerHTML = Object.entries(TOPIC_NAMES).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
-  typeSelect.innerHTML = Object.entries(TYPE_NAMES).filter(([key]) => ['all', 'trend', 'evidence', 'paper', 'discussion', 'social'].includes(key)).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
+  typeSelect.innerHTML = Object.entries(TYPE_NAMES).filter(([key]) => ['all', 'trend', 'evidence', 'paper', 'discussion', 'social', 'report'].includes(key)).map(([value, label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join('');
 
   const params = new URLSearchParams(window.location.search);
   queryInput.value = params.get('q') || '';
@@ -1097,6 +1344,7 @@ function renderMethodology(data) {
 
 async function init() {
   initChrome();
+  initLiveInfoBar();
   const data = await loadData();
   renderFooter(data);
   const page = document.body.dataset.page;

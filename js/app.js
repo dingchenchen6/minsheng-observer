@@ -148,6 +148,30 @@ function renderCommandDeck(containerId, panels) {
   `).join('');
 }
 
+function renderCenterNavGrid(containerId, cards) {
+  const container = byId(containerId);
+  if (!container) return;
+  container.innerHTML = cards.map((card) => html`
+    <a class="nav-hub-card ${card.core ? 'is-core' : ''}" href="${escapeHtml(card.href)}">
+      <small>${escapeHtml(card.eyebrow)}</small>
+      <h3>${escapeHtml(card.title)}</h3>
+      <p>${escapeHtml(card.body)}</p>
+      <div class="nav-hub-stats">
+        ${(card.stats || []).map((item) => html`
+          <div class="nav-hub-stat">
+            <span>${escapeHtml(item.label)}</span>
+            <strong>${escapeHtml(item.value)}</strong>
+          </div>
+        `).join('')}
+      </div>
+      <div class="nav-hub-footer">
+        <span>${escapeHtml(card.cta)}</span>
+        <strong>${escapeHtml(card.signal)}</strong>
+      </div>
+    </a>
+  `).join('');
+}
+
 function configureChartDefaults() {
   if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
 
@@ -491,6 +515,10 @@ function renderHome(data) {
   const weeklyReport = ((data || {}).hotspot_analysis || {}).weekly_report || {};
   const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
   const digest = data.insight_digest || {};
+  const pollPayload = getPollPayload(data);
+  const pollSurveys = pollPayload.surveys || [];
+  const pollBaseVotes = pollSurveys.reduce((sum, poll) => sum + poll.options.reduce((acc, option) => acc + option.votes, 0), 0);
+  const exposureLead = ((digest.case_library || [])[0] || (digest.exposure_timeline || [])[0] || {});
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -571,6 +599,72 @@ function renderHome(data) {
         { label: 'Discussion', value: data.discussion_archive.length * 9, display: `${data.discussion_archive.length}`, note: '讨论摘录' },
         { label: 'Reports', value: data.reports.length * 7, display: `${data.reports.length}`, note: '报告与调查入口' }
       ])
+    }
+  ]);
+
+  renderCenterNavGrid('centerNavGrid', [
+    {
+      eyebrow: 'Signal Lane',
+      title: '热点追踪',
+      body: '按综合分、平台状态和历史均值查看今天最需要盯住的公共议题。',
+      href: 'trends.html',
+      cta: '进入信号面板',
+      signal: topSignal ? `TOP ${topSignal.label}` : '等待生成',
+      stats: [
+        { label: '热点条目', value: `${data.trend_current.length}` },
+        { label: '监测窗口', value: `${activeWindows.length || (data.editorial_watchlist.windows || []).length}` }
+      ]
+    },
+    {
+      eyebrow: 'Pulse Core',
+      title: '轻投票',
+      body: '这里作为中央主卡，集中进入民意脉冲面板，查看多议题投票、建议和样本变化。',
+      href: 'polls.html',
+      cta: '进入轻投票',
+      signal: `${pollSurveys.length} 题可投`,
+      core: true,
+      stats: [
+        { label: '题目总数', value: `${pollSurveys.length}` },
+        { label: '基础样本', value: `${pollBaseVotes}` },
+        { label: '建议板', value: `${(pollPayload.suggestion_boards || []).length}` },
+        { label: '联动议题', value: `${new Set(pollSurveys.map((item) => item.topic)).size}` }
+      ]
+    },
+    {
+      eyebrow: 'Public Feed',
+      title: '讨论与弹幕',
+      body: '从讨论摘录、精选观点和公开弹幕里看公众怎么表达分歧与建议。',
+      href: 'discuss.html',
+      cta: '进入讨论区',
+      signal: `${data.discussion_archive.length} 条归档`,
+      stats: [
+        { label: '精选评论', value: `${data.discussion_archive.filter((item) => item.featured).length}` },
+        { label: '最新评论', value: `${Math.min(8, data.discussion_archive.length)}` }
+      ]
+    },
+    {
+      eyebrow: 'Risk Route',
+      title: '问题曝光',
+      body: '把高风险个案、典型问题和处理路径单独拎出来，方便快速判断风险等级。',
+      href: 'exposure.html',
+      cta: '查看风险专题',
+      signal: exposureLead.title || '案例更新中',
+      stats: [
+        { label: '高风险案例', value: `${(digest.case_library || []).length}` },
+        { label: '问题线索', value: `${(digest.exposure_timeline || []).length}` }
+      ]
+    },
+    {
+      eyebrow: 'Archive Node',
+      title: '归档检索',
+      body: '按关键词、议题和时间回看旧热点、旧证据、旧讨论与报告入口。',
+      href: 'archive.html',
+      cta: '进入归档检索',
+      signal: `${data.trend_archive.length + data.evidence_records.length + data.papers.length + data.discussion_archive.length + data.reports.length} 条记录`,
+      stats: [
+        { label: '热点归档', value: `${data.trend_archive.length}` },
+        { label: '证据与论文', value: `${data.evidence_records.length + data.papers.length}` }
+      ]
     }
   ]);
 

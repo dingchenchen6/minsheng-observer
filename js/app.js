@@ -134,6 +134,41 @@ const THEME_LABELS = {
   ancient: '完全古风',
   future: '未来世界'
 };
+const THEME_ICONS = {
+  system: 'assets/theme/icons/system-sparkles.svg',
+  cyber: 'assets/theme/icons/cyber-cpu.svg',
+  ancient: 'assets/theme/icons/ancient-flower.svg',
+  future: 'assets/theme/icons/future-orbit.svg'
+};
+const THEME_PRESENTATIONS = {
+  cyber: {
+    eyebrow: '极光绿赛博都市监测台',
+    headline: '把热点、争议、证据与民意<br>投射到霓虹控制中枢',
+    copy: '这一套主题更像高空俯瞰的极光绿未来都市。网格、都市夜景、雨幕和发光信号把站点压成一座持续运行的公共议题控制台。',
+    loreTitle: '赛博朋克世界观',
+    loreBody: '我们把热点追踪、轻投票、曝光与归档做成霓虹城市里的信号屏幕，适合快速扫读、比较强弱和盯拐点。',
+    loreTags: ['Neon Grid', 'Aurora Green', 'City Console'],
+    modeCode: 'CYBER GRID'
+  },
+  ancient: {
+    eyebrow: '山水田园与人间烟火观察录',
+    headline: '让热点、证据、建议与归档<br>落在一卷唯美中国山水里',
+    copy: '这一套主题更像展开的山水长卷。远山、曲水、荷塘、白鹭、桃花和卷轴画面把公共议题放回具体的人间生活，读起来更温柔，也更有东方叙事感。',
+    loreTitle: '完全古风世界观',
+    loreBody: '我们把站点做成一卷可互动的田园山水。每个议题像卷轴上的一段行旅，既看现实问题，也保留审美与情绪的呼吸感。',
+    loreTags: ['Landscape Scroll', 'Peach Blossom', 'Riverside Lantern'],
+    modeCode: 'ANCIENT SCROLL'
+  },
+  future: {
+    eyebrow: '深空文明与异星信号前哨站',
+    headline: '把热点、数据、讨论与报告<br>送进黑洞边缘的未来指挥舱',
+    copy: '这一套主题像宇宙边缘的监测站。黑洞、轨道、星云、机器人与异星符号共同组成一个更强的未来世界，让信息像深空信号一样被捕获、排序和解读。',
+    loreTitle: '未来世界观',
+    loreBody: '我们把站点视作一座外星文明观测平台。热点像被捕获的脉冲，证据和报告像深空样本，被一层层送入分析舱。',
+    loreTags: ['Deep Space', 'Black Hole', 'Signal Orbit'],
+    modeCode: 'FUTURE GATE'
+  }
+};
 
 function getChartThemePalette() {
   const theme = document.body?.dataset.theme || 'ancient';
@@ -142,6 +177,14 @@ function getChartThemePalette() {
 
 function getThemeLabel(theme) {
   return THEME_LABELS[theme] || theme;
+}
+
+function getThemeIcon(theme) {
+  return THEME_ICONS[theme] || THEME_ICONS.system;
+}
+
+function getThemePresentation(theme) {
+  return THEME_PRESENTATIONS[theme] || THEME_PRESENTATIONS.ancient;
 }
 
 const CHART_PALETTE = new Proxy({}, {
@@ -304,10 +347,10 @@ function ensureThemeSwitcher() {
   toggle.setAttribute('role', 'group');
   toggle.setAttribute('aria-label', '站点主题切换');
   toggle.innerHTML = html`
-    <button class="theme-pill" type="button" data-theme-target="system" aria-pressed="false">跟随系统</button>
-    <button class="theme-pill" type="button" data-theme-target="cyber" aria-pressed="false">赛博朋克</button>
-    <button class="theme-pill" type="button" data-theme-target="ancient" aria-pressed="false">完全古风</button>
-    <button class="theme-pill" type="button" data-theme-target="future" aria-pressed="false">未来世界</button>
+    <button class="theme-pill" type="button" data-theme-target="system" aria-pressed="false"><img class="theme-pill-icon" src="${getThemeIcon('system')}" alt=""><span>跟随系统</span></button>
+    <button class="theme-pill" type="button" data-theme-target="cyber" aria-pressed="false"><img class="theme-pill-icon" src="${getThemeIcon('cyber')}" alt=""><span>赛博朋克</span></button>
+    <button class="theme-pill" type="button" data-theme-target="ancient" aria-pressed="false"><img class="theme-pill-icon" src="${getThemeIcon('ancient')}" alt=""><span>完全古风</span></button>
+    <button class="theme-pill" type="button" data-theme-target="future" aria-pressed="false"><img class="theme-pill-icon" src="${getThemeIcon('future')}" alt=""><span>未来世界</span></button>
   `;
 
   const navToggle = byId('navToggle');
@@ -1052,6 +1095,31 @@ function renderHome(data) {
   const exposureLead = ((digest.case_library || [])[0] || (digest.exposure_timeline || [])[0] || {});
   const currentTheme = document.body?.dataset.theme || 'ancient';
   const themeMedia = (data.theme_media || []).find((item) => item.theme === currentTheme) || {};
+  const themePresentation = getThemePresentation(currentTheme);
+
+  const heroEyebrow = byId('heroEyebrow');
+  if (heroEyebrow) heroEyebrow.textContent = themePresentation.eyebrow;
+  const heroHeadline = byId('heroHeadline');
+  if (heroHeadline) heroHeadline.innerHTML = themePresentation.headline;
+  const heroCopy = byId('heroCopy');
+  if (heroCopy) heroCopy.textContent = themePresentation.copy;
+  const themeLoreCard = byId('themeLoreCard');
+  if (themeLoreCard) {
+    themeLoreCard.innerHTML = html`
+      <div class="theme-lore-head">
+        <img class="theme-lore-icon" src="${escapeHtml(getThemeIcon(currentTheme))}" alt="">
+        <div>
+          <small>${escapeHtml(getThemeLabel(currentTheme))}</small>
+          <strong>${escapeHtml(themePresentation.loreTitle)}</strong>
+        </div>
+      </div>
+      <p>${escapeHtml(themePresentation.loreBody)}</p>
+      <div class="theme-lore-tags">
+        ${themePresentation.loreTags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}
+      </div>
+    `;
+  }
+
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -1094,7 +1162,7 @@ function renderHome(data) {
     { label: 'SYNC', value: data.site_meta.last_updated_label || '更新中' },
     { label: 'TRACK', value: `${data.trend_current.length} HOT` },
     { label: 'ARCHIVE', value: `${data.trend_archive.length} LOGS` },
-    { label: 'MODE', value: 'CYBER DESK' }
+    { label: 'MODE', value: themePresentation.modeCode }
   ]);
 
   const topSignals = ((data.hotspot_analysis || {}).topic_rankings || []).slice(0, 4);

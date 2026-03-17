@@ -16,6 +16,11 @@ THEME_URLS = {
     'cyber': 'https://images.unsplash.com/photo-1672872476232-da16b45c9001?q=80&w=2200&auto=format&fit=crop',
     'future': 'https://assets.science.nasa.gov/content/dam/science/astro/universe/2023/09/Black_Hole_Face_on_View.png/jcr:content/renditions/cq5dam.web.1280.1280.png'
 }
+ICON_URLS = {
+    'ancient': 'https://unpkg.com/lucide-static@latest/icons/flower-2.svg',
+    'cyber': 'https://unpkg.com/lucide-static@latest/icons/cpu.svg',
+    'future': 'https://unpkg.com/lucide-static@latest/icons/orbit.svg'
+}
 
 
 def load_theme_media() -> list[dict]:
@@ -39,15 +44,24 @@ def main() -> int:
     for item in theme_media:
         theme = item['theme']
         target = ROOT / item['local_asset']
+        url = THEME_URLS.get(theme)
         if target.exists() and not args.force:
             print(f'skip {theme}: {target.name}')
-            continue
-        url = THEME_URLS.get(theme)
-        if not url:
+        elif not url:
             print(f'missing url for {theme}')
-            continue
-        fetch(url, target)
-        print(f'fetched {theme}: {target.name}')
+        else:
+            fetch(url, target)
+            print(f'fetched {theme}: {target.name}')
+
+        icon_target = ROOT / item.get('icon_asset', '')
+        icon_url = ICON_URLS.get(theme)
+        if icon_target.name and icon_url:
+            if icon_target.exists() and not args.force:
+                print(f'skip {theme} icon: {icon_target.name}')
+            else:
+                icon_target.parent.mkdir(parents=True, exist_ok=True)
+                fetch(icon_url, icon_target)
+                print(f'fetched {theme} icon: {icon_target.name}')
 
     return 0
 

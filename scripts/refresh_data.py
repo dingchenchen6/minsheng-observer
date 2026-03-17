@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 from datetime import datetime, timezone
+from http.client import RemoteDisconnected
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
@@ -66,8 +67,13 @@ def check_url(url: str) -> bool:
     try:
         with urlopen(request, timeout=12):
             return True
-    except (HTTPError, URLError, ValueError):
-        return False
+    except (HTTPError, URLError, ValueError, RemoteDisconnected, TimeoutError):
+        try:
+            fallback_request = Request(url, headers={'User-Agent': USER_AGENT}, method='GET')
+            with urlopen(fallback_request, timeout=12):
+                return True
+        except Exception:
+            return False
 
 
 def average(values) -> float:

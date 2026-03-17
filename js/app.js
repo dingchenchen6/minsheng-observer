@@ -456,12 +456,14 @@ function initPoeticScene() {
     <div class="poetic-terraces terrace-back"></div>
     <div class="poetic-waterline"></div>
     <div class="poetic-river"></div>
+    <div class="poetic-lotus-field"><span class="lotus lotus-a"></span><span class="lotus lotus-b"></span><span class="lotus lotus-c"></span><span class="lotus lotus-d"></span></div>
     <div class="poetic-mountains poetic-mountains-front"></div>
     <div class="poetic-terraces terrace-front"></div>
     <div class="poetic-mist poetic-mist-front"></div>
     <div class="poetic-pavilion"></div>
     <div class="poetic-bridge"></div>
     <div class="poetic-boat"></div>
+    <div class="poetic-egrets"><span class="poetic-egret egret-a"></span><span class="poetic-egret egret-b"></span></div>
     <div class="poetic-willow willow-left"></div>
     <div class="poetic-willow willow-right"></div>
     <div class="poetic-branch poetic-branch-left"></div>

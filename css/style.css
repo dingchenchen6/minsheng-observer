@@ -532,6 +532,8 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
 .poetic-pavilion,
 .poetic-bridge,
 .poetic-butterflies,
+.poetic-lotus-field,
+.poetic-egrets,
 .fan-silhouette,
 .poetic-sun-glow,
 .poetic-terraces,
@@ -634,6 +636,66 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
   filter: blur(1px);
   animation: river-shimmer 10s ease-in-out infinite;
 }
+.poetic-lotus-field {
+  left: 30%;
+  right: 24%;
+  bottom: 8%;
+  height: 14%;
+  opacity: 0.72;
+}
+.lotus {
+  position: absolute;
+  width: 26px;
+  height: 18px;
+}
+.lotus::before,
+.lotus::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 60% 40% 60% 40%;
+  background: radial-gradient(circle at 40% 30%, rgba(255,255,255,0.94), rgba(255, 186, 214, 0.88) 58%, rgba(255, 138, 180, 0.5));
+}
+.lotus::after {
+  transform: scaleX(-1) rotate(12deg);
+}
+.lotus-a { left: 14%; top: 42%; }
+.lotus-b { left: 38%; top: 24%; transform: scale(1.08); }
+.lotus-c { left: 62%; top: 48%; transform: scale(0.94); }
+.lotus-d { left: 80%; top: 18%; transform: scale(1.12); }
+.poetic-egrets {
+  left: 54%;
+  top: 20%;
+  width: 180px;
+  height: 90px;
+  opacity: 0.56;
+}
+.poetic-egret {
+  position: absolute;
+  width: 42px;
+  height: 22px;
+  animation: crane-glide 11s ease-in-out infinite;
+}
+.poetic-egret::before,
+.poetic-egret::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  width: 24px;
+  height: 14px;
+  border-top: 2px solid rgba(255, 248, 240, 0.84);
+  border-radius: 60% 60% 0 0;
+}
+.poetic-egret::before {
+  left: 0;
+  transform: rotate(10deg);
+}
+.poetic-egret::after {
+  right: 0;
+  transform: scaleX(-1) rotate(12deg);
+}
+.egret-a { left: 18px; top: 12px; }
+.egret-b { left: 86px; top: 34px; animation-delay: -4s; transform: scale(0.86); }
 .poetic-boat {
   left: 44%;
   bottom: 13%;
@@ -780,6 +842,17 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
     radial-gradient(circle at 82% 18%, rgba(255, 236, 209, 0.08), transparent 16%),
     radial-gradient(circle at 52% 48%, rgba(255, 214, 232, 0.06), transparent 22%);
   animation: poetic-mist 16s ease-in-out infinite alternate;
+}
+.hero-copy,
+h1,
+.eyebrow,
+.brand-mark {
+  transition: color 0.28s ease, text-shadow 0.28s ease, letter-spacing 0.28s ease, background 0.28s ease;
+}
+.news-hero h1,
+.page-hero h1 {
+  position: relative;
+  z-index: 1;
 }
 .cyber-scene,
 .hero-cyber-scene {
@@ -1435,6 +1508,20 @@ body[data-theme="cyber"] .brand-mark {
   color: #a6ffe7;
   text-shadow: 0 0 18px rgba(118, 255, 213, 0.56), 0 0 38px rgba(86, 255, 191, 0.28);
 }
+body[data-theme="cyber"] h1,
+body[data-theme="cyber"] h2 {
+  color: #e9fff7;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 18px rgba(118, 255, 213, 0.26), 0 0 34px rgba(203, 255, 124, 0.12);
+}
+body[data-theme="cyber"] .hero-copy {
+  color: #d2fff0;
+  max-width: 58ch;
+}
+body[data-theme="cyber"] .eyebrow {
+  background: rgba(118, 255, 213, 0.1);
+  box-shadow: 0 0 16px rgba(118, 255, 213, 0.08);
+}
 body[data-theme="cyber"] .cyber-scene,
 body[data-theme="cyber"] .hero-cyber-scene {
   opacity: 1;
@@ -1521,6 +1608,23 @@ body[data-theme="ancient"] h3,
 body[data-theme="ancient"] h4 {
   font-family: "Noto Serif SC", serif;
   letter-spacing: 0.08em;
+}
+body[data-theme="ancient"] h1,
+body[data-theme="poetic"] h1 {
+  color: #fff2e8;
+  letter-spacing: 0.16em;
+  text-shadow: 0 0 18px rgba(255, 224, 196, 0.12), 0 0 28px rgba(255, 192, 214, 0.08);
+}
+body[data-theme="ancient"] .hero-copy,
+body[data-theme="poetic"] .hero-copy {
+  color: #f2e5dc;
+  max-width: 54ch;
+}
+body[data-theme="ancient"] .eyebrow,
+body[data-theme="poetic"] .eyebrow {
+  background: rgba(255, 225, 205, 0.08);
+  border-color: rgba(255, 224, 200, 0.14);
+  color: #ffe9d8;
 }
 body[data-theme="ancient"] .brand-mark,
 body[data-theme="poetic"] .brand-mark {
@@ -1642,6 +1746,24 @@ body[data-theme="future"] .hero-future-scene {
 body[data-theme="future"] .brand-mark {
   color: #d7fff1;
   text-shadow: 0 0 18px rgba(91, 255, 190, 0.48), 0 0 34px rgba(76, 168, 255, 0.24);
+}
+body[data-theme="future"] h1,
+body[data-theme="future"] h2 {
+  background: linear-gradient(90deg, #e6ffff 0%, #8ffff0 38%, #8cb8ff 72%, #d7fff7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 0.12em;
+  text-shadow: none;
+}
+body[data-theme="future"] .hero-copy {
+  color: #d6f7ff;
+  max-width: 58ch;
+}
+body[data-theme="future"] .eyebrow {
+  background: rgba(91, 255, 190, 0.08);
+  border-color: rgba(91, 255, 190, 0.16);
+  color: #bffff4;
 }
 body[data-theme="future"] .theme-switcher {
   background: rgba(4, 10, 22, 0.84);

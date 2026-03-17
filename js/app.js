@@ -221,6 +221,39 @@ function animateAuroraValues() {
   });
 }
 
+function buildPoeticPetals() {
+  return Array.from({ length: 18 }, (_, index) => {
+    const left = ((index * 11) + (index % 4) * 7) % 100;
+    const drift = (index % 2 === 0 ? 24 : -28) + (index % 5) * 7;
+    const duration = 11 + (index % 6) * 1.6;
+    const delay = index * -0.85;
+    const scale = (0.72 + (index % 5) * 0.12).toFixed(2);
+    const opacity = (0.38 + (index % 4) * 0.12).toFixed(2);
+    const rotate = `${12 + index * 17}deg`;
+    return html`<span class="poetic-petal" style="--petal-left:${left}%;--petal-drift:${drift}px;--petal-duration:${duration.toFixed(2)}s;--petal-delay:${delay.toFixed(2)}s;--petal-scale:${scale};--petal-opacity:${opacity};--petal-rotate:${rotate};"></span>`;
+  }).join('');
+}
+
+function initPoeticScene() {
+  if (!document.body || document.body.classList.contains('redirect-body')) return;
+  if (document.querySelector('.poetic-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'poetic-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="poetic-mist poetic-mist-back"></div>
+    <div class="poetic-mountains poetic-mountains-back"></div>
+    <div class="poetic-waterline"></div>
+    <div class="poetic-mountains poetic-mountains-front"></div>
+    <div class="poetic-mist poetic-mist-front"></div>
+    <div class="poetic-branch poetic-branch-left"></div>
+    <div class="poetic-branch poetic-branch-right"></div>
+    <div class="poetic-petals">${buildPoeticPetals()}</div>
+  `;
+  document.body.prepend(layer);
+}
+
 function configureChartDefaults() {
   if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
 
@@ -3064,6 +3097,7 @@ function renderMethodology(data) {
 
 async function init() {
   configureChartDefaults();
+  initPoeticScene();
   initChrome();
   initLiveInfoBar();
   const data = await loadData();

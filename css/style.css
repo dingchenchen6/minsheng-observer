@@ -18,6 +18,9 @@
   --purple: #8f88ff;
   --orange: #ffb072;
   --pink: #b995ff;
+  --blossom: #ffc8df;
+  --blossom-strong: #ff94bb;
+  --mist: rgba(216, 242, 255, 0.16);
   --shadow: 0 0 0 1px rgba(109, 244, 255, 0.12), 0 24px 56px rgba(0, 0, 0, 0.46), 0 0 42px rgba(143, 136, 255, 0.14);
   --radius: 24px;
   --radius-sm: 16px;
@@ -30,6 +33,7 @@ body {
   font-family: "Rajdhani", "Noto Sans SC", sans-serif;
   color: var(--ink);
   background:
+    radial-gradient(circle at 18% 12%, rgba(255, 180, 213, 0.12), transparent 18%),
     radial-gradient(circle at 14% 18%, rgba(109, 244, 255, 0.2), transparent 24%),
     radial-gradient(circle at 86% 14%, rgba(185, 149, 255, 0.16), transparent 22%),
     radial-gradient(circle at 78% 72%, rgba(149, 255, 214, 0.12), transparent 24%),
@@ -58,7 +62,8 @@ body::before {
 body::after {
   background:
     linear-gradient(120deg, transparent 0%, rgba(176, 136, 255, 0.08) 32%, transparent 56%),
-    linear-gradient(300deg, transparent 0%, rgba(149, 255, 214, 0.07) 40%, transparent 64%);
+    linear-gradient(300deg, transparent 0%, rgba(149, 255, 214, 0.07) 40%, transparent 64%),
+    radial-gradient(circle at 72% 18%, rgba(255, 189, 219, 0.08), transparent 18%);
   opacity: 0.92;
   animation: aurora-drift 20s ease-in-out infinite alternate;
 }
@@ -66,6 +71,140 @@ a { color: inherit; text-decoration: none; }
 img { max-width: 100%; }
 button, input, select, textarea { font: inherit; }
 .site-header, .live-info-bar, main, .backtop { position: relative; z-index: 1; }
+.poetic-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.poetic-scene > * {
+  position: absolute;
+  pointer-events: none;
+}
+.poetic-mist {
+  left: -8%;
+  right: -8%;
+  border-radius: 50%;
+  filter: blur(24px);
+  opacity: 0.72;
+  animation: poetic-mist 18s ease-in-out infinite alternate;
+}
+.poetic-mist-back {
+  bottom: 18%;
+  height: 24%;
+  background:
+    radial-gradient(circle at 20% 40%, rgba(205, 235, 255, 0.18), transparent 22%),
+    radial-gradient(circle at 70% 50%, rgba(255, 212, 230, 0.14), transparent 20%),
+    linear-gradient(90deg, transparent 0%, var(--mist) 20%, rgba(255, 219, 234, 0.1) 54%, transparent 100%);
+}
+.poetic-mist-front {
+  bottom: 5%;
+  height: 18%;
+  background:
+    radial-gradient(circle at 30% 48%, rgba(215, 244, 255, 0.22), transparent 20%),
+    radial-gradient(circle at 68% 45%, rgba(255, 207, 227, 0.16), transparent 18%),
+    linear-gradient(90deg, transparent 0%, rgba(219, 240, 255, 0.16) 22%, rgba(255, 214, 232, 0.12) 52%, transparent 100%);
+  animation-duration: 22s;
+}
+.poetic-waterline {
+  left: -12%;
+  right: -12%;
+  bottom: 10%;
+  height: 12%;
+  background:
+    linear-gradient(180deg, rgba(127, 233, 255, 0), rgba(127, 233, 255, 0.08)),
+    radial-gradient(circle at 50% 0%, rgba(255, 200, 224, 0.1), transparent 42%);
+  filter: blur(18px);
+  opacity: 0.7;
+}
+.poetic-mountains {
+  left: -10%;
+  right: -10%;
+  bottom: -2%;
+  height: 40%;
+  transform-origin: center bottom;
+}
+.poetic-mountains-back {
+  background:
+    linear-gradient(180deg, rgba(88, 130, 155, 0.04), rgba(10, 21, 36, 0.72)),
+    radial-gradient(circle at 24% 22%, rgba(176, 227, 244, 0.08), transparent 18%);
+  clip-path: polygon(0 100%, 0 72%, 8% 66%, 16% 42%, 22% 63%, 31% 36%, 40% 61%, 50% 28%, 60% 60%, 72% 34%, 80% 64%, 88% 46%, 100% 72%, 100% 100%);
+  opacity: 0.68;
+  filter: blur(2px);
+  animation: mountain-drift 20s ease-in-out infinite alternate;
+}
+.poetic-mountains-front {
+  background:
+    linear-gradient(180deg, rgba(34, 69, 91, 0.08), rgba(3, 10, 20, 0.9)),
+    radial-gradient(circle at 62% 20%, rgba(255, 188, 214, 0.08), transparent 16%);
+  clip-path: polygon(0 100%, 0 86%, 10% 76%, 18% 48%, 28% 78%, 38% 38%, 48% 82%, 58% 52%, 66% 76%, 76% 34%, 88% 80%, 100% 62%, 100% 100%);
+  opacity: 0.9;
+  transform: scaleY(1.04);
+}
+.poetic-branch {
+  top: -2%;
+  width: min(30vw, 360px);
+  height: 220px;
+  opacity: 0.82;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.18));
+}
+.poetic-branch::before,
+.poetic-branch::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.poetic-branch::before {
+  background:
+    linear-gradient(138deg, transparent 24%, rgba(77, 58, 82, 0.88) 25% 27%, transparent 28%),
+    linear-gradient(120deg, transparent 40%, rgba(89, 68, 96, 0.76) 41% 42%, transparent 43%),
+    linear-gradient(154deg, transparent 56%, rgba(66, 49, 76, 0.72) 57% 58%, transparent 59%);
+}
+.poetic-branch::after {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(255, 243, 249, 0.96) 0 3px, transparent 4px),
+    radial-gradient(circle at 24% 20%, rgba(255, 198, 225, 0.94) 0 7px, transparent 8px),
+    radial-gradient(circle at 32% 34%, rgba(255, 214, 234, 0.92) 0 6px, transparent 7px),
+    radial-gradient(circle at 44% 26%, rgba(255, 191, 221, 0.92) 0 8px, transparent 9px),
+    radial-gradient(circle at 58% 18%, rgba(255, 205, 229, 0.9) 0 7px, transparent 8px),
+    radial-gradient(circle at 62% 40%, rgba(255, 182, 214, 0.88) 0 6px, transparent 7px),
+    radial-gradient(circle at 76% 28%, rgba(255, 228, 239, 0.94) 0 4px, transparent 5px);
+}
+.poetic-branch-left {
+  left: -2%;
+  transform: rotate(-8deg);
+}
+.poetic-branch-right {
+  right: -1%;
+  transform: scaleX(-1) rotate(-10deg);
+}
+.poetic-petals {
+  inset: 0;
+}
+.poetic-petal {
+  position: absolute;
+  top: -12%;
+  left: var(--petal-left);
+  width: calc(12px * var(--petal-scale));
+  height: calc(18px * var(--petal-scale));
+  border-radius: 78% 36% 72% 44%;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 249, 252, 0.98), rgba(255, 212, 232, 0.95) 42%, rgba(255, 152, 191, 0.88) 100%);
+  box-shadow: 0 0 16px rgba(255, 178, 210, 0.18);
+  opacity: 0;
+  transform: rotate(var(--petal-rotate)) scale(var(--petal-scale));
+  animation: petal-fall var(--petal-duration) linear infinite;
+  animation-delay: var(--petal-delay);
+}
+.news-hero::before,
+.page-hero::before {
+  background:
+    radial-gradient(circle at 12% 16%, rgba(255, 194, 221, 0.12), transparent 18%),
+    radial-gradient(circle at 18% 28%, rgba(109, 244, 255, 0.14), transparent 24%),
+    radial-gradient(circle at 80% 18%, rgba(176, 136, 255, 0.14), transparent 20%),
+    linear-gradient(135deg, rgba(149, 255, 214, 0.05), transparent 52%);
+}
 .shell { width: min(var(--max), calc(100vw - 32px)); margin: 0 auto; }
 .narrow { width: min(780px, calc(100vw - 32px)); }
 .section { padding: 72px 0; }
@@ -894,6 +1033,29 @@ p { margin: 0; color: var(--ink-soft); }
   10% { opacity: 1; }
   100% { transform: translateX(420%); opacity: 0; }
 }
+@keyframes poetic-mist {
+  0% { transform: translate3d(-2%, 0, 0) scale(1); opacity: 0.54; }
+  100% { transform: translate3d(2%, -2%, 0) scale(1.08); opacity: 0.76; }
+}
+@keyframes mountain-drift {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(1.5%, -0.6%, 0); }
+}
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -6vh, 0) rotate(var(--petal-rotate)) scale(var(--petal-scale));
+    opacity: 0;
+  }
+  10% { opacity: var(--petal-opacity); }
+  50% {
+    transform: translate3d(var(--petal-drift), 48vh, 0) rotate(calc(var(--petal-rotate) + 100deg)) scale(calc(var(--petal-scale) * 1.04));
+    opacity: calc(var(--petal-opacity) * 0.92);
+  }
+  100% {
+    transform: translate3d(calc(var(--petal-drift) * -0.7), 112vh, 0) rotate(calc(var(--petal-rotate) + 220deg)) scale(calc(var(--petal-scale) * 0.95));
+    opacity: 0;
+  }
+}
 [data-report-kind="official-data"] { border-left: 4px solid var(--red); }
 [data-report-kind="official-yearbook"] { border-left: 4px solid var(--amber); }
 [data-report-kind="official-report"] { border-left: 4px solid var(--blue); }
@@ -948,4 +1110,29 @@ p { margin: 0; color: var(--ink-soft); }
   .sticky-filter { top: 118px; }
   .nav-hub-stats { grid-template-columns: 1fr; }
   .nav-hub-footer { flex-direction: column; align-items: flex-start; }
+  .poetic-branch {
+    width: min(42vw, 220px);
+    height: 160px;
+    opacity: 0.64;
+  }
+  .poetic-mountains {
+    height: 34%;
+  }
+  .poetic-petal:nth-child(n + 15) {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after,
+  .news-hero::before,
+  .aurora-panel,
+  .aurora-panel::before,
+  .poetic-scene *,
+  .chart-wrap::before {
+    animation: none !important;
+  }
+  .poetic-petal {
+    opacity: 0.25;
+  }
 }

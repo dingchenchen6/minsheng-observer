@@ -254,6 +254,47 @@ function initPoeticScene() {
   document.body.prepend(layer);
 }
 
+function buildFireflies() {
+  return Array.from({ length: 12 }, (_, index) => {
+    const left = 42 + (index % 5) * 10 + (index % 2 === 0 ? 0 : 3);
+    const top = 18 + (index % 4) * 12;
+    const size = (4 + (index % 3) * 1.6).toFixed(1);
+    const delay = (index * -0.9).toFixed(2);
+    const duration = (6.8 + (index % 4) * 1.4).toFixed(2);
+    return html`<span class="firefly-dot" style="left:${left}%;top:${top}%;width:${size}px;height:${size}px;--firefly-delay:${delay}s;--firefly-duration:${duration}s;"></span>`;
+  }).join('');
+}
+
+function buildCranes() {
+  return Array.from({ length: 3 }, (_, index) => {
+    const top = 18 + index * 18;
+    const left = index * 38;
+    const delay = (index * -1.6).toFixed(2);
+    const scale = (1 - index * 0.12).toFixed(2);
+    return html`<span class="crane" style="left:${left}px;top:${top}px;--bird-delay:${delay}s;--bird-scale:${scale};"></span>`;
+  }).join('');
+}
+
+function initHomeHeroScene() {
+  if (document.body?.dataset.page !== 'home') return;
+  const hero = document.querySelector('.news-hero');
+  if (!hero || hero.querySelector('.hero-romantic-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'hero-romantic-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="moon-halo"></div>
+    <div class="romantic-cloud cloud-a"></div>
+    <div class="romantic-cloud cloud-b"></div>
+    <div class="silk-lantern lantern-a"></div>
+    <div class="silk-lantern lantern-b"></div>
+    <div class="crane-flight">${buildCranes()}</div>
+    <div class="firefly-field">${buildFireflies()}</div>
+  `;
+  hero.appendChild(layer);
+}
+
 function configureChartDefaults() {
   if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
 
@@ -3098,6 +3139,7 @@ function renderMethodology(data) {
 async function init() {
   configureChartDefaults();
   initPoeticScene();
+  initHomeHeroScene();
   initChrome();
   initLiveInfoBar();
   const data = await loadData();

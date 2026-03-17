@@ -52,6 +52,7 @@ const REPORT_CATEGORY_NAMES = {
 };
 const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
 const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
+const THEME_STORAGE_KEY = 'minsheng_observer_theme_v1';
 
 const html = String.raw;
 const CHART_PALETTE = {
@@ -105,6 +106,65 @@ function formatSignedNumber(value) {
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function getStoredTheme() {
+  try {
+    const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return theme === 'cyber' || theme === 'poetic' ? theme : 'poetic';
+  } catch {
+    return 'poetic';
+  }
+}
+
+function syncThemeButtons(theme) {
+  document.querySelectorAll('[data-theme-target]').forEach((button) => {
+    const active = button.dataset.themeTarget === theme;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function applyTheme(theme, persist = true) {
+  const nextTheme = theme === 'cyber' ? 'cyber' : 'poetic';
+  document.body.dataset.theme = nextTheme;
+  syncThemeButtons(nextTheme);
+  if (persist) {
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    } catch {
+      // ignore storage failures
+    }
+  }
+}
+
+function ensureThemeSwitcher() {
+  const navShell = document.querySelector('.nav-shell');
+  if (!navShell || navShell.querySelector('.theme-switcher')) return;
+
+  const toggle = document.createElement('div');
+  toggle.className = 'theme-switcher';
+  toggle.setAttribute('role', 'group');
+  toggle.setAttribute('aria-label', '站点主题切换');
+  toggle.innerHTML = html`
+    <button class="theme-pill" type="button" data-theme-target="cyber" aria-pressed="false">赛博朋克</button>
+    <button class="theme-pill" type="button" data-theme-target="poetic" aria-pressed="false">赛博古风</button>
+  `;
+
+  const navToggle = byId('navToggle');
+  if (navToggle) {
+    navShell.insertBefore(toggle, navToggle);
+  } else {
+    navShell.appendChild(toggle);
+  }
+
+  toggle.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-theme-target]');
+    if (!button) return;
+    applyTheme(button.dataset.themeTarget);
+  });
+
+  syncThemeButtons(document.body.dataset.theme || getStoredTheme());
 }
 
 function renderDiagnosticChips(containerId, items) {
@@ -548,6 +608,7 @@ async function initLiveInfoBar() {
 }
 
 function initChrome() {
+  ensureThemeSwitcher();
   const toggle = byId('navToggle');
   const nav = byId('siteNav');
   const backTop = byId('backTop');
@@ -3137,6 +3198,7 @@ function renderMethodology(data) {
 }
 
 async function init() {
+  applyTheme(getStoredTheme(), false);
   configureChartDefaults();
   initPoeticScene();
   initHomeHeroScene();

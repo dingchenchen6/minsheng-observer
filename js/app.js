@@ -18,7 +18,8 @@ const DATA_FILES = [
   'insight_digest',
   'editorial_watchlist',
   'live_config',
-  'reports'
+  'reports',
+  'theme_media'
 ];
 const TOPIC_NAMES = {
   all: '全部议题',
@@ -127,10 +128,20 @@ const CHART_THEME_PALETTES = {
     tooltipBody: '#eaffff'
   }
 };
+const THEME_LABELS = {
+  system: '跟随系统',
+  cyber: '赛博朋克',
+  ancient: '完全古风',
+  future: '未来世界'
+};
 
 function getChartThemePalette() {
   const theme = document.body?.dataset.theme || 'ancient';
   return CHART_THEME_PALETTES[theme] || CHART_THEME_PALETTES.ancient;
+}
+
+function getThemeLabel(theme) {
+  return THEME_LABELS[theme] || theme;
 }
 
 const CHART_PALETTE = new Proxy({}, {
@@ -450,6 +461,7 @@ function initPoeticScene() {
   layer.className = 'poetic-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="poetic-scroll-illustration"></div>
     <div class="poetic-mist poetic-mist-back"></div>
     <div class="poetic-sun-glow"></div>
     <div class="poetic-mountains poetic-mountains-back"></div>
@@ -504,6 +516,7 @@ function initHomeHeroScene() {
   layer.className = 'hero-romantic-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="hero-ancient-scroll"></div>
     <div class="moon-halo"></div>
     <div class="romantic-cloud cloud-a"></div>
     <div class="romantic-cloud cloud-b"></div>
@@ -545,6 +558,7 @@ function initCyberScene() {
   layer.className = 'cyber-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="cyber-photo-backdrop"></div>
     <div class="cyber-grid-floor"></div>
     <div class="cyber-halo-sun"></div>
     <div class="cyber-cityline city-a">${buildCyberWindows()}</div>
@@ -566,6 +580,7 @@ function initHomeCyberScene() {
   layer.className = 'hero-cyber-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="hero-cyber-poster"></div>
     <div class="hero-cyber-orbit"></div>
     <div class="hero-cyber-panel panel-a"></div>
     <div class="hero-cyber-panel panel-b"></div>
@@ -602,6 +617,7 @@ function initFutureScene() {
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
     <div class="future-starfield">${buildFutureStars()}</div>
+    <div class="future-deepfield-art"></div>
     <div class="future-nebula nebula-a"></div>
     <div class="future-nebula nebula-b"></div>
     <div class="future-planet-haze"></div>
@@ -626,6 +642,7 @@ function initHomeFutureScene() {
   layer.className = 'hero-future-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="hero-future-vortex"></div>
     <div class="future-planet"></div>
     <div class="future-ufo"></div>
     <div class="future-portal"></div>
@@ -1033,6 +1050,8 @@ function renderHome(data) {
   const pollSurveys = pollPayload.surveys || [];
   const pollBaseVotes = pollSurveys.reduce((sum, poll) => sum + poll.options.reduce((acc, option) => acc + option.votes, 0), 0);
   const exposureLead = ((digest.case_library || [])[0] || (digest.exposure_timeline || [])[0] || {});
+  const currentTheme = document.body?.dataset.theme || 'ancient';
+  const themeMedia = (data.theme_media || []).find((item) => item.theme === currentTheme) || {};
   byId('heroStats').innerHTML = data.site_meta.hero_stats.map((item) => html`
     <div class="stat-row">
       <div class="stat-value">${escapeHtml(item.value)}</div>
@@ -1113,6 +1132,21 @@ function renderHome(data) {
         { label: 'Discussion', value: data.discussion_archive.length * 9, display: `${data.discussion_archive.length}`, note: '讨论摘录' },
         { label: 'Reports', value: data.reports.length * 7, display: `${data.reports.length}`, note: '报告与调查入口' }
       ])
+    },
+    {
+      eyebrow: 'Theme Feed',
+      title: `${getThemeLabel(currentTheme)} 素材氛围`,
+      body: '当前主题会加载联网抓取并本地归档的氛围图，保证风格鲜明，同时不牺牲加载速度。',
+      html: themeMedia.theme ? html`
+        <a class="theme-media-card" href="${escapeHtml(themeMedia.source_url || '#')}" target="_blank" rel="noopener noreferrer">
+          <span class="theme-media-thumb theme-media-${escapeHtml(themeMedia.theme)}"></span>
+          <span class="theme-media-copy">
+            <strong>${escapeHtml(themeMedia.title || '主题素材')}</strong>
+            <small>${escapeHtml(themeMedia.source_name || '外部来源')} · ${escapeHtml(themeMedia.creator || '已归档')}</small>
+            <small>${escapeHtml(themeMedia.license_note || '素材说明待补充')}</small>
+          </span>
+        </a>
+      ` : '<div class="theme-media-copy"><small>当前主题素材信息加载中</small></div>'
     }
   ]);
 

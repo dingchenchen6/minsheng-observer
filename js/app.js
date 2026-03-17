@@ -451,12 +451,19 @@ function initPoeticScene() {
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
     <div class="poetic-mist poetic-mist-back"></div>
+    <div class="poetic-sun-glow"></div>
     <div class="poetic-mountains poetic-mountains-back"></div>
+    <div class="poetic-terraces terrace-back"></div>
     <div class="poetic-waterline"></div>
+    <div class="poetic-river"></div>
     <div class="poetic-mountains poetic-mountains-front"></div>
+    <div class="poetic-terraces terrace-front"></div>
     <div class="poetic-mist poetic-mist-front"></div>
     <div class="poetic-pavilion"></div>
     <div class="poetic-bridge"></div>
+    <div class="poetic-boat"></div>
+    <div class="poetic-willow willow-left"></div>
+    <div class="poetic-willow willow-right"></div>
     <div class="poetic-branch poetic-branch-left"></div>
     <div class="poetic-branch poetic-branch-right"></div>
     <div class="poetic-petals">${buildPoeticPetals()}</div>
@@ -502,8 +509,65 @@ function initHomeHeroScene() {
     <div class="silk-lantern lantern-b"></div>
     <div class="fan-silhouette fan-a"></div>
     <div class="fan-silhouette fan-b"></div>
+    <div class="hero-boat-silhouette"></div>
+    <div class="hero-petal-haze"></div>
     <div class="crane-flight">${buildCranes()}</div>
     <div class="firefly-field">${buildFireflies()}</div>
+  `;
+  hero.appendChild(layer);
+}
+
+function buildCyberRain() {
+  return Array.from({ length: 20 }, (_, index) => {
+    const left = (index * 5 + (index % 4) * 6) % 100;
+    const delay = (index * -0.45).toFixed(2);
+    const duration = (3.8 + (index % 5) * 0.5).toFixed(2);
+    const opacity = (0.12 + (index % 4) * 0.05).toFixed(2);
+    return html`<span class="cyber-rain-drop" style="left:${left}%;--rain-delay:${delay}s;--rain-duration:${duration}s;--rain-opacity:${opacity};"></span>`;
+  }).join('');
+}
+
+function buildCyberWindows() {
+  return Array.from({ length: 36 }, (_, index) => {
+    const x = (index % 6) * 12 + 6;
+    const y = Math.floor(index / 6) * 12 + 10;
+    return html`<span class="city-window" style="left:${x}%;top:${y}%;"></span>`;
+  }).join('');
+}
+
+function initCyberScene() {
+  if (!document.body || document.body.classList.contains('redirect-body')) return;
+  if (document.querySelector('.cyber-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'cyber-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="cyber-grid-floor"></div>
+    <div class="cyber-halo-sun"></div>
+    <div class="cyber-cityline city-a">${buildCyberWindows()}</div>
+    <div class="cyber-cityline city-b">${buildCyberWindows()}</div>
+    <div class="cyber-billboard board-a"></div>
+    <div class="cyber-billboard board-b"></div>
+    <div class="cyber-rain">${buildCyberRain()}</div>
+    <div class="cyber-scan-beam"></div>
+  `;
+  document.body.prepend(layer);
+}
+
+function initHomeCyberScene() {
+  if (document.body?.dataset.page !== 'home') return;
+  const hero = document.querySelector('.news-hero');
+  if (!hero || hero.querySelector('.hero-cyber-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'hero-cyber-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="hero-cyber-orbit"></div>
+    <div class="hero-cyber-panel panel-a"></div>
+    <div class="hero-cyber-panel panel-b"></div>
+    <div class="hero-cyber-drone"></div>
   `;
   hero.appendChild(layer);
 }
@@ -538,11 +602,14 @@ function initFutureScene() {
     <div class="future-starfield">${buildFutureStars()}</div>
     <div class="future-nebula nebula-a"></div>
     <div class="future-nebula nebula-b"></div>
+    <div class="future-planet-haze"></div>
     <div class="future-blackhole"><span class="blackhole-core"></span><span class="blackhole-ring ring-a"></span><span class="blackhole-ring ring-b"></span></div>
     <div class="future-orbit orbit-a"></div>
     <div class="future-orbit orbit-b"></div>
     <div class="future-alien-sigil"></div>
     <div class="future-robot-eye"></div>
+    <div class="future-monolith monolith-a"></div>
+    <div class="future-monolith monolith-b"></div>
     <div class="future-signal-grid">${buildFutureSignals()}</div>
   `;
   document.body.prepend(layer);
@@ -559,6 +626,7 @@ function initHomeFutureScene() {
   layer.innerHTML = html`
     <div class="future-planet"></div>
     <div class="future-ufo"></div>
+    <div class="future-portal"></div>
     <div class="robot-sentinel">
       <span class="robot-head"></span>
       <span class="robot-eye left"></span>
@@ -3427,8 +3495,10 @@ async function init() {
   bindSystemThemeWatcher();
   configureChartDefaults();
   initPoeticScene();
+  initCyberScene();
   initFutureScene();
   initHomeHeroScene();
+  initHomeCyberScene();
   initHomeFutureScene();
   initChrome();
   initLiveInfoBar();

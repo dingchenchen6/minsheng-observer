@@ -533,10 +533,29 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
 .poetic-bridge,
 .poetic-butterflies,
 .fan-silhouette,
+.poetic-sun-glow,
+.poetic-terraces,
+.poetic-river,
+.poetic-boat,
+.poetic-willow,
+.hero-boat-silhouette,
+.hero-petal-haze,
+.cyber-scene,
+.hero-cyber-scene,
 .future-scene,
 .hero-future-scene {
   position: absolute;
   pointer-events: none;
+}
+.poetic-sun-glow {
+  left: 14%;
+  top: 10%;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 241, 208, 0.22), rgba(255, 207, 178, 0.12) 42%, transparent 72%);
+  filter: blur(10px);
+  opacity: 0.88;
 }
 .poetic-pavilion {
   left: 16%;
@@ -580,6 +599,99 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
   height: 26px;
   border-top: 1px solid rgba(255, 214, 190, 0.16);
   border-radius: 90px 90px 0 0;
+}
+.poetic-terraces {
+  left: -4%;
+  right: -4%;
+  bottom: 2%;
+  height: 22%;
+  opacity: 0.46;
+}
+.terrace-back {
+  background:
+    radial-gradient(circle at 22% 46%, rgba(181, 220, 171, 0.18), transparent 16%),
+    linear-gradient(180deg, rgba(66, 95, 83, 0.1), rgba(16, 28, 29, 0.46));
+  clip-path: polygon(0 100%, 0 72%, 12% 66%, 20% 70%, 34% 60%, 42% 66%, 58% 54%, 68% 62%, 82% 50%, 100% 58%, 100% 100%);
+}
+.terrace-front {
+  bottom: 0;
+  height: 18%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(214, 234, 182, 0.14), transparent 18%),
+    linear-gradient(180deg, rgba(91, 121, 84, 0.12), rgba(12, 22, 18, 0.62));
+  clip-path: polygon(0 100%, 0 78%, 10% 74%, 22% 82%, 36% 68%, 48% 80%, 60% 64%, 72% 76%, 86% 62%, 100% 70%, 100% 100%);
+}
+.poetic-river {
+  left: 26%;
+  right: 18%;
+  bottom: 5%;
+  height: 16%;
+  opacity: 0.52;
+  background:
+    linear-gradient(180deg, rgba(196, 224, 255, 0.06), rgba(198, 216, 255, 0.14)),
+    linear-gradient(90deg, transparent 0%, rgba(241, 228, 213, 0.08) 34%, rgba(188, 227, 255, 0.12) 60%, transparent 100%);
+  clip-path: polygon(8% 84%, 22% 68%, 34% 62%, 46% 48%, 56% 44%, 68% 32%, 82% 36%, 100% 24%, 100% 100%, 0 100%, 0 92%);
+  filter: blur(1px);
+  animation: river-shimmer 10s ease-in-out infinite;
+}
+.poetic-boat {
+  left: 44%;
+  bottom: 13%;
+  width: 76px;
+  height: 26px;
+  opacity: 0.5;
+}
+.poetic-boat::before,
+.poetic-boat::after {
+  content: "";
+  position: absolute;
+}
+.poetic-boat::before {
+  inset: 10px 0 0;
+  background: linear-gradient(180deg, rgba(44, 34, 39, 0.16), rgba(7, 12, 17, 0.88));
+  clip-path: polygon(0 100%, 10% 44%, 84% 40%, 100% 100%);
+}
+.poetic-boat::after {
+  left: 42px;
+  top: -2px;
+  width: 10px;
+  height: 22px;
+  background: linear-gradient(180deg, rgba(255, 226, 202, 0.42), rgba(255, 208, 184, 0.08));
+  clip-path: polygon(0 100%, 0 0, 100% 24%, 100% 100%);
+}
+.poetic-willow {
+  top: 10%;
+  width: 180px;
+  height: 260px;
+  opacity: 0.42;
+  animation: willow-sway 12s ease-in-out infinite;
+}
+.poetic-willow::before,
+.poetic-willow::after {
+  content: "";
+  position: absolute;
+}
+.poetic-willow::before {
+  left: 50%;
+  top: 0;
+  width: 5px;
+  height: 200px;
+  background: linear-gradient(180deg, rgba(73, 64, 48, 0.8), rgba(20, 17, 16, 0));
+}
+.poetic-willow::after {
+  inset: 0;
+  background:
+    linear-gradient(94deg, transparent 40%, rgba(163, 203, 151, 0.22) 41% 42%, transparent 43%),
+    linear-gradient(98deg, transparent 48%, rgba(163, 203, 151, 0.18) 49% 50%, transparent 51%),
+    linear-gradient(102deg, transparent 58%, rgba(163, 203, 151, 0.16) 59% 60%, transparent 61%),
+    linear-gradient(106deg, transparent 66%, rgba(163, 203, 151, 0.14) 67% 68%, transparent 69%);
+}
+.willow-left {
+  left: 2%;
+  transform: scaleX(-1);
+}
+.willow-right {
+  right: 2%;
 }
 .poetic-butterflies {
   inset: 0;
@@ -633,6 +745,195 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
   width: 94px;
   height: 58px;
   transform: rotate(14deg);
+}
+.hero-boat-silhouette {
+  position: absolute;
+  left: 54%;
+  bottom: 46px;
+  width: 120px;
+  height: 40px;
+  opacity: 0.22;
+}
+.hero-boat-silhouette::before,
+.hero-boat-silhouette::after {
+  content: "";
+  position: absolute;
+}
+.hero-boat-silhouette::before {
+  inset: 14px 0 0;
+  background: linear-gradient(180deg, rgba(255, 228, 207, 0.16), rgba(10, 11, 17, 0.84));
+  clip-path: polygon(0 100%, 10% 42%, 84% 38%, 100% 100%);
+}
+.hero-boat-silhouette::after {
+  left: 62px;
+  top: 0;
+  width: 14px;
+  height: 32px;
+  background: linear-gradient(180deg, rgba(255, 234, 216, 0.24), rgba(255, 208, 184, 0.08));
+  clip-path: polygon(0 100%, 0 0, 100% 28%, 100% 100%);
+}
+.hero-petal-haze {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 24%, rgba(255, 205, 225, 0.08), transparent 16%),
+    radial-gradient(circle at 82% 18%, rgba(255, 236, 209, 0.08), transparent 16%),
+    radial-gradient(circle at 52% 48%, rgba(255, 214, 232, 0.06), transparent 22%);
+  animation: poetic-mist 16s ease-in-out infinite alternate;
+}
+.cyber-scene,
+.hero-cyber-scene {
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+.cyber-scene {
+  position: fixed;
+}
+.cyber-grid-floor {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  bottom: -4%;
+  height: 34%;
+  background:
+    linear-gradient(rgba(111, 255, 213, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111, 255, 213, 0.1) 1px, transparent 1px);
+  background-size: 60px 32px;
+  transform: perspective(520px) rotateX(74deg);
+  transform-origin: center bottom;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,0.9) 36%, rgba(0,0,0,1));
+}
+.cyber-halo-sun {
+  position: absolute;
+  right: 10%;
+  top: 10%;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, rgba(182, 255, 218, 0.22), rgba(112, 255, 206, 0.16) 38%, rgba(12, 24, 22, 0.08) 62%, transparent 72%);
+  box-shadow: 0 0 68px rgba(111, 255, 213, 0.16);
+}
+.cyber-cityline {
+  position: absolute;
+  bottom: 0;
+  width: 38%;
+  height: 42%;
+  background:
+    linear-gradient(180deg, rgba(14, 31, 28, 0.18), rgba(4, 8, 13, 0.92));
+  clip-path: polygon(0 100%, 0 52%, 8% 48%, 8% 24%, 18% 24%, 18% 60%, 28% 60%, 28% 18%, 38% 18%, 38% 48%, 46% 48%, 46% 30%, 58% 30%, 58% 66%, 66% 66%, 66% 20%, 76% 20%, 76% 54%, 86% 54%, 86% 36%, 100% 36%, 100% 100%);
+  opacity: 0.78;
+}
+.city-a { left: 0; }
+.city-b {
+  right: 0;
+  transform: scaleX(-1);
+}
+.city-window {
+  position: absolute;
+  width: 7px;
+  height: 10px;
+  background: linear-gradient(180deg, rgba(232, 255, 243, 0.9), rgba(111, 255, 213, 0.42));
+  box-shadow: 0 0 8px rgba(111, 255, 213, 0.14);
+  opacity: 0.76;
+}
+.cyber-billboard {
+  position: absolute;
+  width: 110px;
+  height: 56px;
+  border: 1px solid rgba(111, 255, 213, 0.24);
+  background:
+    linear-gradient(135deg, rgba(111, 255, 213, 0.18), rgba(203, 255, 124, 0.12));
+  box-shadow: 0 0 18px rgba(111, 255, 213, 0.12);
+}
+.board-a {
+  left: 20%;
+  bottom: 30%;
+}
+.board-b {
+  right: 18%;
+  bottom: 24%;
+}
+.cyber-rain {
+  position: absolute;
+  inset: 0;
+}
+.cyber-rain-drop {
+  position: absolute;
+  top: -16%;
+  width: 1px;
+  height: 26%;
+  background: linear-gradient(180deg, rgba(193, 255, 236, 0), rgba(111, 255, 213, var(--rain-opacity)), rgba(111, 255, 213, 0));
+  animation: cyber-rain var(--rain-duration) linear infinite;
+  animation-delay: var(--rain-delay);
+}
+.cyber-scan-beam {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(111, 255, 213, 0.08) 48%, transparent 68%);
+  transform: translateX(-120%);
+  animation: cyber-sweep 10s linear infinite;
+}
+.hero-cyber-orbit {
+  position: absolute;
+  right: 12%;
+  top: 54px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(111, 255, 213, 0.18);
+  box-shadow: 0 0 26px rgba(111, 255, 213, 0.08);
+}
+.hero-cyber-orbit::before,
+.hero-cyber-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  border: 1px dashed rgba(203, 255, 124, 0.14);
+}
+.hero-cyber-panel {
+  position: absolute;
+  width: 120px;
+  height: 60px;
+  border: 1px solid rgba(111, 255, 213, 0.18);
+  background: linear-gradient(135deg, rgba(111, 255, 213, 0.14), rgba(203, 255, 124, 0.08));
+  backdrop-filter: blur(8px);
+}
+.panel-a {
+  right: 32%;
+  top: 106px;
+  transform: skewX(-18deg);
+}
+.panel-b {
+  right: 8%;
+  top: 204px;
+  transform: skewX(16deg);
+}
+.hero-cyber-drone {
+  position: absolute;
+  right: 24%;
+  top: 72px;
+  width: 88px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgba(214, 255, 233, 0.78), rgba(111, 255, 213, 0.18));
+  box-shadow: 0 0 24px rgba(111, 255, 213, 0.14);
+  animation: ufo-hover 7s ease-in-out infinite;
+}
+.hero-cyber-drone::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 24px;
+  border-radius: 50% 50% 36% 36%;
+  background: radial-gradient(circle at 50% 24%, rgba(236, 255, 245, 0.94), rgba(111, 255, 213, 0.26));
 }
 .future-scene,
 .hero-future-scene {
@@ -688,6 +989,16 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
   border-radius: 50%;
   filter: drop-shadow(0 0 34px rgba(83, 255, 194, 0.16));
   animation: blackhole-spin 18s linear infinite;
+}
+.future-planet-haze {
+  position: absolute;
+  left: -4%;
+  bottom: -10%;
+  width: 60%;
+  height: 38%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, rgba(71, 255, 196, 0.08), rgba(8, 24, 32, 0.18) 46%, transparent 68%);
+  filter: blur(10px);
 }
 .blackhole-core {
   position: absolute;
@@ -822,6 +1133,46 @@ body[data-theme-mode="system"] .theme-pill[data-theme-target="system"].active {
   height: 30px;
   border-radius: 50% 50% 40% 40%;
   background: radial-gradient(circle at 50% 30%, rgba(232, 255, 248, 0.86), rgba(98, 255, 208, 0.32));
+}
+.future-portal {
+  position: absolute;
+  left: 56%;
+  top: 22%;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 1px solid rgba(118, 243, 255, 0.18);
+  box-shadow: 0 0 30px rgba(91, 255, 190, 0.14);
+  animation: portal-pulse 6.8s ease-in-out infinite;
+}
+.future-portal::before,
+.future-portal::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  border: 1px solid rgba(118, 243, 255, 0.18);
+}
+.future-portal::after {
+  inset: 36%;
+  background: radial-gradient(circle, rgba(91, 255, 190, 0.12), transparent 70%);
+}
+.future-monolith {
+  position: absolute;
+  bottom: 4%;
+  width: 70px;
+  height: 180px;
+  background: linear-gradient(180deg, rgba(116, 244, 255, 0.12), rgba(5, 12, 20, 0.74));
+  border: 1px solid rgba(91, 255, 190, 0.12);
+  clip-path: polygon(20% 100%, 0 12%, 70% 0, 100% 88%, 80% 100%);
+  box-shadow: 0 0 22px rgba(76, 168, 255, 0.08);
+}
+.monolith-a {
+  left: 16%;
+}
+.monolith-b {
+  right: 18%;
+  height: 140px;
 }
 .robot-sentinel {
   position: absolute;
@@ -1064,10 +1415,10 @@ body[data-theme="cyber"] {
   --orange: #bfff86;
   --pink: #63f3c8;
   background:
-    radial-gradient(circle at 18% 16%, rgba(118, 255, 213, 0.28), transparent 22%),
-    radial-gradient(circle at 84% 14%, rgba(64, 255, 181, 0.18), transparent 24%),
-    radial-gradient(circle at 78% 74%, rgba(151, 255, 202, 0.12), transparent 24%),
-    linear-gradient(180deg, #01060c 0%, #021611 38%, #020b08 100%);
+    radial-gradient(circle at 18% 16%, rgba(118, 255, 213, 0.34), transparent 22%),
+    radial-gradient(circle at 84% 14%, rgba(64, 255, 181, 0.22), transparent 24%),
+    radial-gradient(circle at 78% 74%, rgba(151, 255, 202, 0.14), transparent 24%),
+    linear-gradient(180deg, #01060a 0%, #02140f 32%, #000805 100%);
 }
 body[data-theme="cyber"]::before {
   background:
@@ -1083,6 +1434,18 @@ body[data-theme="cyber"]::after {
 body[data-theme="cyber"] .brand-mark {
   color: #a6ffe7;
   text-shadow: 0 0 18px rgba(118, 255, 213, 0.56), 0 0 38px rgba(86, 255, 191, 0.28);
+}
+body[data-theme="cyber"] .cyber-scene,
+body[data-theme="cyber"] .hero-cyber-scene {
+  opacity: 1;
+  visibility: visible;
+}
+body[data-theme="cyber"] .future-scene,
+body[data-theme="cyber"] .hero-future-scene,
+body[data-theme="cyber"] .poetic-scene,
+body[data-theme="cyber"] .hero-romantic-scene {
+  opacity: 0;
+  visibility: hidden;
 }
 body[data-theme="cyber"] .theme-pill.active,
 body[data-theme="cyber"] .button.primary,
@@ -1119,11 +1482,11 @@ body[data-theme="cyber"] .chart-wrap canvas {
 body[data-theme="ancient"],
 body[data-theme="poetic"] {
   background:
-    radial-gradient(circle at 18% 12%, rgba(255, 205, 228, 0.18), transparent 18%),
-    radial-gradient(circle at 14% 18%, rgba(156, 224, 255, 0.12), transparent 24%),
-    radial-gradient(circle at 86% 14%, rgba(240, 198, 255, 0.1), transparent 22%),
-    radial-gradient(circle at 78% 72%, rgba(212, 252, 231, 0.08), transparent 24%),
-    linear-gradient(180deg, #08101d 0%, #101729 34%, #070d18 100%);
+    radial-gradient(circle at 18% 12%, rgba(255, 224, 205, 0.22), transparent 18%),
+    radial-gradient(circle at 14% 18%, rgba(173, 217, 255, 0.14), transparent 24%),
+    radial-gradient(circle at 86% 14%, rgba(255, 211, 226, 0.12), transparent 22%),
+    radial-gradient(circle at 78% 72%, rgba(214, 243, 207, 0.1), transparent 24%),
+    linear-gradient(180deg, #101926 0%, #1b2433 34%, #0a1118 100%);
 }
 body[data-theme="ancient"]::before,
 body[data-theme="poetic"]::before {
@@ -1182,8 +1545,12 @@ body[data-theme="poetic"] .hero-romantic-scene {
 }
 body[data-theme="ancient"] .future-scene,
 body[data-theme="ancient"] .hero-future-scene,
+body[data-theme="ancient"] .cyber-scene,
+body[data-theme="ancient"] .hero-cyber-scene,
 body[data-theme="poetic"] .future-scene,
-body[data-theme="poetic"] .hero-future-scene {
+body[data-theme="poetic"] .hero-future-scene,
+body[data-theme="poetic"] .cyber-scene,
+body[data-theme="poetic"] .hero-cyber-scene {
   opacity: 0;
   visibility: hidden;
 }
@@ -1257,11 +1624,13 @@ body[data-theme="future"]::before {
 }
 body[data-theme="future"]::after {
   background:
-    linear-gradient(120deg, transparent 0%, rgba(72, 255, 194, 0.07) 28%, transparent 56%),
-    linear-gradient(300deg, transparent 0%, rgba(76, 168, 255, 0.08) 40%, transparent 66%);
+    linear-gradient(120deg, transparent 0%, rgba(72, 255, 194, 0.08) 28%, transparent 56%),
+    linear-gradient(300deg, transparent 0%, rgba(76, 168, 255, 0.1) 40%, transparent 66%);
 }
 body[data-theme="future"] .poetic-scene,
-body[data-theme="future"] .hero-romantic-scene {
+body[data-theme="future"] .hero-romantic-scene,
+body[data-theme="future"] .cyber-scene,
+body[data-theme="future"] .hero-cyber-scene {
   opacity: 0;
   visibility: hidden;
 }
@@ -2092,9 +2461,27 @@ p { margin: 0; color: var(--ink-soft); }
   50% { transform: translate3d(14px, -10px, 0) scale(1.12); opacity: 0.4; }
   75% { opacity: 0.86; }
 }
+@keyframes river-shimmer {
+  0%, 100% { transform: translate3d(0, 0, 0) scaleY(1); opacity: 0.44; }
+  50% { transform: translate3d(1%, -2%, 0) scaleY(1.04); opacity: 0.6; }
+}
 @keyframes butterfly-drift {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-6deg); opacity: 0.44; }
   50% { transform: translate3d(16px, -18px, 0) rotate(12deg); opacity: 0.82; }
+}
+@keyframes willow-sway {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(6px, 4px, 0); }
+}
+@keyframes cyber-rain {
+  0% { transform: translate3d(0, -12%, 0); opacity: 0; }
+  14% { opacity: var(--rain-opacity); }
+  100% { transform: translate3d(-20px, 120%, 0); opacity: 0; }
+}
+@keyframes cyber-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: translateX(140%); opacity: 0; }
 }
 @keyframes star-twinkle {
   0%, 100% { transform: scale(0.8); opacity: 0.24; }
@@ -2119,6 +2506,10 @@ p { margin: 0; color: var(--ink-soft); }
 @keyframes ufo-hover {
   0%, 100% { transform: translate3d(0, 0, 0) rotate(-2deg); }
   50% { transform: translate3d(16px, -10px, 0) rotate(3deg); }
+}
+@keyframes portal-pulse {
+  0%, 100% { transform: scale(0.94); opacity: 0.42; }
+  50% { transform: scale(1.06); opacity: 0.82; }
 }
 @keyframes theme-wash {
   0% { opacity: 0; transform: scale(0.98); }

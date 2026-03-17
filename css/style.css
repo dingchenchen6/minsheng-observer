@@ -248,6 +248,18 @@ button, input, select, textarea { font: inherit; }
   color: #f8fdff;
   text-shadow: 0 0 18px rgba(109, 244, 255, 0.16), 0 0 28px rgba(176, 136, 255, 0.12);
   animation: aurora-value 3.6s ease-in-out infinite;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+}
+.aurora-value::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 46%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(109, 244, 255, 0.78), rgba(176, 136, 255, 0.1));
+  box-shadow: 0 0 14px rgba(109, 244, 255, 0.16);
 }
 .aurora-panel h3 {
   margin: 14px 0 10px;

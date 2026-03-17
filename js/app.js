@@ -178,12 +178,47 @@ function renderAuroraBoard(containerId, panels) {
   container.innerHTML = panels.map((panel) => html`
     <article class="aurora-panel ${panel.wide ? 'is-wide' : ''}">
       <small>${escapeHtml(panel.eyebrow)}</small>
-      <strong>${escapeHtml(panel.value)}</strong>
+      <strong class="aurora-value" data-count-value="${escapeHtml(panel.value)}">${escapeHtml(panel.value)}</strong>
       <h3>${escapeHtml(panel.title)}</h3>
       <p>${escapeHtml(panel.body)}</p>
       ${panel.note ? `<div class="aurora-note">${escapeHtml(panel.note)}</div>` : ''}
     </article>
   `).join('');
+}
+
+function animateAuroraValues() {
+  const values = document.querySelectorAll('.aurora-value[data-count-value]');
+  values.forEach((node) => {
+    if (node.dataset.animated === 'true') return;
+    const raw = node.dataset.countValue || '';
+    if (!/\d/.test(raw)) {
+      node.dataset.animated = 'true';
+      return;
+    }
+    const numeric = Number(raw.replace(/[^\d.-]/g, ''));
+    if (Number.isNaN(numeric)) {
+      node.dataset.animated = 'true';
+      return;
+    }
+    const isInteger = Number.isInteger(numeric);
+    const duration = 1200;
+    const start = performance.now();
+    node.dataset.animated = 'true';
+
+    function frame(now) {
+      const progress = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = numeric * eased;
+      node.textContent = isInteger ? `${Math.round(current)}` : current.toFixed(1);
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        node.textContent = raw;
+      }
+    }
+
+    requestAnimationFrame(frame);
+  });
 }
 
 function configureChartDefaults() {
@@ -230,7 +265,42 @@ function configureChartDefaults() {
     }
   };
 
-  Chart.register(neonPlugin);
+  const peakPlugin = {
+    id: 'signalPeaks',
+    afterDatasetsDraw(chart) {
+      if (chart.config.type !== 'line') return;
+      const { ctx } = chart;
+      const pulse = 4 + ((Date.now() / 260) % 4);
+      chart.data.datasets.forEach((dataset, datasetIndex) => {
+        if (dataset.peakMarker === false) return;
+        const values = (dataset.data || []).map((value) => Number(value)).filter((value) => !Number.isNaN(value));
+        if (!values.length) return;
+        const maxValue = Math.max(...values);
+        const peakIndex = dataset.data.findIndex((value) => Number(value) === maxValue);
+        const meta = chart.getDatasetMeta(datasetIndex);
+        const point = meta?.data?.[peakIndex];
+        if (!point) return;
+        const color = Array.isArray(dataset.borderColor) ? dataset.borderColor[0] : (dataset.borderColor || CHART_PALETTE.cyan);
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, pulse, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 2.8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.font = '11px Rajdhani, sans-serif';
+        ctx.fillStyle = '#f4fcff';
+        ctx.textAlign = 'left';
+        ctx.fillText('PEAK', point.x + 8, point.y - 8);
+        ctx.restore();
+      });
+    }
+  };
+
+  Chart.register(neonPlugin, peakPlugin);
   Chart.defaults.color = '#bfd7eb';
   Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
   Chart.defaults.font.size = 13;
@@ -3013,6 +3083,7 @@ async function init() {
     case 'methodology': renderMethodology(data); break;
     default: break;
   }
+  animateAuroraValues();
 }
 
 document.addEventListener('DOMContentLoaded', () => {

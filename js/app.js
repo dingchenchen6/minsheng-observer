@@ -53,6 +53,7 @@ const REPORT_CATEGORY_NAMES = {
 const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
 const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 const THEME_STORAGE_KEY = 'minsheng_observer_theme_v1';
+let systemThemeWatcherBound = false;
 
 const html = String.raw;
 const CHART_PALETTE = {
@@ -108,34 +109,62 @@ function byId(id) {
   return document.getElementById(id);
 }
 
-function getStoredTheme() {
+function getStoredThemeMode() {
   try {
     const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return theme === 'cyber' || theme === 'poetic' ? theme : 'poetic';
+    return theme === 'cyber' || theme === 'poetic' || theme === 'system' ? theme : 'system';
   } catch {
-    return 'poetic';
+    return 'system';
   }
 }
 
-function syncThemeButtons(theme) {
+function getSystemPreferredTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'cyber' : 'poetic';
+}
+
+function resolveThemeMode(mode) {
+  if (mode === 'cyber' || mode === 'poetic') return mode;
+  return getSystemPreferredTheme();
+}
+
+function syncThemeButtons(mode) {
   document.querySelectorAll('[data-theme-target]').forEach((button) => {
-    const active = button.dataset.themeTarget === theme;
+    const active = button.dataset.themeTarget === mode;
     button.classList.toggle('active', active);
     button.setAttribute('aria-pressed', active ? 'true' : 'false');
   });
 }
 
-function applyTheme(theme, persist = true) {
-  const nextTheme = theme === 'cyber' ? 'cyber' : 'poetic';
-  document.body.dataset.theme = nextTheme;
-  syncThemeButtons(nextTheme);
+function applyThemeMode(mode, persist = true) {
+  const nextMode = mode === 'cyber' || mode === 'poetic' ? mode : 'system';
+  const effectiveTheme = resolveThemeMode(nextMode);
+  document.body.dataset.themeMode = nextMode;
+  document.body.dataset.theme = effectiveTheme;
+  syncThemeButtons(nextMode);
   if (persist) {
     try {
-      window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+      window.localStorage.setItem(THEME_STORAGE_KEY, nextMode);
     } catch {
       // ignore storage failures
     }
   }
+}
+
+function bindSystemThemeWatcher() {
+  if (systemThemeWatcherBound || !window.matchMedia) return;
+  const query = window.matchMedia('(prefers-color-scheme: dark)');
+  const handleChange = () => {
+    if ((document.body.dataset.themeMode || getStoredThemeMode()) === 'system') {
+      applyThemeMode('system', false);
+    }
+  };
+
+  if (typeof query.addEventListener === 'function') {
+    query.addEventListener('change', handleChange);
+  } else if (typeof query.addListener === 'function') {
+    query.addListener(handleChange);
+  }
+  systemThemeWatcherBound = true;
 }
 
 function ensureThemeSwitcher() {
@@ -147,6 +176,7 @@ function ensureThemeSwitcher() {
   toggle.setAttribute('role', 'group');
   toggle.setAttribute('aria-label', '站点主题切换');
   toggle.innerHTML = html`
+    <button class="theme-pill" type="button" data-theme-target="system" aria-pressed="false">跟随系统</button>
     <button class="theme-pill" type="button" data-theme-target="cyber" aria-pressed="false">赛博朋克</button>
     <button class="theme-pill" type="button" data-theme-target="poetic" aria-pressed="false">赛博古风</button>
   `;
@@ -161,10 +191,10 @@ function ensureThemeSwitcher() {
   toggle.addEventListener('click', (event) => {
     const button = event.target.closest('[data-theme-target]');
     if (!button) return;
-    applyTheme(button.dataset.themeTarget);
+    applyThemeMode(button.dataset.themeTarget);
   });
 
-  syncThemeButtons(document.body.dataset.theme || getStoredTheme());
+  syncThemeButtons(document.body.dataset.themeMode || getStoredThemeMode());
 }
 
 function renderDiagnosticChips(containerId, items) {
@@ -3198,7 +3228,8 @@ function renderMethodology(data) {
 }
 
 async function init() {
-  applyTheme(getStoredTheme(), false);
+  applyThemeMode(getStoredThemeMode(), false);
+  bindSystemThemeWatcher();
   configureChartDefaults();
   initPoeticScene();
   initHomeHeroScene();

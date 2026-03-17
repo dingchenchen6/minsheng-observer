@@ -56,21 +56,89 @@ const THEME_STORAGE_KEY = 'minsheng_observer_theme_v1';
 let systemThemeWatcherBound = false;
 
 const html = String.raw;
-const CHART_PALETTE = {
-  cyan: '#6df4ff',
-  pink: '#b995ff',
-  amber: '#ffd56a',
-  green: '#95ffd6',
-  violet: '#8f88ff',
-  orange: '#ffb072',
-  red: '#ff9780',
-  cyanSoft: 'rgba(109,244,255,0.16)',
-  pinkSoft: 'rgba(185,149,255,0.16)',
-  greenSoft: 'rgba(149,255,214,0.14)',
-  redSoft: 'rgba(255,151,128,0.14)',
-  violetSoft: 'rgba(143,136,255,0.16)',
-  light: '#c8fbff'
+const CHART_THEME_PALETTES = {
+  cyber: {
+    cyan: '#9bffe4',
+    pink: '#63f3c8',
+    amber: '#d8ff7a',
+    green: '#76ffd5',
+    violet: '#4bd6ae',
+    orange: '#bfff86',
+    red: '#8cffb1',
+    cyanSoft: 'rgba(155,255,228,0.18)',
+    pinkSoft: 'rgba(99,243,200,0.18)',
+    greenSoft: 'rgba(118,255,213,0.16)',
+    redSoft: 'rgba(140,255,177,0.14)',
+    violetSoft: 'rgba(75,214,174,0.16)',
+    light: '#ebfff6',
+    text: '#dafef1',
+    legend: '#edfff8',
+    grid: 'rgba(118,255,213,0.12)',
+    border: 'rgba(118,255,213,0.16)',
+    ticks: '#b8f6e3',
+    tooltipBg: 'rgba(3, 16, 17, 0.94)',
+    tooltipBorder: 'rgba(118,255,213,0.2)',
+    tooltipBody: '#eafff7'
+  },
+  ancient: {
+    cyan: '#8fdfff',
+    pink: '#ffc6df',
+    amber: '#ffd89c',
+    green: '#b7f0d1',
+    violet: '#d6b8ff',
+    orange: '#ffb990',
+    red: '#ffadbc',
+    cyanSoft: 'rgba(143,223,255,0.18)',
+    pinkSoft: 'rgba(255,198,223,0.18)',
+    greenSoft: 'rgba(183,240,209,0.16)',
+    redSoft: 'rgba(255,173,188,0.14)',
+    violetSoft: 'rgba(214,184,255,0.14)',
+    light: '#fff7ef',
+    text: '#f4e8e0',
+    legend: '#fff4eb',
+    grid: 'rgba(255,221,200,0.12)',
+    border: 'rgba(255,221,200,0.16)',
+    ticks: '#f3ddd0',
+    tooltipBg: 'rgba(26, 19, 30, 0.94)',
+    tooltipBorder: 'rgba(255,210,190,0.18)',
+    tooltipBody: '#fff3ea'
+  },
+  future: {
+    cyan: '#8ffff0',
+    pink: '#87b8ff',
+    amber: '#afffff',
+    green: '#5bffbe',
+    violet: '#4ca8ff',
+    orange: '#79fff2',
+    red: '#84ffd8',
+    cyanSoft: 'rgba(143,255,240,0.18)',
+    pinkSoft: 'rgba(135,184,255,0.18)',
+    greenSoft: 'rgba(91,255,190,0.16)',
+    redSoft: 'rgba(132,255,216,0.14)',
+    violetSoft: 'rgba(76,168,255,0.16)',
+    light: '#ecffff',
+    text: '#dffbff',
+    legend: '#efffff',
+    grid: 'rgba(91,255,190,0.12)',
+    border: 'rgba(91,255,190,0.16)',
+    ticks: '#bfeeed',
+    tooltipBg: 'rgba(2, 10, 22, 0.94)',
+    tooltipBorder: 'rgba(91,255,190,0.18)',
+    tooltipBody: '#eaffff'
+  }
 };
+
+function getChartThemePalette() {
+  const theme = document.body?.dataset.theme || 'ancient';
+  return CHART_THEME_PALETTES[theme] || CHART_THEME_PALETTES.ancient;
+}
+
+const CHART_PALETTE = new Proxy({}, {
+  get(_, prop) {
+    const palette = getChartThemePalette();
+    return palette[prop] ?? CHART_THEME_PALETTES.ancient[prop];
+  }
+});
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -109,6 +177,10 @@ function byId(id) {
   return document.getElementById(id);
 }
 
+function getCurrentPage() {
+  return document.body?.dataset.page || '';
+}
+
 function getStoredThemeMode() {
   try {
     const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
@@ -139,8 +211,10 @@ function syncThemeButtons(mode) {
 function applyThemeMode(mode, persist = true) {
   const nextMode = mode === 'cyber' || mode === 'ancient' || mode === 'future' ? mode : 'system';
   const effectiveTheme = resolveThemeMode(nextMode);
+  const previousTheme = document.body?.dataset.theme;
   document.body.dataset.themeMode = nextMode;
   document.body.dataset.theme = effectiveTheme;
+  document.body.dataset.themeTransition = effectiveTheme;
   syncThemeButtons(nextMode);
   if (persist) {
     try {
@@ -149,6 +223,48 @@ function applyThemeMode(mode, persist = true) {
       // ignore storage failures
     }
   }
+  if (previousTheme && previousTheme !== effectiveTheme) {
+    triggerThemeTransition(effectiveTheme);
+    applyChartDefaults();
+    rerenderThemeAwarePage();
+  }
+}
+
+function ensureThemeTransitionOverlay() {
+  if (!document.body || document.querySelector('.theme-transition-overlay')) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'theme-transition-overlay';
+  overlay.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(overlay);
+}
+
+function triggerThemeTransition(theme) {
+  ensureThemeTransitionOverlay();
+  const overlay = document.querySelector('.theme-transition-overlay');
+  if (!overlay) return;
+  overlay.dataset.theme = theme;
+  overlay.classList.remove('is-animating');
+  void overlay.offsetWidth;
+  overlay.classList.add('is-animating');
+  window.clearTimeout(window.__themeTransitionTimer);
+  window.__themeTransitionTimer = window.setTimeout(() => {
+    overlay.classList.remove('is-animating');
+  }, 900);
+}
+
+function rerenderThemeAwarePage() {
+  const data = window.__appData;
+  if (!data) return;
+  switch (getCurrentPage()) {
+    case 'home': renderHome(data); break;
+    case 'analysis': renderAnalysis(data); break;
+    case 'trends': renderTrends(data); break;
+    case 'exposure': renderExposure(data); break;
+    case 'guide': renderGuide(data); break;
+    case 'polls': renderPolls(data); break;
+    default: return;
+  }
+  animateAuroraValues();
 }
 
 function bindSystemThemeWatcher() {
@@ -455,8 +571,32 @@ function initHomeFutureScene() {
   hero.appendChild(layer);
 }
 
+function applyChartDefaults() {
+  if (typeof Chart === 'undefined') return;
+  const palette = getChartThemePalette();
+  Chart.defaults.color = palette.text;
+  Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
+  Chart.defaults.font.size = 13;
+  Chart.defaults.plugins.legend.labels.color = palette.legend;
+  Chart.defaults.plugins.legend.labels.boxWidth = 14;
+  Chart.defaults.plugins.tooltip.backgroundColor = palette.tooltipBg;
+  Chart.defaults.plugins.tooltip.borderColor = palette.tooltipBorder;
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
+  Chart.defaults.plugins.tooltip.bodyColor = palette.tooltipBody;
+  Chart.defaults.scale.grid.color = palette.grid;
+  Chart.defaults.scale.border.color = palette.border;
+  Chart.defaults.scale.ticks.color = palette.ticks;
+  Chart.defaults.elements.line.borderWidth = 2.5;
+  Chart.defaults.elements.point.radius = 3;
+  Chart.defaults.elements.point.hoverRadius = 5;
+}
+
 function configureChartDefaults() {
-  if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) return;
+  if (typeof Chart === 'undefined' || window.__cyberChartsConfigured) {
+    applyChartDefaults();
+    return;
+  }
 
   const neonPlugin = {
     id: 'cyberGlow',
@@ -535,22 +675,7 @@ function configureChartDefaults() {
   };
 
   Chart.register(neonPlugin, peakPlugin);
-  Chart.defaults.color = '#bfd7eb';
-  Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
-  Chart.defaults.font.size = 13;
-  Chart.defaults.plugins.legend.labels.color = '#e6f8ff';
-  Chart.defaults.plugins.legend.labels.boxWidth = 14;
-  Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(8, 17, 34, 0.94)';
-  Chart.defaults.plugins.tooltip.borderColor = 'rgba(109, 244, 255, 0.18)';
-  Chart.defaults.plugins.tooltip.borderWidth = 1;
-  Chart.defaults.plugins.tooltip.titleColor = '#ffffff';
-  Chart.defaults.plugins.tooltip.bodyColor = '#dffcff';
-  Chart.defaults.scale.grid.color = 'rgba(109, 244, 255, 0.1)';
-  Chart.defaults.scale.border.color = 'rgba(109, 244, 255, 0.14)';
-  Chart.defaults.scale.ticks.color = '#a9c7df';
-  Chart.defaults.elements.line.borderWidth = 2.5;
-  Chart.defaults.elements.point.radius = 3;
-  Chart.defaults.elements.point.hoverRadius = 5;
+  applyChartDefaults();
   window.__cyberChartsConfigured = true;
 }
 
@@ -3308,6 +3433,7 @@ async function init() {
   initChrome();
   initLiveInfoBar();
   const data = await loadData();
+  window.__appData = data;
   renderFooter(data);
   const page = document.body.dataset.page;
   switch (page) {

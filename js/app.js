@@ -112,18 +112,19 @@ function byId(id) {
 function getStoredThemeMode() {
   try {
     const theme = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return theme === 'cyber' || theme === 'poetic' || theme === 'system' ? theme : 'system';
+    if (theme === 'poetic') return 'ancient';
+    return theme === 'cyber' || theme === 'ancient' || theme === 'future' || theme === 'system' ? theme : 'system';
   } catch {
     return 'system';
   }
 }
 
 function getSystemPreferredTheme() {
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'cyber' : 'poetic';
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'cyber' : 'ancient';
 }
 
 function resolveThemeMode(mode) {
-  if (mode === 'cyber' || mode === 'poetic') return mode;
+  if (mode === 'cyber' || mode === 'ancient' || mode === 'future') return mode;
   return getSystemPreferredTheme();
 }
 
@@ -136,7 +137,7 @@ function syncThemeButtons(mode) {
 }
 
 function applyThemeMode(mode, persist = true) {
-  const nextMode = mode === 'cyber' || mode === 'poetic' ? mode : 'system';
+  const nextMode = mode === 'cyber' || mode === 'ancient' || mode === 'future' ? mode : 'system';
   const effectiveTheme = resolveThemeMode(nextMode);
   document.body.dataset.themeMode = nextMode;
   document.body.dataset.theme = effectiveTheme;
@@ -178,7 +179,8 @@ function ensureThemeSwitcher() {
   toggle.innerHTML = html`
     <button class="theme-pill" type="button" data-theme-target="system" aria-pressed="false">跟随系统</button>
     <button class="theme-pill" type="button" data-theme-target="cyber" aria-pressed="false">赛博朋克</button>
-    <button class="theme-pill" type="button" data-theme-target="poetic" aria-pressed="false">赛博古风</button>
+    <button class="theme-pill" type="button" data-theme-target="ancient" aria-pressed="false">完全古风</button>
+    <button class="theme-pill" type="button" data-theme-target="future" aria-pressed="false">未来世界</button>
   `;
 
   const navToggle = byId('navToggle');
@@ -337,9 +339,12 @@ function initPoeticScene() {
     <div class="poetic-waterline"></div>
     <div class="poetic-mountains poetic-mountains-front"></div>
     <div class="poetic-mist poetic-mist-front"></div>
+    <div class="poetic-pavilion"></div>
+    <div class="poetic-bridge"></div>
     <div class="poetic-branch poetic-branch-left"></div>
     <div class="poetic-branch poetic-branch-right"></div>
     <div class="poetic-petals">${buildPoeticPetals()}</div>
+    <div class="poetic-butterflies"><span class="poetic-butterfly butterfly-a"></span><span class="poetic-butterfly butterfly-b"></span><span class="poetic-butterfly butterfly-c"></span></div>
   `;
   document.body.prepend(layer);
 }
@@ -379,8 +384,73 @@ function initHomeHeroScene() {
     <div class="romantic-cloud cloud-b"></div>
     <div class="silk-lantern lantern-a"></div>
     <div class="silk-lantern lantern-b"></div>
+    <div class="fan-silhouette fan-a"></div>
+    <div class="fan-silhouette fan-b"></div>
     <div class="crane-flight">${buildCranes()}</div>
     <div class="firefly-field">${buildFireflies()}</div>
+  `;
+  hero.appendChild(layer);
+}
+
+function buildFutureStars() {
+  return Array.from({ length: 24 }, (_, index) => {
+    const left = (index * 17 + (index % 3) * 9) % 100;
+    const top = (index * 13 + (index % 4) * 7) % 100;
+    const size = (1.8 + (index % 4) * 1.1).toFixed(1);
+    const delay = (index * -0.45).toFixed(2);
+    const duration = (4.8 + (index % 5) * 1.1).toFixed(2);
+    return html`<span class="future-star" style="left:${left}%;top:${top}%;width:${size}px;height:${size}px;--star-delay:${delay}s;--star-duration:${duration}s;"></span>`;
+  }).join('');
+}
+
+function buildFutureSignals() {
+  return Array.from({ length: 5 }, (_, index) => {
+    const rotate = -18 + index * 10;
+    const delay = (index * -0.8).toFixed(2);
+    return html`<span class="future-signal signal-${index + 1}" style="--signal-rotate:${rotate}deg;--signal-delay:${delay}s;"></span>`;
+  }).join('');
+}
+
+function initFutureScene() {
+  if (!document.body || document.body.classList.contains('redirect-body')) return;
+  if (document.querySelector('.future-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'future-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="future-starfield">${buildFutureStars()}</div>
+    <div class="future-nebula nebula-a"></div>
+    <div class="future-nebula nebula-b"></div>
+    <div class="future-blackhole"><span class="blackhole-core"></span><span class="blackhole-ring ring-a"></span><span class="blackhole-ring ring-b"></span></div>
+    <div class="future-orbit orbit-a"></div>
+    <div class="future-orbit orbit-b"></div>
+    <div class="future-alien-sigil"></div>
+    <div class="future-robot-eye"></div>
+    <div class="future-signal-grid">${buildFutureSignals()}</div>
+  `;
+  document.body.prepend(layer);
+}
+
+function initHomeFutureScene() {
+  if (document.body?.dataset.page !== 'home') return;
+  const hero = document.querySelector('.news-hero');
+  if (!hero || hero.querySelector('.hero-future-scene')) return;
+
+  const layer = document.createElement('div');
+  layer.className = 'hero-future-scene';
+  layer.setAttribute('aria-hidden', 'true');
+  layer.innerHTML = html`
+    <div class="future-planet"></div>
+    <div class="future-ufo"></div>
+    <div class="robot-sentinel">
+      <span class="robot-head"></span>
+      <span class="robot-eye left"></span>
+      <span class="robot-eye right"></span>
+      <span class="robot-neck"></span>
+    </div>
+    <div class="alien-glyph glyph-a"></div>
+    <div class="alien-glyph glyph-b"></div>
   `;
   hero.appendChild(layer);
 }
@@ -3232,7 +3302,9 @@ async function init() {
   bindSystemThemeWatcher();
   configureChartDefaults();
   initPoeticScene();
+  initFutureScene();
   initHomeHeroScene();
+  initHomeFutureScene();
   initChrome();
   initLiveInfoBar();
   const data = await loadData();

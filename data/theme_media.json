@@ -10,7 +10,7 @@
     "icon_asset": "assets/theme/icons/ancient-flower.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/flower-2.svg",
-    "summary": "用于当前主题的动态壁纸底图素材。"
+    "summary": "背景素材。"
   },
   {
     "theme": "cyber",
@@ -23,7 +23,7 @@
     "icon_asset": "assets/theme/icons/cyber-cpu.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/cpu.svg",
-    "summary": "用于当前主题的动态壁纸底图素材。"
+    "summary": "背景素材。"
   },
   {
     "theme": "future",
@@ -36,6 +36,6 @@
     "icon_asset": "assets/theme/icons/future-orbit.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/orbit.svg",
-    "summary": "用于当前主题的动态壁纸底图素材。"
+    "summary": "背景素材。"
   }
 ]

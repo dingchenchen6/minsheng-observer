@@ -142,31 +142,31 @@ const THEME_ICONS = {
 };
 const THEME_PRESENTATIONS = {
   cyber: {
-    eyebrow: '高对比阅读模式',
-    headline: '把热点排序、证据强弱与民意变化<br>放进更高对比的阅读版面里',
-    copy: '这一套主题优先突出热点排行、证据密度、社媒快照和趋势变化，适合快速浏览重点、比较高低和捕捉变化。',
-    loreTitle: '当前模式说明',
-    loreBody: '适合先看热点升温、图表对比、来源结构和异常峰值。页面会优先强调排序、分值和对比关系。',
-    loreTags: ['热点排序', '高对比版面', '快速扫读'],
-    modeCode: 'NEON BRIEF'
+    eyebrow: '数据新闻与公共议题研究实验站',
+    headline: '把热点、数据、政策与研究<br>放进同一条证据链',
+    copy: '民声 2.0 以静态站的稳定性承载动态公共议题：一边接权威统计、部委政策与论文 DOI，一边把网络热议、讨论摘录和历史快照做成可追溯的归档。',
+    loreTitle: '本站说明',
+    loreBody: '首页把热点追踪、证据整理、讨论摘录、报告入口和历史归档放在同一处，方便对照查看。',
+    loreTags: ['热点追踪', '证据整理', '历史归档'],
+    modeCode: 'DATA DESK'
   },
   ancient: {
-    eyebrow: '舒展阅读模式',
-    headline: '让议题分析、投诉路径与防踩坑建议<br>放进更舒展耐读的页面里',
-    copy: '这一套主题更适合阅读议题分析、辟谣澄清、投诉入口和建议清单，页面节奏会更平缓，长内容更容易连续阅读。',
-    loreTitle: '当前模式说明',
-    loreBody: '适合看长文、证据卡、政策链接和经验总结。页面会减少阅读干扰，让信息段落和层级更平稳。',
-    loreTags: ['长文阅读', '证据卡片', '经验总结'],
-    modeCode: 'INK DOSSIER'
+    eyebrow: '数据新闻与公共议题研究实验站',
+    headline: '把热点、数据、政策与研究<br>放进同一条证据链',
+    copy: '民声 2.0 以静态站的稳定性承载动态公共议题：一边接权威统计、部委政策与论文 DOI，一边把网络热议、讨论摘录和历史快照做成可追溯的归档。',
+    loreTitle: '本站说明',
+    loreBody: '首页把热点追踪、证据整理、讨论摘录、报告入口和历史归档放在同一处，方便对照查看。',
+    loreTags: ['热点追踪', '证据整理', '历史归档'],
+    modeCode: 'DATA DESK'
   },
   future: {
-    eyebrow: '聚焦分析模式',
-    headline: '把趋势线、报告入口与讨论脉冲<br>组织成更聚焦的分析版面',
-    copy: '这一套主题更适合查看时间序列、来源结构、报告入口和讨论变化，重点模块会更集中，方便多图表联读。',
-    loreTitle: '当前模式说明',
-    loreBody: '适合看时间序列、监测面板、归档检索和多图表联读。页面会更强调结构、顺序和数据关系。',
-    loreTags: ['时间序列', '多图表联读', '结构聚焦'],
-    modeCode: 'ORBIT LAB'
+    eyebrow: '数据新闻与公共议题研究实验站',
+    headline: '把热点、数据、政策与研究<br>放进同一条证据链',
+    copy: '民声 2.0 以静态站的稳定性承载动态公共议题：一边接权威统计、部委政策与论文 DOI，一边把网络热议、讨论摘录和历史快照做成可追溯的归档。',
+    loreTitle: '本站说明',
+    loreBody: '首页把热点追踪、证据整理、讨论摘录、报告入口和历史归档放在同一处，方便对照查看。',
+    loreTags: ['热点追踪', '证据整理', '历史归档'],
+    modeCode: 'DATA DESK'
   }
 };
 
@@ -1096,7 +1096,6 @@ function renderHome(data) {
   const pollBaseVotes = pollSurveys.reduce((sum, poll) => sum + poll.options.reduce((acc, option) => acc + option.votes, 0), 0);
   const exposureLead = ((digest.case_library || [])[0] || (digest.exposure_timeline || [])[0] || {});
   const currentTheme = document.body?.dataset.theme || 'ancient';
-  const themeMedia = (data.theme_media || []).find((item) => item.theme === currentTheme) || {};
   const themePresentation = getThemePresentation(currentTheme);
 
   const heroEyebrow = byId('heroEyebrow');
@@ -1109,9 +1108,8 @@ function renderHome(data) {
   if (themeLoreCard) {
     themeLoreCard.innerHTML = html`
       <div class="theme-lore-head">
-        <img class="theme-lore-icon" src="${escapeHtml(getThemeIcon(currentTheme))}" alt="">
         <div>
-          <small>${escapeHtml(getThemeLabel(currentTheme))}</small>
+          <small>首页说明</small>
           <strong>${escapeHtml(themePresentation.loreTitle)}</strong>
         </div>
       </div>
@@ -1202,21 +1200,6 @@ function renderHome(data) {
         { label: 'Discussion', value: data.discussion_archive.length * 9, display: `${data.discussion_archive.length}`, note: '讨论摘录' },
         { label: 'Reports', value: data.reports.length * 7, display: `${data.reports.length}`, note: '报告与调查入口' }
       ])
-    },
-    {
-      eyebrow: 'Theme Feed',
-      title: `${getThemeLabel(currentTheme)} 素材来源`,
-      body: '当前主题会加载已归档的外部图片与图标，这里展示正在使用的来源，方便追溯和后续替换。',
-      html: themeMedia.theme ? html`
-        <a class="theme-media-card" href="${escapeHtml(themeMedia.source_url || '#')}" target="_blank" rel="noopener noreferrer">
-          <span class="theme-media-thumb theme-media-${escapeHtml(themeMedia.theme)}"></span>
-          <span class="theme-media-copy">
-            <strong>${escapeHtml(themeMedia.title || '主题素材')}</strong>
-            <small>${escapeHtml(themeMedia.source_name || '外部来源')} · ${escapeHtml(themeMedia.creator || '已归档')}</small>
-            <small>${escapeHtml(themeMedia.license_note || '素材说明待补充')}</small>
-          </span>
-        </a>
-      ` : '<div class="theme-media-copy"><small>当前主题素材信息加载中</small></div>'
     }
   ]);
 

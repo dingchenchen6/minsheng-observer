@@ -142,30 +142,30 @@ const THEME_ICONS = {
 };
 const THEME_PRESENTATIONS = {
   cyber: {
-    eyebrow: '赛博朋克主题阅读模式',
-    headline: '把热点排序、证据强弱与民意变化<br>放进高反差霓虹界面里',
-    copy: '参考霓虹都市题材电影的光色调度和透视构图，把热点排行、证据密度、社媒快照和趋势变化放到一块更利于快速扫读的高密度版面里。',
-    loreTitle: '赛博朋克主题说明',
-    loreBody: '这一套更强调速度感和信号感，适合看热点升温、图表对比、来源结构和异常峰值。页面层级会更锋利，重点信息也会更先跳出来。',
-    loreTags: ['霓虹夜景', '高反差透视', '密度读屏'],
+    eyebrow: '高对比阅读模式',
+    headline: '把热点排序、证据强弱与民意变化<br>放进更高对比的阅读版面里',
+    copy: '这一套主题优先突出热点排行、证据密度、社媒快照和趋势变化，适合快速浏览重点、比较高低和捕捉变化。',
+    loreTitle: '当前模式说明',
+    loreBody: '适合先看热点升温、图表对比、来源结构和异常峰值。页面会优先强调排序、分值和对比关系。',
+    loreTags: ['热点排序', '高对比版面', '快速扫读'],
     modeCode: 'NEON BRIEF'
   },
   ancient: {
-    eyebrow: '中国古风主题阅读模式',
-    headline: '让议题分析、投诉路径与防踩坑建议<br>落在更舒展的山水长卷里',
-    copy: '参考中国古风电影的山水留白、层景调度和柔雾光感，把议题分析、辟谣澄清、投诉入口和建议清单放进更耐读的长卷式版面里。',
-    loreTitle: '完全古风主题说明',
-    loreBody: '这一套更强调留白和节奏感，适合看长文、证据卡、政策链接和经验总结。重点不在炫技，而在让内容更顺、更静、更容易沉浸阅读。',
-    loreTags: ['山水留白', '柔雾层景', '长卷排版'],
+    eyebrow: '舒展阅读模式',
+    headline: '让议题分析、投诉路径与防踩坑建议<br>放进更舒展耐读的页面里',
+    copy: '这一套主题更适合阅读议题分析、辟谣澄清、投诉入口和建议清单，页面节奏会更平缓，长内容更容易连续阅读。',
+    loreTitle: '当前模式说明',
+    loreBody: '适合看长文、证据卡、政策链接和经验总结。页面会减少阅读干扰，让信息段落和层级更平稳。',
+    loreTags: ['长文阅读', '证据卡片', '经验总结'],
     modeCode: 'INK DOSSIER'
   },
   future: {
-    eyebrow: '未来世界主题阅读模式',
-    headline: '把趋势线、报告入口与讨论脉冲<br>组织成更强的实验舱界面',
-    copy: '参考太空科幻电影的深空冷光、环形构图和中心聚焦，把趋势线、来源结构、报告入口和讨论脉冲压进更具实验室感的分析界面里。',
-    loreTitle: '未来世界主题说明',
-    loreBody: '这一套更强调结构感和聚焦感，适合看时间序列、监测面板、归档检索和多图表联读。视觉会更冷峻，但信息关系会更清楚。',
-    loreTags: ['深空冷光', '环形构图', '实验舱界面'],
+    eyebrow: '聚焦分析模式',
+    headline: '把趋势线、报告入口与讨论脉冲<br>组织成更聚焦的分析版面',
+    copy: '这一套主题更适合查看时间序列、来源结构、报告入口和讨论变化，重点模块会更集中，方便多图表联读。',
+    loreTitle: '当前模式说明',
+    loreBody: '适合看时间序列、监测面板、归档检索和多图表联读。页面会更强调结构、顺序和数据关系。',
+    loreTags: ['时间序列', '多图表联读', '结构聚焦'],
     modeCode: 'ORBIT LAB'
   }
 };
@@ -1171,7 +1171,7 @@ function renderHome(data) {
     {
       eyebrow: 'Signal Queue',
       title: '高优先信号通道',
-      body: '把综合分最高的议题压缩成一组控制台信号条，方便一眼判断今天站点最该盯什么。',
+      body: '把综合分最高的议题压缩成一组重点指标，方便一眼判断今天站点最该先看什么。',
       html: renderSignalMeters(topSignals.map((item) => ({
         label: item.label,
         value: item.combined_score / 3,
@@ -1193,7 +1193,7 @@ function renderHome(data) {
     {
       eyebrow: 'Archive Pulse',
       title: '站内归档脉冲',
-      body: '把热点、证据、讨论和报告的体量放到一张控制板里，快速看站点的信息厚度。',
+      body: '把热点、证据、讨论和报告的体量放到一组摘要里，快速看站点的信息厚度。',
       html: renderSignalMeters([
         { label: 'Trend', value: data.trend_archive.length * 4, display: `${data.trend_archive.length}`, note: '历史热点快照' },
         { label: 'Evidence', value: data.evidence_records.length * 8, display: `${data.evidence_records.length}`, note: '证据库条目' },
@@ -1203,8 +1203,8 @@ function renderHome(data) {
     },
     {
       eyebrow: 'Theme Feed',
-      title: `${getThemeLabel(currentTheme)} 素材氛围`,
-      body: '当前主题会加载联网抓取并本地归档的氛围图，保证风格鲜明，同时不牺牲加载速度。',
+      title: `${getThemeLabel(currentTheme)} 素材来源`,
+      body: '当前主题会加载已归档的外部图片与图标，这里展示正在使用的来源，方便追溯和后续替换。',
       html: themeMedia.theme ? html`
         <a class="theme-media-card" href="${escapeHtml(themeMedia.source_url || '#')}" target="_blank" rel="noopener noreferrer">
           <span class="theme-media-thumb theme-media-${escapeHtml(themeMedia.theme)}"></span>

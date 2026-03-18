@@ -10,7 +10,7 @@
     "icon_asset": "assets/theme/icons/ancient-flower.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/flower-2.svg",
-    "summary": "以中国古代山水画卷做成竖幅卷轴，让完全古风主题更像山水田园长卷，而不是普通背景色。"
+    "summary": "用于当前主题的背景图素材。"
   },
   {
     "theme": "cyber",
@@ -23,7 +23,7 @@
     "icon_asset": "assets/theme/icons/cyber-cpu.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/cpu.svg",
-    "summary": "用霓虹都市夜景强化极光绿赛博朋克的城市包围感，让第一页就更像未来都市控制台。"
+    "summary": "用于当前主题的背景图素材。"
   },
   {
     "theme": "future",
@@ -36,6 +36,6 @@
     "icon_asset": "assets/theme/icons/future-orbit.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/orbit.svg",
-    "summary": "把黑洞深空图像织入未来世界主题，配合星云、异星符号和机器人元素，让世界观更完整。"
+    "summary": "用于当前主题的背景图素材。"
   }
 ]

@@ -504,6 +504,7 @@ function initPoeticScene() {
   layer.className = 'poetic-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="poetic-wallpaper-motion"></div>
     <div class="poetic-scroll-illustration"></div>
     <div class="poetic-mist poetic-mist-back"></div>
     <div class="poetic-sun-glow"></div>
@@ -659,6 +660,7 @@ function initFutureScene() {
   layer.className = 'future-scene';
   layer.setAttribute('aria-hidden', 'true');
   layer.innerHTML = html`
+    <div class="future-wallpaper-motion"></div>
     <div class="future-starfield">${buildFutureStars()}</div>
     <div class="future-deepfield-art"></div>
     <div class="future-nebula nebula-a"></div>

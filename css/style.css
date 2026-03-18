@@ -26,7 +26,10 @@
   --radius-sm: 16px;
   --max: 1200px;
   --theme-ancient-art: url("../assets/theme/ancient-landscape.jpg");
+  --theme-ancient-wallpaper: url("../assets/theme/ancient-wallpaper.jpg");
+  --theme-cyber-wallpaper: url("../assets/theme/cyber-neon-city.jpg");
   --theme-cyber-art: url("../assets/theme/cyber-neon-city.jpg");
+  --theme-future-wallpaper: url("../assets/theme/future-galaxy.jpg");
   --theme-future-art: url("../assets/theme/future-blackhole.png");
 }
 * { box-sizing: border-box; }
@@ -84,6 +87,17 @@ button, input, select, textarea { font: inherit; }
 .poetic-scene > * {
   position: absolute;
   pointer-events: none;
+}
+.poetic-wallpaper-motion {
+  inset: -4%;
+  background:
+    linear-gradient(180deg, rgba(11, 16, 24, 0.18), rgba(7, 11, 16, 0.38)),
+    radial-gradient(circle at 24% 24%, rgba(255, 228, 214, 0.18), transparent 26%),
+    var(--theme-ancient-wallpaper) center/cover no-repeat;
+  opacity: 0.24;
+  filter: saturate(1.06) brightness(0.78) blur(1px);
+  transform-origin: center center;
+  animation: wallpaper-drift 30s ease-in-out infinite alternate;
 }
 .poetic-scroll-illustration {
   left: 4%;
@@ -983,11 +997,12 @@ h1,
   background:
     linear-gradient(180deg, rgba(2, 10, 12, 0.16), rgba(1, 5, 9, 0.56)),
     linear-gradient(90deg, rgba(111, 255, 213, 0.08), transparent 36%, rgba(216, 255, 122, 0.06) 74%, rgba(111, 255, 213, 0.08)),
-    var(--theme-cyber-art) center/cover no-repeat;
-  opacity: 0.28;
+    var(--theme-cyber-wallpaper) center/cover no-repeat;
+  opacity: 0.34;
   mix-blend-mode: screen;
   filter: saturate(1.14) hue-rotate(-16deg) brightness(0.5) contrast(1.12) blur(1px);
   mask-image: radial-gradient(circle at 55% 42%, rgba(0, 0, 0, 0.94), transparent 86%);
+  animation: cyber-wallpaper-pan 24s ease-in-out infinite alternate;
 }
 .cyber-grid-floor {
   position: absolute;
@@ -1158,6 +1173,18 @@ h1,
 }
 .future-scene {
   position: fixed;
+}
+.future-wallpaper-motion {
+  position: absolute;
+  inset: -6%;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(91, 255, 190, 0.1), transparent 30%),
+    linear-gradient(180deg, rgba(2, 7, 15, 0.12), rgba(1, 4, 11, 0.34)),
+    var(--theme-future-wallpaper) center/cover no-repeat;
+  opacity: 0.3;
+  filter: saturate(1.08) brightness(0.8);
+  transform-origin: center center;
+  animation: galaxy-drift 42s ease-in-out infinite alternate;
 }
 .future-deepfield-art {
   position: absolute;
@@ -1386,17 +1413,17 @@ h1,
 .theme-media-ancient {
   background-image:
     linear-gradient(180deg, rgba(255, 242, 230, 0.12), rgba(17, 15, 18, 0.18)),
-    var(--theme-ancient-art);
+    var(--theme-ancient-wallpaper);
 }
 .theme-media-cyber {
   background-image:
     linear-gradient(180deg, rgba(111, 255, 213, 0.12), rgba(4, 6, 8, 0.2)),
-    var(--theme-cyber-art);
+    var(--theme-cyber-wallpaper);
 }
 .theme-media-future {
   background-image:
     linear-gradient(180deg, rgba(91, 255, 190, 0.12), rgba(3, 7, 15, 0.18)),
-    var(--theme-future-art);
+    var(--theme-future-wallpaper);
 }
 .theme-media-copy {
   display: grid;
@@ -2797,6 +2824,10 @@ p { margin: 0; color: var(--ink-soft); }
   50% { transform: translate3d(2%, -1%, 0) scale(1.04); }
   100% { transform: translate3d(-2%, 1.5%, 0) scale(1.06); }
 }
+@keyframes wallpaper-drift {
+  0% { transform: scale(1.04) translate3d(-1.5%, -1%, 0); }
+  100% { transform: scale(1.12) translate3d(1.5%, 1%, 0); }
+}
 @keyframes aurora-breathe {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.03); opacity: 0.92; }
@@ -2873,6 +2904,10 @@ p { margin: 0; color: var(--ink-soft); }
   14% { opacity: var(--rain-opacity); }
   100% { transform: translate3d(-20px, 120%, 0); opacity: 0; }
 }
+@keyframes cyber-wallpaper-pan {
+  0% { transform: scale(1.04) translate3d(-1.5%, 0, 0); }
+  100% { transform: scale(1.1) translate3d(1.5%, -1%, 0); }
+}
 @keyframes cyber-sweep {
   0% { transform: translateX(-120%); opacity: 0; }
   12% { opacity: 1; }
@@ -2885,6 +2920,10 @@ p { margin: 0; color: var(--ink-soft); }
 @keyframes nebula-pulse {
   0%, 100% { transform: scale(1) translate3d(0, 0, 0); opacity: 0.24; }
   50% { transform: scale(1.08) translate3d(8px, -6px, 0); opacity: 0.4; }
+}
+@keyframes galaxy-drift {
+  0% { transform: scale(1.02) rotate(-1deg) translate3d(-1%, -1%, 0); }
+  100% { transform: scale(1.12) rotate(1deg) translate3d(1.2%, 1.4%, 0); }
 }
 @keyframes blackhole-spin {
   0% { transform: rotate(0deg); }
@@ -3039,10 +3078,12 @@ p { margin: 0; color: var(--ink-soft); }
     transform-origin: bottom right;
   }
   .poetic-scroll-illustration,
+  .poetic-wallpaper-motion,
   .hero-ancient-scroll,
   .hero-cyber-poster,
   .hero-future-vortex,
-  .future-deepfield-art {
+  .future-deepfield-art,
+  .future-wallpaper-motion {
     display: none;
   }
   .theme-media-card {
@@ -3064,6 +3105,8 @@ p { margin: 0; color: var(--ink-soft); }
   .aurora-panel::before,
   .poetic-scene *,
   .hero-romantic-scene *,
+  .cyber-scene *,
+  .hero-cyber-scene *,
   .future-scene *,
   .hero-future-scene *,
   .chart-wrap::before {

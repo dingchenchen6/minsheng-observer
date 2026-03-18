@@ -12,9 +12,9 @@ DATA_FILE = ROOT / 'data' / 'theme_media.json'
 ASSET_DIR = ROOT / 'assets' / 'theme'
 
 THEME_URLS = {
-    'ancient': 'https://collectionapi.metmuseum.org/api/collection/v1/iiif/39628/91784/main-image',
+    'ancient': 'https://images.unsplash.com/photo-1741568714270-a36886b7b083?q=80&w=2400&h=1350&auto=format&fit=crop&crop=entropy',
     'cyber': 'https://images.unsplash.com/photo-1672872476232-da16b45c9001?q=80&w=2200&auto=format&fit=crop',
-    'future': 'https://assets.science.nasa.gov/content/dam/science/astro/universe/2023/09/Black_Hole_Face_on_View.png/jcr:content/renditions/cq5dam.web.1280.1280.png'
+    'future': 'https://images.unsplash.com/photo-1707057539184-27e90364e30a?q=80&w=2600&auto=format&fit=crop'
 }
 ICON_URLS = {
     'ancient': 'https://unpkg.com/lucide-static@latest/icons/flower-2.svg',

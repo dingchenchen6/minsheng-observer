@@ -1,16 +1,16 @@
 [
   {
     "theme": "ancient",
-    "title": "Boating amid Snowy Streams and Mountains",
-    "creator": "Lan Meng",
-    "source_name": "The Metropolitan Museum of Art",
-    "license_note": "Open Access / Public Domain",
-    "source_url": "https://www.metmuseum.org/art/collection/search/39628",
-    "local_asset": "assets/theme/ancient-landscape.jpg",
+    "title": "Blossoming branches frame a traditional chinese pavilion",
+    "creator": "Vida Huang",
+    "source_name": "Unsplash",
+    "license_note": "Unsplash License",
+    "source_url": "https://unsplash.com/photos/blossoming-branches-frame-a-traditional-chinese-pavilion-Ua37tUFa9as",
+    "local_asset": "assets/theme/ancient-wallpaper.jpg",
     "icon_asset": "assets/theme/icons/ancient-flower.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/flower-2.svg",
-    "summary": "用于当前主题的背景图素材。"
+    "summary": "用于当前主题的动态壁纸底图素材。"
   },
   {
     "theme": "cyber",
@@ -23,19 +23,19 @@
     "icon_asset": "assets/theme/icons/cyber-cpu.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/cpu.svg",
-    "summary": "用于当前主题的背景图素材。"
+    "summary": "用于当前主题的动态壁纸底图素材。"
   },
   {
     "theme": "future",
-    "title": "Black Hole",
-    "creator": "NASA",
-    "source_name": "NASA Science",
-    "license_note": "NASA media resource",
-    "source_url": "https://science.nasa.gov/resource/black-hole/",
-    "local_asset": "assets/theme/future-blackhole.png",
+    "title": "a spiral galaxy with stars in the background",
+    "creator": "NASA Hubble Space Telescope",
+    "source_name": "Unsplash",
+    "license_note": "Unsplash License",
+    "source_url": "https://unsplash.com/photos/a-spiral-galaxy-with-stars-in-the-background-tTZLCKJicZ0",
+    "local_asset": "assets/theme/future-galaxy.jpg",
     "icon_asset": "assets/theme/icons/future-orbit.svg",
     "icon_source_name": "Lucide",
     "icon_source_url": "https://unpkg.com/lucide-static@latest/icons/orbit.svg",
-    "summary": "用于当前主题的背景图素材。"
+    "summary": "用于当前主题的动态壁纸底图素材。"
   }
 ]

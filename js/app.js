@@ -1066,6 +1066,7 @@ function renderFooter(data) {
         <a class="button ghost" href="https://www.12315.cn/" target="_blank" rel="noopener noreferrer">全国 12315</a>
         <a class="button ghost" href="https://www.stats.gov.cn/" target="_blank" rel="noopener noreferrer">国家统计局</a>
         <a class="button ghost" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noopener noreferrer">GitHub Discussions</a>
+        <a class="button ghost" href="privacy.html">隐私与合规</a>
       </div>
     </div>
   `;
@@ -3641,6 +3642,10 @@ function renderMethodology(data) {
       body: '页面启用了浏览器端内容安全策略、引用来源限制和权限策略；核心图表库改为本地托管，外链会统一补上安全属性并过滤掉非法协议。'
     },
     {
+      title: '隐私与合规边界',
+      body: '浏览器端仅使用本地存储保存主题切换、本机投票和本机意见板；若未来启用微信登录或实时后端，会在隐私与合规页中单独披露数据项、保留周期与用户删除路径。'
+    },
+    {
       title: '免责声明',
       body: '本站用于研究型整理、公开信息导航与议题归档，不构成官方答复、法律意见或科学抽样民调。'
     }
@@ -3653,6 +3658,133 @@ function renderMethodology(data) {
       <h3>${escapeHtml(source.name)}</h3>
       <p>${escapeHtml(source.note)}</p>
       <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">打开入口</a></div>
+    </article>
+  `).join('');
+}
+
+function renderPrivacy() {
+  const summary = byId('privacySummaryGrid');
+  const storage = byId('privacyStorageCards');
+  const thirdParty = byId('privacyThirdPartyCards');
+  const safeguards = byId('privacySafetyCards');
+  const rights = byId('privacyRightsCards');
+  if (!summary || !storage || !thirdParty || !safeguards || !rights) return;
+
+  renderSummaryGrid('privacySummaryGrid', [
+    {
+      label: '当前站点形态',
+      value: '静态站',
+      note: '公开版运行在 GitHub Pages，默认不自建账号体系，也不直接保存实名资料。'
+    },
+    {
+      label: '本地存储',
+      value: '3 类',
+      note: '仅保存主题模式、本机投票和本机意见板，主要用于改善站内体验。'
+    },
+    {
+      label: '外部服务',
+      value: '少量必要',
+      note: '当前主要使用天气接口、Google Fonts 与 Giscus / GitHub Discussions。'
+    },
+    {
+      label: '后续扩展提醒',
+      value: '需单独披露',
+      note: '如果启用微信登录、实时投票或评论后端，需要同步披露新增数据项、用途、保留周期和删除方式。'
+    }
+  ]);
+
+  storage.innerHTML = [
+    {
+      title: '主题切换偏好',
+      body: '浏览器会保存你选择的主题模式，用来记住下次打开网站时显示赛博朋克、完全古风、未来世界还是跟随系统。',
+      note: '本地键：minsheng_observer_theme_v1'
+    },
+    {
+      title: '本机轻投票记录',
+      body: '在未接通实时后端时，站点会把你已点选的轻投票选项保存在当前浏览器，避免刷新页面后丢失。',
+      note: '本地键：minsheng_observer_votes_v1'
+    },
+    {
+      title: '本机意见板',
+      body: '你写在“本机意见板”的内容只保存在当前浏览器，不会自动发到公开页面，也不会进入 GitHub Discussions。',
+      note: '本地键：minsheng_observer_suggestions_v1'
+    },
+    {
+      title: '定位与天气',
+      body: '页面会尝试读取浏览器定位来请求天气；若你拒绝授权，会回退到默认城市，不会把定位写入站内存储。',
+      note: '浏览器权限：geolocation'
+    }
+  ].map((item) => html`
+    <article class="stack-card">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.body)}</p>
+      <div class="meta-line"><span>${escapeHtml(item.note)}</span></div>
+    </article>
+  `).join('');
+
+  thirdParty.innerHTML = [
+    {
+      title: 'GitHub Discussions / Giscus',
+      body: '公开讨论区依赖 GitHub 账号体系，留言、点赞和公开讨论记录会按 GitHub 的产品机制处理并公开展示。',
+      note: '适用页面：讨论与弹幕'
+    },
+    {
+      title: 'Open-Meteo',
+      body: '实时天气仅用于显示当前天气卡片，不用于画像、广告或站内个性化推荐。',
+      note: '适用页面：全站顶部实时信息条'
+    },
+    {
+      title: 'Google Fonts',
+      body: '页面字体通过 Google Fonts 加载，用于保持多页面下的排版一致性。',
+      note: '适用页面：全站'
+    },
+    {
+      title: '外部权威入口',
+      body: '点击国家统计局、部委、12315、报告、论文等外链后，将进入对应第三方网站并适用其各自规则。',
+      note: '适用页面：证据库、报告库、热点页等'
+    }
+  ].map((item) => html`
+    <article class="stack-card">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.body)}</p>
+      <div class="meta-line"><span>${escapeHtml(item.note)}</span></div>
+    </article>
+  `).join('');
+
+  safeguards.innerHTML = [
+    '核心图表脚本已改为本地托管，减少第三方 CDN 供应链风险。',
+    '所有页面启用了浏览器端内容安全策略、引用来源策略与权限策略。',
+    '动态生成的外链会先做协议和地址校验，不合规链接不会直接打开。',
+    '新窗口外链统一加上 noopener 与 noreferrer，降低 opener 劫持风险。',
+    '计划中的实时投票、评论与微信登录功能，需要配套服务端限流、签名、审核队列和审计日志。'
+  ].map((item) => `<article class="stack-card"><p>${escapeHtml(item)}</p></article>`).join('');
+
+  rights.innerHTML = [
+    {
+      title: '如何清除本机记录',
+      body: '你可以使用投票页的“清空本机投票与建议”按钮，或直接清除浏览器站点数据。',
+      action: '投票页支持一键清空'
+    },
+    {
+      title: '如何删除公开讨论',
+      body: '站内公开讨论来自 GitHub Discussions；如果要删除或修改，请到对应 GitHub 讨论串内处理。',
+      action: '按 GitHub 规则管理'
+    },
+    {
+      title: '未来接入微信登录后',
+      body: '若后续启用微信登录，我们会单独披露收集字段、用途、保留周期、导出/删除方式和客服联系路径。',
+      action: '上线前单独更新披露'
+    },
+    {
+      title: '如何判断站点边界',
+      body: '站点主要用于公共议题整理、资料导航和研究归档，不替代官方办事、法律咨询或医学诊疗意见。',
+      action: '请优先参考官方入口'
+    }
+  ].map((item) => html`
+    <article class="stack-card">
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.body)}</p>
+      <div class="meta-line"><span>${escapeHtml(item.action)}</span></div>
     </article>
   `).join('');
 }
@@ -3686,6 +3818,7 @@ async function init() {
     case 'reports': renderReports(data); break;
     case 'polls': renderPolls(data); break;
     case 'methodology': renderMethodology(data); break;
+    case 'privacy': renderPrivacy(data); break;
     default: break;
   }
   animateAuroraValues();

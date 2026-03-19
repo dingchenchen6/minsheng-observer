@@ -112,3 +112,25 @@
 - 用户级去重在服务端做，不要只依赖前端 `localStorage`
 - 评论/弹幕需要审核队列
 - 微信登录完成后，把公开昵称与匿名显示策略分开
+
+## 最低安全要求
+
+- 登录、投票、评论、弹幕都只走 `HTTPS`
+- 微信 `AppSecret` 只放服务端
+- 所有写接口都要求后端签发的短期会话
+- 服务端必须记录审计日志
+- 评论与弹幕必须具备审核 / 下线能力
+
+## 推荐后端能力
+
+- `rate limit`：按 IP、用户、设备摘要三层限流
+- `dedupe`：同用户同题去重或按规则限制重复投票
+- `review queue`：评论 / 弹幕先过风险检查
+- `audit log`：记录请求时间、请求 ID、用户、动作、结果
+- `session rotation`：短期会话 + 可刷新机制
+
+## 与站内页面的配合
+
+- [隐私与合规页](/Users/dingchenchen/Desktop/AI辅助数据分析/minsheng-observer/privacy.html) 需要同步披露新增的数据项、用途、保留周期与删除方式
+- [方法说明页](/Users/dingchenchen/Desktop/AI辅助数据分析/minsheng-observer/methodology.html) 需要同步更新后端状态与审核边界
+- 更完整的服务端方案见：[live-backend-security-blueprint.md](/Users/dingchenchen/Desktop/AI辅助数据分析/minsheng-observer/docs/live-backend-security-blueprint.md)

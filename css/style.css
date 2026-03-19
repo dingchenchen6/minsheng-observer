@@ -2654,18 +2654,170 @@ p { margin: 0; color: var(--ink-soft); }
 .stack-card h3 { margin-bottom: 8px; }
 .note-card, .method-card, .discussion-shell { padding: 22px; }
 .note-card.strong { margin-bottom: 22px; background: linear-gradient(135deg, rgba(10, 20, 42, 0.92), rgba(20, 8, 42, 0.9)); }
+.bili-discuss-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 0.75fr;
+  gap: 18px;
+  align-items: start;
+}
+.discussion-main-grid { align-items: start; }
+.danmu-player-shell,
+.danmu-side-panel {
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(109, 244, 255, 0.16);
+  background: linear-gradient(180deg, rgba(8, 18, 37, 0.86), rgba(5, 11, 24, 0.94));
+  box-shadow: var(--shadow);
+}
+.danmu-player-head,
+.comment-toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
 .danmu-stage {
   position: relative; overflow: hidden; border: 1px solid rgba(109, 244, 255, 0.16); border-radius: var(--radius);
   background: linear-gradient(180deg, rgba(4, 12, 28, 0.84), rgba(7, 8, 22, 0.96)); min-height: 190px;
 }
 .danmu-stage.large { min-height: 260px; }
+.danmu-stage.bili {
+  min-height: 320px;
+  background:
+    linear-gradient(180deg, rgba(8, 13, 28, 0.36), rgba(6, 9, 18, 0.88)),
+    radial-gradient(circle at 12% 18%, rgba(109, 244, 255, 0.12), transparent 20%),
+    radial-gradient(circle at 82% 20%, rgba(185, 149, 255, 0.12), transparent 18%),
+    linear-gradient(180deg, rgba(3, 8, 17, 0.84), rgba(9, 13, 24, 0.98));
+}
+.danmu-stage.bili::before {
+  content: "弹幕播放区";
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  color: #d6f9ff;
+  background: rgba(5, 18, 34, 0.62);
+  border: 1px solid rgba(109, 244, 255, 0.16);
+  letter-spacing: 0.08em;
+  z-index: 2;
+}
 .danmu-track { position: absolute; white-space: nowrap; will-change: transform; animation: slide-left linear infinite; }
+.danmu-stage.is-paused .danmu-track { animation-play-state: paused; }
 .danmu-chip {
   display: inline-flex; align-items: center; gap: 10px; margin-right: 18px; padding: 10px 16px; border-radius: 999px;
   background: rgba(7, 19, 40, 0.92); color: #ecf8ff; font-size: 0.92rem; box-shadow: 0 8px 18px rgba(0,0,0,0.24), 0 0 18px rgba(109,244,255,0.08);
   border: 1px solid rgba(109, 244, 255, 0.14);
 }
 .danmu-chip span { color: var(--pink); font-weight: 800; }
+.bili-chip {
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(12, 20, 38, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.bili-chip.mode-top {
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(109, 244, 255, 0.12));
+}
+.bili-chip .danmu-user {
+  color: #ffd56a;
+  font-weight: 800;
+}
+.bili-chip .danmu-topic {
+  color: var(--pink);
+  font-weight: 800;
+}
+.bili-chip .danmu-text {
+  color: #f4fbff;
+  font-weight: 600;
+}
+.danmu-control-bar {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.danmu-control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+.danmu-toggle,
+.danmu-chip-btn {
+  border: 1px solid rgba(109, 244, 255, 0.16);
+  background: rgba(9, 18, 36, 0.84);
+  color: #eef8ff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.danmu-toggle.active,
+.danmu-chip-btn.active {
+  background: linear-gradient(90deg, rgba(109, 244, 255, 0.18), rgba(176, 136, 255, 0.18));
+}
+.comment-feed {
+  display: grid;
+  gap: 14px;
+}
+.comment-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 16px;
+  padding: 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(109, 244, 255, 0.14);
+  background: linear-gradient(180deg, rgba(8, 18, 37, 0.82), rgba(6, 10, 22, 0.92));
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+}
+.comment-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
+  box-shadow: 0 0 0 1px rgba(109, 244, 255, 0.14), 0 10px 22px rgba(0, 0, 0, 0.18);
+}
+.comment-main h3 {
+  margin: 6px 0 8px;
+  font-size: 1.02rem;
+}
+.comment-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.comment-badge,
+.comment-floor {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  background: rgba(109, 244, 255, 0.1);
+  color: #d7faff;
+  border: 1px solid rgba(109, 244, 255, 0.12);
+}
+.comment-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+.bullet-card h3 {
+  font-size: 0.98rem;
+}
 @keyframes slide-left { from { transform: translateX(100%); } to { transform: translateX(-120%); } }
 .site-footer { padding: 38px 0 56px; border-top: 1px solid rgba(109, 244, 255, 0.16); }
 .footer-shell { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
@@ -2962,7 +3114,7 @@ p { margin: 0; color: var(--ink-soft); }
 [data-accent="orange"] { color: var(--orange); }
 [data-accent="pink"] { color: var(--pink); }
 @media (max-width: 980px) {
-  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid, .command-grid, .aurora-hero-grid { grid-template-columns: 1fr; }
+  .hero-grid, .two-col, .split-grid, .analysis-layout, .feature-grid, .topic-grid, .source-grid, .card-grid, .poll-grid, .command-grid, .aurora-hero-grid, .bili-discuss-layout { grid-template-columns: 1fr; }
   .center-nav-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
@@ -2981,6 +3133,13 @@ p { margin: 0; color: var(--ink-soft); }
   .indicator-grid { grid-template-columns: 1fr; }
   .search-panel { grid-template-columns: 1fr 1fr; }
   .hero-brief-grid { grid-template-columns: 1fr; }
+  .comment-card {
+    grid-template-columns: 48px 1fr;
+  }
+  .comment-avatar {
+    width: 48px;
+    height: 48px;
+  }
 }
 @media (max-width: 760px) {
   .nav-shell {
@@ -3093,6 +3252,25 @@ p { margin: 0; color: var(--ink-soft); }
   }
   .theme-lore-card {
     padding: 14px;
+  }
+  .danmu-player-head,
+  .danmu-control-bar,
+  .comment-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .danmu-stage.bili {
+    min-height: 280px;
+  }
+  .comment-card {
+    grid-template-columns: 1fr;
+  }
+  .comment-avatar {
+    width: 42px;
+    height: 42px;
+  }
+  .comment-actions {
+    gap: 10px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

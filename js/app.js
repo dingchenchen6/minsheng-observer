@@ -1089,6 +1089,66 @@ function renderDanmu(containerId, discussions, large = false) {
   }
 }
 
+function getDiscussionDisplayName(item) {
+  const raw = String(item.display_name || item.nickname || '').trim();
+  if (raw) return raw;
+  return `${getTopicName(item.topic || 'livelihood')}观察员`;
+}
+
+function getAvatarText(name) {
+  const value = String(name || '').trim();
+  if (!value) return '民';
+  return value.length > 2 ? value.slice(-2) : value;
+}
+
+function normalizeDiscussionComment(item, fallbackType = 'latest') {
+  const excerpt = item.excerpt || item.content || '';
+  return {
+    id: item.id,
+    topic: item.topic || 'livelihood',
+    title: item.title || `${getTopicName(item.topic || 'livelihood')}讨论`,
+    excerpt,
+    created_at: item.created_at,
+    url: item.url || '',
+    likes: Number(item.likes || 0),
+    featured: Boolean(item.featured),
+    source_type: item.source_type || fallbackType,
+    display_name: getDiscussionDisplayName(item)
+  };
+}
+
+function renderBiliDanmuStage(containerId, items, options = {}) {
+  const container = byId(containerId);
+  if (!container) return;
+  const density = options.density || 'standard';
+  const speed = Number(options.speed || 1);
+  const paused = Boolean(options.paused);
+  const rows = density === 'dense' ? 4 : 3;
+  container.classList.toggle('is-paused', paused);
+  container.dataset.density = density;
+  container.innerHTML = '';
+
+  const queue = items.slice(0, 16);
+  for (let i = 0; i < rows; i += 1) {
+    const track = document.createElement('div');
+    track.className = 'danmu-track bili-track';
+    track.style.top = `${28 + i * 62}px`;
+    track.style.animationDuration = `${(24 + i * 4) / speed}s`;
+    track.innerHTML = queue.map((item, index) => {
+      const name = getDiscussionDisplayName(item);
+      const mode = item.mode || (index % 4 === 0 ? 'top' : 'scroll');
+      return html`
+        <span class="danmu-chip bili-chip mode-${escapeHtml(mode)}">
+          <span class="danmu-user">${escapeHtml(name)}</span>
+          <span class="danmu-topic">#${escapeHtml(getTopicName(item.topic))}</span>
+          <span class="danmu-text">${escapeHtml(item.excerpt || item.content || '')}</span>
+        </span>
+      `;
+    }).join('');
+    container.appendChild(track);
+  }
+}
+
 function summaryCardMarkup(item) {
   return html`
     <article class="source-card">
@@ -2864,36 +2924,258 @@ function renderGuide(data) {
 function renderDiscussion(data) {
   const wechat = (data.live_config || {}).wechat_login || {};
   const backend = (data.live_config || {}).vote_backend || {};
-  byId('discussionIntro').innerHTML = html`
-    <h3>为什么改用 GitHub Discussions？</h3>
-    <p>因为 GitHub Pages 适合部署静态站，不适合承载匿名后端。将正式留言迁移到 Discussions 后，我们可以保留公开线程、可追溯链接和自动归档能力。</p>
-    <div class="stack-list" style="margin-top:16px;">
-      <div class="stack-card"><small>实时互动后端</small><p>${escapeHtml(backend.status_label || '未配置')}</p></div>
-      <div class="stack-card"><small>微信登录</small><p>${escapeHtml(wechat.status_label || '未配置')}</p></div>
-    </div>
-    <div class="topic-actions" style="margin-top:16px;">
-      <a class="button primary" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noopener noreferrer">打开 Discussions</a>
-      ${wechat.enabled && wechat.login_url ? `<a class="button ghost" href="${escapeHtml(wechat.login_url)}">微信登录入口</a>` : ''}
-      <a class="button ghost" href="archive.html?type=discussion">查看讨论归档</a>
-    </div>
-  `;
-
-  byId('discussionCards').innerHTML = data.discussion_archive.map((item) => html`
-    <article class="stack-card">
-      <small>${escapeHtml(item.source_type)} · ${escapeHtml(getTopicName(item.topic))}</small>
-      <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.excerpt)}</p>
-      <div class="meta-line"><span>${formatDate(item.created_at)}</span><span>点赞 ${item.likes}</span></div>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">跳转到仓库讨论</a></div>
-    </article>
-  `).join('');
-
-  const liveBullets = ((data.liveRuntime || {}).bullets || []).map((item, index) => ({
+  const runtimeComments = ((data.liveRuntime || {}).comments || []).map((item, index) => normalizeDiscussionComment({
+    ...item,
+    id: item.id || `runtime_comment_${index}`,
+    source_type: 'live',
+    likes: item.likes || 0
+  }, 'live'));
+  const archiveComments = (data.discussion_archive || []).map((item) => normalizeDiscussionComment(item));
+  const discussionItems = [...runtimeComments, ...archiveComments];
+  const bulletItems = (((data.liveRuntime || {}).bullets || []).map((item, index) => ({
     id: item.id || `live_bullet_${index}`,
     topic: item.topic || 'livelihood',
     excerpt: item.excerpt || item.content || '',
-  })).filter((item) => item.excerpt);
-  renderDanmu('discussionDanmu', liveBullets.length ? liveBullets : data.discussion_archive, true);
+    created_at: item.created_at || new Date().toISOString(),
+    display_name: getDiscussionDisplayName(item),
+    mode: item.mode || 'scroll'
+  })).filter((item) => item.excerpt)).concat(
+    archiveComments.slice(0, 10).map((item, index) => ({
+      id: `${item.id}_bullet_${index}`,
+      topic: item.topic,
+      excerpt: item.excerpt,
+      created_at: item.created_at,
+      display_name: item.display_name,
+      mode: index % 4 === 0 ? 'top' : 'scroll'
+    }))
+  );
+  const topicCounts = discussionItems.reduce((acc, item) => {
+    acc[item.topic] = (acc[item.topic] || 0) + 1;
+    return acc;
+  }, {});
+  const topTopic = Object.entries(topicCounts).sort((a, b) => b[1] - a[1])[0];
+  let currentTab = 'featured';
+  let danmuState = { paused: false, speed: 1, density: 'standard' };
+
+  renderAuroraBoard('discussionAuroraBoard', [
+    {
+      eyebrow: 'Danmu Feed',
+      value: `${bulletItems.length}`,
+      title: '当前上屏弹幕',
+      body: '公开弹幕优先展示最近归档和实时后端已通过审核的内容。'
+    },
+    {
+      eyebrow: 'Comment Pool',
+      value: `${discussionItems.length}`,
+      title: '可切换评论流',
+      body: '支持精选、最热、最新切换，阅读逻辑更接近视频站评论区。'
+    },
+    {
+      eyebrow: 'Top Topic',
+      value: topTopic ? `${topTopic[1]}` : '0',
+      title: topTopic ? `${getTopicName(topTopic[0])}讨论最多` : '等待更多讨论',
+      body: '右侧会优先汇总当前讨论最集中的议题，方便继续追看。'
+    },
+    {
+      eyebrow: 'Entry',
+      value: wechat.enabled ? 'LIVE' : 'DISCUSS',
+      title: '正式发言入口',
+      body: '当前公开留言仍走 GitHub Discussions；实时后端接通后可再开放更像视频站的投稿流程。'
+    }
+  ]);
+
+  const intro = byId('discussionIntro');
+  if (intro) {
+    intro.innerHTML = html`
+      <h3>为什么改用 GitHub Discussions？</h3>
+      <p>因为 GitHub Pages 适合部署静态站，不适合承载匿名后端。将正式留言迁移到 Discussions 后，我们可以保留公开线程、可追溯链接和自动归档能力。</p>
+      <div class="stack-list" style="margin-top:16px;">
+        <div class="stack-card"><small>实时互动后端</small><p>${escapeHtml(backend.status_label || '未配置')}</p></div>
+        <div class="stack-card"><small>微信登录</small><p>${escapeHtml(wechat.status_label || '未配置')}</p></div>
+      </div>
+      <div class="topic-actions" style="margin-top:16px;">
+        <a class="button primary" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noopener noreferrer">打开 Discussions</a>
+        ${wechat.enabled && wechat.login_url ? `<a class="button ghost" href="${escapeHtml(wechat.login_url)}">微信登录入口</a>` : ''}
+        <a class="button ghost" href="archive.html?type=discussion">查看讨论归档</a>
+      </div>
+    `;
+  }
+
+  const playerMeta = byId('discussionPlayerMeta');
+  if (playerMeta) {
+    playerMeta.innerHTML = html`
+      <div>
+        <small>弹幕播放区</small>
+        <h3>公共讨论弹幕流</h3>
+      </div>
+      <div class="meta-line">
+        <span>弹幕 ${bulletItems.length}</span>
+        <span>评论 ${discussionItems.length}</span>
+        <span>热门议题 ${escapeHtml(topTopic ? getTopicName(topTopic[0]) : '民生')}</span>
+      </div>
+    `;
+  }
+
+  const guideCards = byId('discussionGuideCards');
+  if (guideCards) {
+    guideCards.innerHTML = [
+      {
+        title: '发正式评论',
+        body: '当前公开版最稳的正式发言入口仍是 GitHub Discussions，留言后可自动进入站内归档。',
+        label: '去 Discussions',
+        url: data.site_meta.repository.discussions_url
+      },
+      {
+        title: '发实时弹幕',
+        body: backend.enabled ? '实时后端已开启时，可通过后端接口提交弹幕。' : '当前站内弹幕主要来自公开归档和实时后端预留位，尚未开放直接投稿。',
+        label: backend.enabled && backend.bullet_url ? '查看实时入口' : '查看接入说明',
+        url: backend.enabled && backend.bullet_url ? backend.bullet_url : 'methodology.html'
+      },
+      {
+        title: '查看历史评论',
+        body: '如果你想回看旧讨论、按议题搜索，直接跳转到归档页会更方便。',
+        label: '打开讨论归档',
+        url: 'archive.html?type=discussion'
+      }
+    ].map((item) => html`
+      <article class="stack-card">
+        <h3>${escapeHtml(item.title)}</h3>
+        <p>${escapeHtml(item.body)}</p>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+      </article>
+    `).join('');
+  }
+
+  const topicBoard = byId('discussionTopicBoard');
+  if (topicBoard) {
+    topicBoard.innerHTML = Object.entries(topicCounts).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([topic, count]) => html`
+      <article class="stack-card">
+        <small>讨论主题</small>
+        <h3>${escapeHtml(getTopicName(topic))}</h3>
+        <p>当前已归档或已接入的公开评论共有 ${count} 条，适合继续补充案例、证据和建议。</p>
+      </article>
+    `).join('');
+  }
+
+  function renderDanmuArea() {
+    renderBiliDanmuStage('discussionDanmu', bulletItems, danmuState);
+    const controls = byId('discussionDanmuControls');
+    if (controls) {
+      controls.innerHTML = html`
+        <div class="danmu-control-group">
+          <button type="button" class="danmu-toggle${danmuState.paused ? ' active' : ''}" data-danmu-action="pause">${danmuState.paused ? '继续播放' : '暂停弹幕'}</button>
+        </div>
+        <div class="danmu-control-group">
+          <span>速度</span>
+          ${[
+            { label: '慢', value: '0.85' },
+            { label: '标准', value: '1' },
+            { label: '快', value: '1.25' }
+          ].map((item) => `<button type="button" class="danmu-chip-btn${String(danmuState.speed) === item.value ? ' active' : ''}" data-danmu-speed="${item.value}">${item.label}</button>`).join('')}
+        </div>
+        <div class="danmu-control-group">
+          <span>密度</span>
+          ${[
+            { label: '标准', value: 'standard' },
+            { label: '密集', value: 'dense' }
+          ].map((item) => `<button type="button" class="danmu-chip-btn${danmuState.density === item.value ? ' active' : ''}" data-danmu-density="${item.value}">${item.label}</button>`).join('')}
+        </div>
+      `;
+      controls.querySelectorAll('[data-danmu-speed]').forEach((button) => {
+        button.addEventListener('click', () => {
+          danmuState.speed = Number(button.dataset.danmuSpeed || '1');
+          renderDanmuArea();
+        });
+      });
+      controls.querySelectorAll('[data-danmu-density]').forEach((button) => {
+        button.addEventListener('click', () => {
+          danmuState.density = button.dataset.danmuDensity || 'standard';
+          renderDanmuArea();
+        });
+      });
+      controls.querySelector('[data-danmu-action="pause"]')?.addEventListener('click', () => {
+        danmuState.paused = !danmuState.paused;
+        renderDanmuArea();
+      });
+    }
+
+    const queue = byId('discussionBulletQueue');
+    if (queue) {
+      queue.innerHTML = bulletItems.slice(0, 8).map((item) => html`
+        <article class="stack-card bullet-card">
+          <small>${escapeHtml(getTopicName(item.topic))}</small>
+          <h3>${escapeHtml(item.display_name || '公共用户')}</h3>
+          <p>${escapeHtml(item.excerpt)}</p>
+          <div class="meta-line"><span>${formatDate(item.created_at)}</span><span>${escapeHtml(item.mode === 'top' ? '顶部弹幕' : '滚动弹幕')}</span></div>
+        </article>
+      `).join('');
+    }
+  }
+
+  function getItemsForTab(tab) {
+    if (tab === 'hot') {
+      return discussionItems.slice().sort((a, b) => b.likes - a.likes || new Date(b.created_at) - new Date(a.created_at));
+    }
+    if (tab === 'latest') {
+      return discussionItems.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+    return discussionItems.filter((item) => item.featured || item.source_type === 'featured')
+      .concat(discussionItems.filter((item) => !(item.featured || item.source_type === 'featured')).slice(0, 4));
+  }
+
+  function renderCommentFeed() {
+    const tabs = byId('discussionTabs');
+    if (tabs) {
+      tabs.innerHTML = [
+        { key: 'featured', label: '精选', count: discussionItems.filter((item) => item.featured || item.source_type === 'featured').length },
+        { key: 'hot', label: '最热', count: discussionItems.length },
+        { key: 'latest', label: '最新', count: discussionItems.length }
+      ].map((item) => `<button type="button" class="tab-button${currentTab === item.key ? ' active' : ''}" data-discussion-tab="${item.key}">${item.label} ${item.count}</button>`).join('');
+      tabs.querySelectorAll('[data-discussion-tab]').forEach((button) => {
+        button.addEventListener('click', () => {
+          currentTab = button.dataset.discussionTab || 'featured';
+          renderCommentFeed();
+        });
+      });
+    }
+
+    const list = getItemsForTab(currentTab);
+    const meta = byId('discussionMeta');
+    if (meta) {
+      meta.textContent = `当前显示 ${list.length} 条${currentTab === 'featured' ? '精选评论' : currentTab === 'hot' ? '热评' : '最新评论'}。`;
+    }
+
+    const cards = byId('discussionCards');
+    if (cards) {
+      cards.innerHTML = list.map((item, index) => html`
+        <article class="comment-card">
+          <div class="comment-avatar">${escapeHtml(getAvatarText(item.display_name))}</div>
+          <div class="comment-main">
+            <div class="comment-head">
+              <strong>${escapeHtml(item.display_name)}</strong>
+              <span class="comment-badge">${escapeHtml(item.featured || item.source_type === 'featured' ? '精选' : item.source_type === 'live' ? '实时' : '归档')}</span>
+              <span class="comment-floor">#${index + 1}</span>
+            </div>
+            <div class="meta-line">
+              <span>${escapeHtml(getTopicName(item.topic))}</span>
+              <span>${formatDate(item.created_at)}</span>
+              <span>点赞 ${item.likes}</span>
+            </div>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.excerpt)}</p>
+            <div class="comment-actions">
+              <span>赞 ${item.likes}</span>
+              <span>话题 #${escapeHtml(getTopicName(item.topic))}</span>
+              ${item.url ? `<a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">查看原讨论</a>` : ''}
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+  }
+
+  renderDanmuArea();
+  renderCommentFeed();
   mountGiscus(data.site_meta);
 }
 

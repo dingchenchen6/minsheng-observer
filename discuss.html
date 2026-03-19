@@ -12,8 +12,45 @@
   <header class="site-header"><div class="shell nav-shell"><a class="brand" href="index.html"><span class="brand-mark">民声</span><span class="brand-sub">Minsheng Observer</span></a><button class="nav-toggle" id="navToggle" aria-label="切换菜单"><span></span><span></span></button><nav class="site-nav" id="siteNav"><a href="index.html">首页</a><a href="analysis.html">议题分析</a><a href="trends.html">热点追踪</a><a href="evidence.html">证据库</a><a href="exposure.html">问题曝光</a><a href="guide.html">防踩坑</a><a href="discuss.html" class="active">讨论与弹幕</a><a href="archive.html">归档检索</a><a href="reports.html">报告库</a><a href="polls.html">轻投票</a><a href="methodology.html">方法说明</a><a href="privacy.html">隐私与合规</a></nav></div></header>
   <main>
     <section class="page-hero"><div class="shell narrow"><span class="eyebrow">讨论与弹幕</span><h1>站内展示公开摘录，正式留言走 GitHub Discussions</h1><p>这样可以保持 Pages 的纯静态部署，同时保留可持续的讨论归档和外部可访问入口。</p></div></section>
-    <section class="section tone-ink"><div class="shell"><div class="section-head compact light"><span class="eyebrow">弹幕墙</span><h2>最近公开摘录</h2></div><div class="danmu-stage large" id="discussionDanmu"></div></div></section>
-    <section class="section"><div class="shell split-grid"><div><div class="section-head compact"><span class="eyebrow">精选摘录</span><h2>可搜索的观点归档</h2></div><div class="stack-list" id="discussionCards"></div></div><div><div class="section-head compact"><span class="eyebrow">正式留言区</span><h2>GitHub Discussions / Giscus</h2></div><div class="discussion-shell"><div class="note-card" id="discussionIntro"></div><div id="giscusContainer"></div></div></div></div></section>
+    <section class="section-tight"><div class="shell"><div class="aurora-hero-grid" id="discussionAuroraBoard"></div></div></section>
+    <section class="section tone-ink">
+      <div class="shell">
+        <div class="section-head compact light"><span class="eyebrow">弹幕区</span><h2>像视频站一样看讨论流</h2></div>
+        <div class="bili-discuss-layout">
+          <article class="danmu-player-shell">
+            <div class="danmu-player-head" id="discussionPlayerMeta"></div>
+            <div class="danmu-stage large bili" id="discussionDanmu"></div>
+            <div class="danmu-control-bar" id="discussionDanmuControls"></div>
+          </article>
+          <aside class="danmu-side-panel">
+            <div class="section-head compact light"><span class="eyebrow">弹幕列表</span><h2>当前上屏内容</h2></div>
+            <div class="stack-list" id="discussionBulletQueue"></div>
+            <div class="section-head compact light"><span class="eyebrow">发言说明</span><h2>正式评论与弹幕入口</h2></div>
+            <div class="stack-list" id="discussionGuideCards"></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="shell split-grid discussion-main-grid">
+        <div>
+          <div class="section-head compact"><span class="eyebrow">评论区</span><h2>热评、精选与最新评论</h2></div>
+          <div class="comment-toolbar">
+            <div class="tab-row" id="discussionTabs"></div>
+            <div class="search-meta" id="discussionMeta"></div>
+          </div>
+          <div class="comment-feed" id="discussionCards"></div>
+        </div>
+        <div>
+          <div class="section-head compact"><span class="eyebrow">正式留言区</span><h2>GitHub Discussions / Giscus</h2></div>
+          <div class="discussion-shell">
+            <div class="note-card" id="discussionIntro"></div>
+            <div class="stack-list" id="discussionTopicBoard" style="margin-top:18px;"></div>
+            <div id="giscusContainer"></div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="site-footer" id="siteFooter"></footer><button class="backtop" id="backTop" aria-label="返回顶部">↑</button><script src="js/app.js"></script>
 </body>

@@ -74,6 +74,9 @@
       "id": "comment_1",
       "topic": "education",
       "content": "希望补充县中支持",
+      "display_name": "教育观察员",
+      "avatar_url": "",
+      "likes": 3,
       "created_at": "2026-03-16T09:00:00Z"
     }
   ],
@@ -81,7 +84,11 @@
     {
       "id": "bullet_1",
       "topic": "employment",
-      "excerpt": "别把实习经历当成默认门槛"
+      "excerpt": "别把实习经历当成默认门槛",
+      "display_name": "求职用户",
+      "color": "#ffd56a",
+      "mode": "scroll",
+      "time_offset": 15
     }
   ],
   "user": {
@@ -103,6 +110,31 @@
   "topic": "education",
   "created_at": "2026-03-16T09:00:00Z",
   "identity_provider": "wechat"
+}
+```
+
+## 评论写入接口建议字段
+
+```json
+{
+  "topic": "education",
+  "content": "县中支持政策要更细一点",
+  "display_name": "教育观察员",
+  "avatar_url": ""
+}
+```
+
+## 弹幕写入接口建议字段
+
+```json
+{
+  "topic": "employment",
+  "excerpt": "别把实习经历当成默认门槛",
+  "display_name": "求职用户",
+  "avatar_url": "",
+  "color": "#ffd56a",
+  "mode": "scroll",
+  "time_offset": 15
 }
 ```
 

@@ -127,6 +127,7 @@ async function handleComment(request, env, headers, requestId, ctx) {
   const body = await parseJson(request);
   ensureString(body.topic, 32, 'topic');
   ensureString(body.content, 400, 'content');
+  const avatarUrl = normalizePublicAssetUrl(body.avatar_url);
 
   await enforceRateLimit(env, session.user_id, request, 'comment', 4, 60);
 
@@ -137,8 +138,8 @@ async function handleComment(request, env, headers, requestId, ctx) {
   const commentId = crypto.randomUUID();
 
   await env.DB.prepare(
-    'INSERT INTO comments (id, topic, content, display_name, user_id, review_status, risk_score, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)'
-  ).bind(commentId, body.topic, body.content.trim(), body.display_name || '匿名用户', session.user_id, reviewStatus, riskScore, now).run();
+    'INSERT INTO comments (id, topic, content, display_name, avatar_url, user_id, review_status, risk_score, like_count, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10)'
+  ).bind(commentId, body.topic, body.content.trim(), body.display_name || '匿名用户', avatarUrl, session.user_id, reviewStatus, riskScore, 0, now).run();
   await writeAudit(env, requestId, session.user_id, 'comment', reviewStatus, ipHash, request);
   ctx.waitUntil(Promise.resolve());
   return json({ ok: true, request_id: requestId, comment_id: commentId, review_status: reviewStatus }, 200, headers);
@@ -149,6 +150,10 @@ async function handleBullet(request, env, headers, requestId, ctx) {
   const body = await parseJson(request);
   ensureString(body.topic, 32, 'topic');
   ensureString(body.excerpt, 80, 'excerpt');
+  const mode = ['scroll', 'top', 'bottom'].includes(body.mode) ? body.mode : 'scroll';
+  const color = typeof body.color === 'string' && /^#[0-9a-fA-F]{6}$/.test(body.color) ? body.color : '#ecf8ff';
+  const timeOffset = Number.isFinite(Number(body.time_offset)) ? Math.max(0, Math.min(7200, Number(body.time_offset))) : 0;
+  const avatarUrl = normalizePublicAssetUrl(body.avatar_url);
 
   await enforceRateLimit(env, session.user_id, request, 'bullet', 6, 60);
 
@@ -159,8 +164,8 @@ async function handleBullet(request, env, headers, requestId, ctx) {
   const bulletId = crypto.randomUUID();
 
   await env.DB.prepare(
-    'INSERT INTO bullets (id, topic, excerpt, user_id, review_status, risk_score, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)'
-  ).bind(bulletId, body.topic, body.excerpt.trim(), session.user_id, reviewStatus, riskScore, now).run();
+    'INSERT INTO bullets (id, topic, excerpt, display_name, avatar_url, color, mode, time_offset, user_id, review_status, risk_score, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12)'
+  ).bind(bulletId, body.topic, body.excerpt.trim(), body.display_name || '匿名用户', avatarUrl, color, mode, timeOffset, session.user_id, reviewStatus, riskScore, now).run();
   await writeAudit(env, requestId, session.user_id, 'bullet', reviewStatus, ipHash, request);
   ctx.waitUntil(Promise.resolve());
   return json({ ok: true, request_id: requestId, bullet_id: bulletId, review_status: reviewStatus }, 200, headers);
@@ -171,10 +176,10 @@ async function getLiveState(env) {
     'SELECT poll_id, option_id, COUNT(*) AS votes FROM poll_votes GROUP BY poll_id, option_id'
   ).all();
   const commentRows = await env.DB.prepare(
-    "SELECT id, topic, content, display_name, created_at FROM comments WHERE review_status = 'approved' ORDER BY created_at DESC LIMIT 20"
+    "SELECT id, topic, content, display_name, avatar_url, like_count, created_at FROM comments WHERE review_status = 'approved' ORDER BY like_count DESC, created_at DESC LIMIT 20"
   ).all();
   const bulletRows = await env.DB.prepare(
-    "SELECT id, topic, excerpt, created_at FROM bullets WHERE review_status = 'approved' ORDER BY created_at DESC LIMIT 20"
+    "SELECT id, topic, excerpt, display_name, avatar_url, color, mode, time_offset, created_at FROM bullets WHERE review_status = 'approved' ORDER BY created_at DESC LIMIT 20"
   ).all();
 
   const pollTotals = {};
@@ -190,12 +195,19 @@ async function getLiveState(env) {
       topic: row.topic,
       content: row.content,
       display_name: row.display_name,
+      avatar_url: row.avatar_url,
+      likes: row.like_count,
       created_at: row.created_at
     })),
     bullets: (bulletRows.results || []).map((row) => ({
       id: row.id,
       topic: row.topic,
       excerpt: row.excerpt,
+      display_name: row.display_name,
+      avatar_url: row.avatar_url,
+      color: row.color,
+      mode: row.mode,
+      time_offset: row.time_offset,
       created_at: row.created_at
     })),
     user: null
@@ -260,6 +272,16 @@ async function hashText(value) {
   const data = new TextEncoder().encode(value);
   const hash = await crypto.subtle.digest('SHA-256', data);
   return [...new Uint8Array(hash)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+function normalizePublicAssetUrl(value) {
+  if (typeof value !== 'string' || !value.trim()) return '';
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' ? url.toString() : '';
+  } catch {
+    return '';
+  }
 }
 
 class HttpError extends Error {

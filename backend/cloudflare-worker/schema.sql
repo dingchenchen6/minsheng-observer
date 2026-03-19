@@ -37,9 +37,11 @@ CREATE TABLE IF NOT EXISTS comments (
   topic TEXT NOT NULL,
   content TEXT NOT NULL,
   display_name TEXT,
+  avatar_url TEXT,
   user_id TEXT NOT NULL,
   review_status TEXT NOT NULL DEFAULT 'pending',
   risk_score INTEGER NOT NULL DEFAULT 0,
+  like_count INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -48,6 +50,11 @@ CREATE TABLE IF NOT EXISTS bullets (
   id TEXT PRIMARY KEY,
   topic TEXT NOT NULL,
   excerpt TEXT NOT NULL,
+  display_name TEXT,
+  avatar_url TEXT,
+  color TEXT,
+  mode TEXT NOT NULL DEFAULT 'scroll',
+  time_offset INTEGER NOT NULL DEFAULT 0,
   user_id TEXT NOT NULL,
   review_status TEXT NOT NULL DEFAULT 'pending',
   risk_score INTEGER NOT NULL DEFAULT 0,

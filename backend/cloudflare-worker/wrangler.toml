@@ -1,0 +1,18 @@
+name = "minsheng-observer-live-backend"
+main = "src/index.mjs"
+compatibility_date = "2026-03-19"
+
+[vars]
+APP_NAME = "minsheng-observer-live-backend"
+ALLOWED_ORIGIN = "https://dingchenchen6.github.io"
+WECHAT_APP_ID = ""
+WECHAT_REDIRECT_URI = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "minsheng-observer-live"
+database_id = "replace-with-your-d1-database-id"
+
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "replace-with-your-kv-namespace-id"

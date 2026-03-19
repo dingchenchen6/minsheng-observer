@@ -776,7 +776,7 @@ function applyChartDefaults() {
   if (typeof Chart === 'undefined') return;
   const palette = getChartThemePalette();
   Chart.defaults.color = palette.text;
-  Chart.defaults.font.family = '"Rajdhani", "Noto Sans SC", sans-serif';
+  Chart.defaults.font.family = '"PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif';
   Chart.defaults.font.size = 13;
   Chart.defaults.plugins.legend.labels.color = palette.legend;
   Chart.defaults.plugins.legend.labels.boxWidth = 14;
@@ -866,7 +866,7 @@ function configureChartDefaults() {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 2.8, 0, Math.PI * 2);
         ctx.fill();
-        ctx.font = '11px Rajdhani, sans-serif';
+        ctx.font = '11px "PingFang SC", "Microsoft YaHei", sans-serif';
         ctx.fillStyle = '#f4fcff';
         ctx.textAlign = 'left';
         ctx.fillText('PEAK', point.x + 8, point.y - 8);

@@ -9,12 +9,19 @@ permissions:
   contents: write
   discussions: read
 
+concurrency:
+  group: export-discussions
+  cancel-in-progress: false
+
 jobs:
   export:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5

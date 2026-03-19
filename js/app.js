@@ -54,7 +54,11 @@ const REPORT_CATEGORY_NAMES = {
 const VOTE_STORAGE_KEY = 'minsheng_observer_votes_v1';
 const SUGGESTION_STORAGE_KEY = 'minsheng_observer_suggestions_v1';
 const THEME_STORAGE_KEY = 'minsheng_observer_theme_v1';
+const SAFE_DATA_FILE_RE = /^[a-z0-9_-]+$/i;
+const EXTERNAL_LINK_REL = 'noopener noreferrer';
+const LOCALHOST_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]']);
 let systemThemeWatcherBound = false;
+let contentGuardsBound = false;
 
 const html = String.raw;
 const CHART_THEME_PALETTES = {
@@ -200,6 +204,71 @@ function escapeHtml(value) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function normalizeUrl(value, options = {}) {
+  const { allowRelative = true, allowLocalhostHttp = false } = options;
+  if (!value) return '';
+  try {
+    const url = new URL(value, window.location.href);
+    const sameOrigin = window.location.origin === url.origin;
+    if (sameOrigin) {
+      if (allowRelative) return `${url.pathname}${url.search}${url.hash}`;
+      return url.toString();
+    }
+    if (url.protocol === 'https:') return url.toString();
+    if (allowLocalhostHttp && url.protocol === 'http:' && LOCALHOST_HOSTS.has(url.hostname)) {
+      return url.toString();
+    }
+  } catch {
+    return '';
+  }
+  return '';
+}
+
+function safeHref(value, options = {}) {
+  return normalizeUrl(value, options) || '#';
+}
+
+function hardenAnchor(anchor) {
+  if (!(anchor instanceof HTMLAnchorElement)) return;
+  const rawHref = anchor.getAttribute('href');
+  if (!rawHref) return;
+  const normalized = normalizeUrl(rawHref, { allowRelative: true });
+  if (!normalized) {
+    anchor.setAttribute('href', '#');
+    anchor.removeAttribute('target');
+    anchor.setAttribute('rel', `nofollow ${EXTERNAL_LINK_REL}`);
+    return;
+  }
+
+  anchor.setAttribute('href', normalized);
+  const isExternal = /^https:\/\//i.test(normalized);
+  if (isExternal || anchor.getAttribute('target') === '_blank') {
+    anchor.setAttribute('target', '_blank');
+    anchor.setAttribute('rel', EXTERNAL_LINK_REL);
+  }
+}
+
+function hardenAnchors(root = document) {
+  if (!root || typeof root.querySelectorAll !== 'function') return;
+  root.querySelectorAll('a[href]').forEach(hardenAnchor);
+}
+
+function initContentGuards() {
+  if (contentGuardsBound || !document.body) return;
+  hardenAnchors(document);
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.matches?.('a[href]')) hardenAnchor(node);
+        hardenAnchors(node);
+      });
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+  contentGuardsBound = true;
 }
 
 function formatDate(value) {
@@ -812,7 +881,8 @@ function configureChartDefaults() {
 }
 
 async function fetchJson(name) {
-  const response = await fetch(`data/${name}.json`, { cache: 'no-cache' });
+  if (!SAFE_DATA_FILE_RE.test(name)) throw new Error(`Invalid data file: ${name}`);
+  const response = await fetch(`data/${name}.json`, { cache: 'no-cache', credentials: 'same-origin' });
   if (!response.ok) throw new Error(`Failed to load ${name}.json`);
   return response.json();
 }
@@ -841,9 +911,10 @@ async function fetchLiveRuntime(config) {
     error: ''
   };
   const backend = (config || {}).vote_backend || {};
-  if (!backend.enabled || !backend.read_url) return runtime;
+  const readUrl = normalizeUrl(backend.read_url, { allowRelative: false, allowLocalhostHttp: true });
+  if (!backend.enabled || !readUrl) return runtime;
   try {
-    const response = await fetch(backend.read_url, { cache: 'no-cache' });
+    const response = await fetch(readUrl, { cache: 'no-cache', credentials: 'omit' });
     if (!response.ok) throw new Error(`live read failed: ${response.status}`);
     const payload = await response.json();
     runtime.voteTotals = payload.poll_totals || {};
@@ -948,7 +1019,7 @@ async function initLiveInfoBar() {
 
   try {
     const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${coords.latitude}&longitude=${coords.longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`;
-    const response = await fetch(weatherUrl);
+    const response = await fetch(weatherUrl, { credentials: 'omit' });
     if (!response.ok) throw new Error('weather request failed');
     const payload = await response.json();
     const current = payload.current || {};
@@ -992,9 +1063,9 @@ function renderFooter(data) {
         最近更新：${escapeHtml(data.site_meta.last_updated_label)}。站点内容用于公共议题整理与研究参考，不代表官方立场。
       </div>
       <div class="footer-links">
-        <a class="button ghost" href="https://www.12315.cn/" target="_blank" rel="noreferrer">全国 12315</a>
-        <a class="button ghost" href="https://www.stats.gov.cn/" target="_blank" rel="noreferrer">国家统计局</a>
-        <a class="button ghost" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noreferrer">GitHub Discussions</a>
+        <a class="button ghost" href="https://www.12315.cn/" target="_blank" rel="noopener noreferrer">全国 12315</a>
+        <a class="button ghost" href="https://www.stats.gov.cn/" target="_blank" rel="noopener noreferrer">国家统计局</a>
+        <a class="button ghost" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noopener noreferrer">GitHub Discussions</a>
       </div>
     </div>
   `;
@@ -1041,7 +1112,7 @@ function reportStackMarkup(report) {
       <div class="meta-line"><span>${escapeHtml(report.publisher)}</span><span>${escapeHtml(report.year)}</span></div>
       <p>${escapeHtml(report.summary)}</p>
       <div class="topic-actions">
-        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noopener noreferrer">打开报告</a>
         <a class="topic-link" href="archive.html?type=report&topic=${escapeHtml(report.topic)}">归档检索</a>
       </div>
     </article>
@@ -1056,7 +1127,7 @@ function reportCardMarkup(report) {
       <div class="meta-line"><span>${escapeHtml(report.publisher)}</span><span>${escapeHtml(report.year)}</span></div>
       <p>${escapeHtml(report.summary)}</p>
       <div class="topic-actions">
-        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+        <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noopener noreferrer">打开报告</a>
         <a class="topic-link" href="analysis.html#${escapeHtml(report.topic)}">关联议题</a>
       </div>
     </article>
@@ -1326,7 +1397,7 @@ function renderHome(data) {
         <div class="meta-line"><span>${escapeHtml(item.platform)}</span><span>${escapeHtml(getTopicName(item.topic))}</span><span>热度 ${item.heat}</span></div>
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.summary)}</p>
-        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开平台入口</a></div>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开平台入口</a></div>
       </article>
     `).join('');
     socialStatus.innerHTML = Object.entries(data.social_hot_topics.platform_status).map(([platform, status]) => html`
@@ -1381,7 +1452,7 @@ function renderHome(data) {
       <small>${escapeHtml(source.category)} · 级别 ${escapeHtml(source.authority_level)}</small>
       <h3>${escapeHtml(source.name)}</h3>
       <p>${escapeHtml(source.note)}</p>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">打开入口</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">打开入口</a></div>
     </article>
   `).join('');
 
@@ -1410,7 +1481,7 @@ function renderHome(data) {
       <h3>${escapeHtml(item.title)}</h3>
       <div class="meta-line"><span>${escapeHtml(item.meta)}</span></div>
       <p>${escapeHtml(item.body)}</p>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.href)}" target="_blank" rel="noreferrer">${escapeHtml(item.linkText)}</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.linkText)}</a></div>
     </article>
   `).join('');
 
@@ -1423,7 +1494,7 @@ function renderHome(data) {
         <h3>${escapeHtml(report.title)}</h3>
         <p>${escapeHtml(report.summary)}</p>
         <div class="topic-actions">
-          <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noreferrer">打开报告</a>
+          <a class="topic-link" href="${escapeHtml(report.url)}" target="_blank" rel="noopener noreferrer">打开报告</a>
           <a class="topic-link" href="archive.html?type=report&topic=${escapeHtml(report.topic)}">关联归档</a>
         </div>
       </article>
@@ -2137,11 +2208,11 @@ function renderAnalysis(data) {
             </div>
             <div class="stack-card">
               <h3>论文证据</h3>
-              ${papers.map((paper) => html`<div class="timeline-item"><div class="timeline-date">${paper.year} · DOI</div><strong>${escapeHtml(paper.title)}</strong><p>${escapeHtml(paper.abstract)}</p><div class="topic-actions"><a class="topic-link" href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">打开论文</a></div></div>`).join('')}
+              ${papers.map((paper) => html`<div class="timeline-item"><div class="timeline-date">${paper.year} · DOI</div><strong>${escapeHtml(paper.title)}</strong><p>${escapeHtml(paper.abstract)}</p><div class="topic-actions"><a class="topic-link" href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">打开论文</a></div></div>`).join('')}
             </div>
             <div class="stack-card">
               <h3>办事与政策入口</h3>
-              <div class="link-pills">${policies.map((policy) => `<a class="link-pill" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)} · ${escapeHtml(policy.source_name)}</a>`).join('')}</div>
+              <div class="link-pills">${policies.map((policy) => `<a class="link-pill" href="${escapeHtml(policy.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(policy.label)} · ${escapeHtml(policy.source_name)}</a>`).join('')}</div>
             </div>
             <div class="stack-card">
               <h3>相关讨论</h3>
@@ -2325,7 +2396,7 @@ function renderTrends(data) {
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.summary)}</p>
       ${ranking ? `<div class="meta-line"><span>综合分 ${escapeHtml(ranking.combined_score)}</span><span>${escapeHtml(ranking.signal_label)}</span><span>较历史 ${escapeHtml(formatSignedNumber(ranking.delta_vs_archive))}</span></div>` : ''}
-      <div class="link-pills" style="margin-top:12px;">${item.source_links.map((link) => `<a class="link-pill" href="${escapeHtml(link.url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}</a>`).join('')}</div>
+      <div class="link-pills" style="margin-top:12px;">${item.source_links.map((link) => `<a class="link-pill" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a>`).join('')}</div>
     </article>
   `;
   }).join('');
@@ -2344,7 +2415,7 @@ function renderTrends(data) {
       <small>${escapeHtml(source.category)}</small>
       <h3>${escapeHtml(source.name)}</h3>
       <p>${escapeHtml(source.note)}</p>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">打开公开入口</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">打开公开入口</a></div>
     </article>
   `).join('');
 
@@ -2359,7 +2430,7 @@ function renderTrends(data) {
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.summary)}</p>
         <div class="meta-line"><span>状态：${escapeHtml(item.fetch_status)}</span><span>热度 ${item.heat}</span></div>
-        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">打开来源</a></div>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">打开来源</a></div>
       </article>
     `).join('');
     socialPlatformStatus.innerHTML = [
@@ -2487,7 +2558,7 @@ function renderEvidence(data) {
           ${item.risk_tags && item.risk_tags.length ? `<div class="tag-row" style="margin-top:10px;">${item.risk_tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
           ${item.clarification_points && item.clarification_points.length ? `<ul class="suggest-list">${item.clarification_points.map((point) => `<li>${escapeHtml(point)}</li>`).join('')}</ul>` : ''}
           ${item.scam_signals && item.scam_signals.length ? `<p><strong>识别信号：</strong>${escapeHtml(item.scam_signals.join('；'))}</p>` : ''}
-          <div class="link-pills" style="margin-top:12px;">${sources.map((source) => `<a class="link-pill" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">来源：${escapeHtml(source.name)}</a>`).join('')}${policies.map((policy) => `<a class="link-pill" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}${papers.map((paper) => `<a class="link-pill" href="${escapeHtml(paper.url)}" target="_blank" rel="noreferrer">论文 DOI</a>`).join('')}</div>
+          <div class="link-pills" style="margin-top:12px;">${sources.map((source) => `<a class="link-pill" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">来源：${escapeHtml(source.name)}</a>`).join('')}${policies.map((policy) => `<a class="link-pill" href="${escapeHtml(policy.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(policy.label)}</a>`).join('')}${papers.map((paper) => `<a class="link-pill" href="${escapeHtml(paper.url)}" target="_blank" rel="noopener noreferrer">论文 DOI</a>`).join('')}</div>
           <div class="stack-list" style="margin-top:14px;">${item.history.map((entry) => `<div class="timeline-item"><p>${escapeHtml(entry)}</p></div>`).join('')}</div>
         </article>
       `;
@@ -2599,7 +2670,7 @@ function renderExposure(data) {
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.summary)}</p>
         <p><strong>站内判断：</strong>${escapeHtml(item.verdict)}</p>
-        <div class="topic-actions">${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}</div>
+        <div class="topic-actions">${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(policy.label)}</a>`).join('')}</div>
       </article>
     `;
   }).join('');
@@ -2620,7 +2691,7 @@ function renderExposure(data) {
         <small>应对动作</small>
         <h3>${escapeHtml(item.title)}</h3>
         <p>${escapeHtml(item.body)}</p>
-        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
       </article>
     `).join('');
   }
@@ -2638,7 +2709,7 @@ function renderExposure(data) {
         <p><strong>站内判断：</strong>${escapeHtml(item.verdict)}</p>
         <p><strong>提醒：</strong>${escapeHtml(item.risk_note)}</p>
         <div class="topic-actions">
-          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noreferrer">${escapeHtml(target.label)}</a>`).join('')}
+          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(target.label)}</a>`).join('')}
         </div>
       </article>
     `).join('');
@@ -2654,7 +2725,7 @@ function renderExposure(data) {
           ${(item.steps || []).map((step, index) => `<div class="route-step"><span>${index + 1}</span><p>${escapeHtml(step)}</p></div>`).join('')}
         </div>
         <div class="topic-actions">
-          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noreferrer">${escapeHtml(target.label)}</a>`).join('')}
+          ${(item.policy_targets || []).map((target) => `<a class="topic-link" href="${escapeHtml(target.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(target.label)}</a>`).join('')}
         </div>
       </article>
     `).join('');
@@ -2752,8 +2823,8 @@ function renderGuide(data) {
         <p><strong>常见坑点：</strong>${escapeHtml(item.risk_points.join('；') || '正在整理')}</p>
         <ul class="suggest-list">${item.safe_steps.map((step) => `<li>${escapeHtml(step)}</li>`).join('')}</ul>
         <div class="topic-actions">
-          ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
-          ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noreferrer">讨论区</a>`).join('')}
+          ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
+          ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noopener noreferrer">讨论区</a>`).join('')}
         </div>
       </article>
     `;
@@ -2763,7 +2834,7 @@ function renderGuide(data) {
     <article class="stack-card">
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.body)}</p>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
     </article>
   `).join('');
 
@@ -2800,7 +2871,7 @@ function renderDiscussion(data) {
       <div class="stack-card"><small>微信登录</small><p>${escapeHtml(wechat.status_label || '未配置')}</p></div>
     </div>
     <div class="topic-actions" style="margin-top:16px;">
-      <a class="button primary" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noreferrer">打开 Discussions</a>
+      <a class="button primary" href="${escapeHtml(data.site_meta.repository.discussions_url)}" target="_blank" rel="noopener noreferrer">打开 Discussions</a>
       ${wechat.enabled && wechat.login_url ? `<a class="button ghost" href="${escapeHtml(wechat.login_url)}">微信登录入口</a>` : ''}
       <a class="button ghost" href="archive.html?type=discussion">查看讨论归档</a>
     </div>
@@ -2812,7 +2883,7 @@ function renderDiscussion(data) {
       <h3>${escapeHtml(item.title)}</h3>
       <p>${escapeHtml(item.excerpt)}</p>
       <div class="meta-line"><span>${formatDate(item.created_at)}</span><span>点赞 ${item.likes}</span></div>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noreferrer">跳转到仓库讨论</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">跳转到仓库讨论</a></div>
     </article>
   `).join('');
 
@@ -2837,6 +2908,7 @@ function mountGiscus(meta) {
   script.src = 'https://giscus.app/client.js';
   script.async = true;
   script.crossOrigin = 'anonymous';
+  script.referrerPolicy = 'no-referrer';
   script.setAttribute('data-repo', config.repo);
   script.setAttribute('data-repo-id', config.repo_id);
   script.setAttribute('data-category', config.category);
@@ -3015,7 +3087,7 @@ function renderArchive(data) {
         <h3>${escapeHtml(doc.title)}</h3>
         <div class="meta-line"><span>${escapeHtml(getTopicName(doc.topic))}</span><span>${formatDate(doc.date)}</span></div>
         <p>${escapeHtml(doc.summary)}</p>
-        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(doc.url)}" ${doc.url.startsWith('http') ? 'target="_blank" rel="noreferrer"' : ''}>打开记录</a></div>
+        <div class="topic-actions"><a class="topic-link" href="${escapeHtml(doc.url)}" ${doc.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''}>打开记录</a></div>
       </article>
     `).join('') : '<div class="note-card">没有匹配结果。可以放宽关键词或改用其他议题筛选。</div>';
   }
@@ -3157,9 +3229,11 @@ function getLiveVoteCount(data, pollId, optionId) {
 
 async function submitLiveVote(data, poll, optionId) {
   const backend = ((data || {}).live_config || {}).vote_backend || {};
-  if (!backend.enabled || !backend.write_url) return { ok: false, fallback: true };
-  const response = await fetch(backend.write_url, {
+  const writeUrl = normalizeUrl(backend.write_url, { allowRelative: false, allowLocalhostHttp: true });
+  if (!backend.enabled || !writeUrl) return { ok: false, fallback: true };
+  const response = await fetch(writeUrl, {
     method: 'POST',
+    credentials: 'omit',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       poll_id: poll.id,
@@ -3427,8 +3501,8 @@ function renderPolls(data) {
           <p>${escapeHtml(board.summary)}</p>
           <ul class="suggest-list">${board.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
           <div class="topic-actions">
-            ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
-            ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noreferrer">进入讨论</a>`).join('')}
+            ${policies.map((policy) => `<a class="topic-link" href="${escapeHtml(policy.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(policy.label)}</a>`).join('')}
+            ${discussions.map((discussion) => `<a class="topic-link" href="${escapeHtml(discussion.url)}" target="_blank" rel="noopener noreferrer">进入讨论</a>`).join('')}
           </div>
         </article>
       `;
@@ -3466,7 +3540,7 @@ function renderPolls(data) {
         <article class="stack-card">
           <h3>${escapeHtml(item.title)}</h3>
           <p>${escapeHtml(item.body)}</p>
-          <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
+          <div class="topic-actions"><a class="topic-link" href="${escapeHtml(item.url)}" ${/^https?:/.test(item.url) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${escapeHtml(item.label)}</a></div>
         </article>
       `).join('');
     }
@@ -3563,6 +3637,10 @@ function renderMethodology(data) {
       body: 'refresh-data 负责刷新时间戳和元数据；export-discussions 负责导出公开讨论摘录；deploy-pages 负责 Pages 发布。'
     },
     {
+      title: '前端安全加固',
+      body: '页面启用了浏览器端内容安全策略、引用来源限制和权限策略；核心图表库改为本地托管，外链会统一补上安全属性并过滤掉非法协议。'
+    },
+    {
       title: '免责声明',
       body: '本站用于研究型整理、公开信息导航与议题归档，不构成官方答复、法律意见或科学抽样民调。'
     }
@@ -3574,7 +3652,7 @@ function renderMethodology(data) {
       <small>${escapeHtml(source.category)} · 级别 ${escapeHtml(source.authority_level)} · 最近检查 ${escapeHtml(source.last_checked)}</small>
       <h3>${escapeHtml(source.name)}</h3>
       <p>${escapeHtml(source.note)}</p>
-      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">打开入口</a></div>
+      <div class="topic-actions"><a class="topic-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">打开入口</a></div>
     </article>
   `).join('');
 }
@@ -3582,6 +3660,7 @@ function renderMethodology(data) {
 async function init() {
   applyThemeMode(getStoredThemeMode(), false);
   bindSystemThemeWatcher();
+  initContentGuards();
   configureChartDefaults();
   initPoeticScene();
   initCyberScene();

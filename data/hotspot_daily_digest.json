@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-03-23T17:52:05.669848+00:00",
+  "updated_at": "2026-03-23T20:57:22.798717+00:00",
   "cadence": {
     "timezone": "Asia/Shanghai",
     "timezone_label": "北京时间",
@@ -48,7 +48,7 @@
     "expected_runs": 2,
     "progress_label": "1 / 2",
     "latest_slot_label": "早报",
-    "latest_timestamp_label": "2026年03月24日 01:52（北京时间）",
+    "latest_timestamp_label": "2026年03月24日 04:57（北京时间）",
     "next_expected_label": "晚报 20:10"
   },
   "latest_run": {
@@ -70,7 +70,7 @@
     "run_count": 1,
     "latest_slot": "morning",
     "latest_slot_label": "早报",
-    "latest_timestamp_label": "2026年03月24日 01:52（北京时间）",
+    "latest_timestamp_label": "2026年03月24日 04:57（北京时间）",
     "headline": "2026年03月24日 早报重点关注“食品”与“住房”",
     "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "top_topic": "food",
@@ -99,7 +99,7 @@
     {
       "label": "最近更新",
       "value": "早报",
-      "note": "2026年03月24日 01:52（北京时间）"
+      "note": "2026年03月24日 04:57（北京时间）"
     },
     {
       "label": "今日领跑",
@@ -132,7 +132,7 @@
       "run_count": 1,
       "latest_slot": "morning",
       "latest_slot_label": "早报",
-      "latest_timestamp_label": "2026年03月24日 01:52（北京时间）",
+      "latest_timestamp_label": "2026年03月24日 04:57（北京时间）",
       "headline": "2026年03月24日 早报重点关注“食品”与“住房”",
       "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
       "top_topic": "food",

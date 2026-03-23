@@ -14,6 +14,7 @@ const DATA_FILES = [
   'polls',
   'social_hot_topics',
   'hotspot_analysis',
+  'hotspot_daily_digest',
   'hotspot_timeseries',
   'insight_digest',
   'editorial_watchlist',
@@ -1785,6 +1786,123 @@ function renderTrendCharts(analysis) {
   }
 }
 
+function renderHotspotDailyDigest(digest) {
+  if (!digest) return;
+  renderSummaryGrid('hotspotDailySummaryGrid', digest.summary_cards || []);
+
+  const dailyLog = byId('hotspotDailyLog');
+  if (dailyLog) {
+    const today = digest.today_status || {};
+    const history = (digest.history || []).slice(0, 6);
+    dailyLog.innerHTML = [
+      html`
+        <article class="stack-card">
+          <small>${escapeHtml((today.date_label || '今日') + ' 自动更新')}</small>
+          <h3>${escapeHtml((today.run_count || 0) + ' / ' + (today.expected_runs || 2))} 次已完成</h3>
+          <p>已完成：${escapeHtml((today.completed_slot_labels || []).join('、') || '尚未更新')}。</p>
+          <p>下一节点：${escapeHtml(today.next_expected_label || '等待下一次自动更新')}</p>
+          <div class="meta-line">
+            <span>最近更新 ${escapeHtml(today.latest_slot_label || '待更新')}</span>
+            <span>${escapeHtml(today.latest_timestamp_label || '')}</span>
+          </div>
+        </article>
+      `,
+      ...history.map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(item.date_label || item.date || '')} · ${escapeHtml((item.completed_slot_labels || []).join(' / ') || '未完成')}</small>
+          <h3>${escapeHtml(item.headline || (item.top_topic_label ? `当日领跑：${item.top_topic_label}` : '日档整理中'))}</h3>
+          <p>${escapeHtml(item.chart_takeaway || item.summary || '正在整理当日热点摘要。')}</p>
+          <div class="meta-line">
+            <span>领跑议题 ${escapeHtml(item.top_topic_label || '统计中')}</span>
+            <span>综合分 ${escapeHtml(item.top_combined_score || 0)}</span>
+            <span>社媒快照 ${escapeHtml(item.social_item_count || 0)}</span>
+          </div>
+        </article>
+      `)
+    ].join('');
+  }
+
+  const automationBoard = byId('hotspotAutomationBoard');
+  if (automationBoard) {
+    const cadence = digest.cadence || {};
+    automationBoard.innerHTML = [
+      ...((cadence.refresh_windows || []).map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(cadence.timezone_label || '北京时间')}</small>
+          <h3>${escapeHtml(item.label)} · ${escapeHtml(item.time)}</h3>
+          <p>热点快照、社媒回退层、证据条目和综合排序会在这一轮一起刷新。</p>
+        </article>
+      `)),
+      ...((cadence.discussion_export_windows || []).map((item) => html`
+        <article class="stack-card">
+          <small>${escapeHtml(cadence.timezone_label || '北京时间')}</small>
+          <h3>${escapeHtml(item.label)} · ${escapeHtml(item.time)}</h3>
+          <p>讨论归档和弹幕摘录会在热点刷新后继续同步，保证讨论面和热点快照尽量对齐。</p>
+        </article>
+      `))
+    ].join('');
+  }
+
+  if (typeof Chart === 'undefined') return;
+  window.__trendCharts = window.__trendCharts || {};
+  const scoreCanvas = byId('trendDailyScoreChart');
+  const runCanvas = byId('trendDailyRunChart');
+  const series = digest.series || {};
+
+  if (scoreCanvas) {
+    if (window.__trendCharts.dailyScore) window.__trendCharts.dailyScore.destroy();
+    window.__trendCharts.dailyScore = new Chart(scoreCanvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: series.labels || [],
+        datasets: [{
+          label: '当日头部综合分',
+          data: series.top_scores || [],
+          borderColor: CHART_PALETTE.cyan,
+          backgroundColor: CHART_PALETTE.cyanSoft,
+          fill: true,
+          tension: 0.35,
+          pointBackgroundColor: CHART_PALETTE.amber,
+          pointBorderColor: CHART_PALETTE.light,
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: true } }
+      }
+    });
+  }
+
+  if (runCanvas) {
+    if (window.__trendCharts.dailyRun) window.__trendCharts.dailyRun.destroy();
+    window.__trendCharts.dailyRun = new Chart(runCanvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: series.labels || [],
+        datasets: [{
+          label: '当日已完成更新次数',
+          data: series.run_counts || [],
+          backgroundColor: (series.run_counts || []).map((count) => count >= 2 ? CHART_PALETTE.green : CHART_PALETTE.pink)
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            suggestedMax: 2,
+            ticks: { stepSize: 1 }
+          }
+        },
+        plugins: { legend: { display: true } }
+      }
+    });
+  }
+}
+
 function renderWeeklyReport(containerId, weeklyReport, limit = 4) {
   const container = byId(containerId);
   if (!container || !weeklyReport) return;
@@ -2317,6 +2435,7 @@ function renderAnalysis(data) {
 
 function renderTrends(data) {
   const analysis = data.hotspot_analysis || {};
+  const dailyDigest = data.hotspot_daily_digest || {};
   const rankingByTopic = Object.fromEntries((analysis.topic_rankings || []).map((item) => [item.topic, item]));
   const activeWindows = getActiveWatchWindows(data.editorial_watchlist || { windows: [] });
 
@@ -2368,6 +2487,7 @@ function renderTrends(data) {
   })));
 
   renderSummaryGrid('hotspotSummaryGrid', analysis.summary_cards || []);
+  renderHotspotDailyDigest(dailyDigest);
   const trendEditionTitle = byId('trendEditionTitle');
   if (trendEditionTitle && analysis.express_brief) {
     trendEditionTitle.textContent = `${analysis.express_brief.edition_date_label}快报`;

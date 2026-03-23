@@ -486,6 +486,142 @@ def build_hotspot_analysis():
         },
     }
     save_json('hotspot_analysis.json', payload)
+    return payload
+
+
+def build_hotspot_daily_digest(analysis_payload: dict | None = None):
+    analysis = analysis_payload or load_json('hotspot_analysis.json')
+    current = load_json('trend_current.json')
+    archive = load_json('trend_archive.json')
+    now = china_now()
+    day_key = now.strftime('%Y-%m-%d')
+    day_label = now.strftime('%m月%d日')
+    weekday_label = now.strftime('%A')
+    edition = analysis.get('edition', {})
+    express = analysis.get('express_brief', {})
+    rankings = analysis.get('topic_rankings', [])
+    capture = analysis.get('capture_overview', {})
+    top_topic = rankings[0] if rankings else {}
+    rising_topic = max(rankings, key=lambda item: item.get('delta_vs_archive', 0), default={})
+
+    existing = {'history': []}
+    existing_path = DATA / 'hotspot_daily_digest.json'
+    if existing_path.exists():
+        try:
+            existing = load_json('hotspot_daily_digest.json')
+        except Exception:
+            existing = {'history': []}
+
+    slot_order = {'morning': 0, 'evening': 1}
+    history_by_date = {
+        item.get('date'): item
+        for item in existing.get('history', [])
+        if item.get('date')
+    }
+    previous = history_by_date.get(day_key, {})
+    completed_slots = sorted(
+        set(previous.get('completed_slots', [])) | {edition.get('slot', 'morning')},
+        key=lambda item: slot_order.get(item, 99)
+    )
+    completed_slot_labels = ['早报' if item == 'morning' else '晚报' for item in completed_slots]
+    missing_slots = [item for item in ['morning', 'evening'] if item not in completed_slots]
+    missing_slot_labels = ['早报' if item == 'morning' else '晚报' for item in missing_slots]
+
+    record = {
+        'date': day_key,
+        'date_label': day_label,
+        'weekday_label': weekday_label,
+        'completed_slots': completed_slots,
+        'completed_slot_labels': completed_slot_labels,
+        'missing_slots': missing_slots,
+        'missing_slot_labels': missing_slot_labels,
+        'run_count': len(completed_slots),
+        'latest_slot': edition.get('slot', 'morning'),
+        'latest_slot_label': edition.get('slot_label', '早报'),
+        'latest_timestamp_label': edition.get('timestamp_label', ''),
+        'headline': express.get('headline', ''),
+        'summary': express.get('summary', ''),
+        'top_topic': top_topic.get('topic', ''),
+        'top_topic_label': top_topic.get('label', ''),
+        'top_combined_score': top_topic.get('combined_score', 0),
+        'rising_topic': rising_topic.get('topic', ''),
+        'rising_topic_label': rising_topic.get('label', ''),
+        'social_item_count': capture.get('social_item_count', 0),
+        'current_trend_count': capture.get('current_trend_count', len(current)),
+        'archive_count': capture.get('archive_count', len(archive)),
+        'discussion_count': capture.get('discussion_count', 0),
+        'evidence_count': capture.get('evidence_count', 0),
+        'chart_takeaway': (express.get('chart_takeaways', []) or [''])[0],
+        'watch_alert_titles': [item.get('title', '') for item in (express.get('watch_alerts', []) or [])[:3] if item.get('title')],
+    }
+    history_by_date[day_key] = record
+    history = sorted(history_by_date.values(), key=lambda item: item.get('date', ''), reverse=True)[:14]
+    recent_history = list(reversed(history[:7]))
+
+    series = {
+        'labels': [item.get('date_label', item.get('date', '')) for item in recent_history],
+        'top_scores': [item.get('top_combined_score', 0) for item in recent_history],
+        'run_counts': [item.get('run_count', 0) for item in recent_history],
+    }
+    today_status = {
+        'date': day_key,
+        'date_label': day_label,
+        'completed_slots': completed_slots,
+        'completed_slot_labels': completed_slot_labels,
+        'missing_slots': missing_slots,
+        'missing_slot_labels': missing_slot_labels,
+        'run_count': len(completed_slots),
+        'expected_runs': 2,
+        'progress_label': f'{len(completed_slots)} / 2',
+        'latest_slot_label': edition.get('slot_label', '早报'),
+        'latest_timestamp_label': edition.get('timestamp_label', ''),
+        'next_expected_label': f"{'早报 08:10' if completed_slots == [] else '晚报 20:10' if 'evening' in missing_slots else '已完成今日两次更新'}",
+    }
+    cadence = {
+        'timezone': 'Asia/Shanghai',
+        'timezone_label': '北京时间',
+        'refresh_runs_per_day': 2,
+        'refresh_windows': [
+            {'slot': 'morning', 'label': '早报', 'time': '08:10'},
+            {'slot': 'evening', 'label': '晚报', 'time': '20:10'},
+        ],
+        'discussion_export_windows': [
+            {'slot': 'morning', 'label': '早报讨论归档', 'time': '08:40'},
+            {'slot': 'evening', 'label': '晚报讨论归档', 'time': '20:40'},
+        ],
+    }
+    payload = {
+        'updated_at': iso_now(),
+        'cadence': cadence,
+        'today_status': today_status,
+        'latest_run': record,
+        'summary_cards': [
+            {
+                'label': '今日进度',
+                'value': f"{today_status['progress_label']} 次",
+                'note': f"今日已完成：{'、'.join(completed_slot_labels) if completed_slot_labels else '尚未更新'}。",
+            },
+            {
+                'label': '最近更新',
+                'value': record.get('latest_slot_label', '待更新'),
+                'note': record.get('latest_timestamp_label', '等待下一次自动更新'),
+            },
+            {
+                'label': '今日领跑',
+                'value': record.get('top_topic_label', '统计中'),
+                'note': f"综合分 {record.get('top_combined_score', 0)}，用于标记当日最强热点。",
+            },
+            {
+                'label': '日档保留',
+                'value': f'{len(history)} 天',
+                'note': '每天自动累积热点日档，方便回看近两周变化。',
+            },
+        ],
+        'history': history,
+        'series': series,
+    }
+    save_json('hotspot_daily_digest.json', payload)
+    return payload
 
 
 def build_hotspot_timeseries():
@@ -819,7 +955,8 @@ def refresh_social_topics():
 
 def main():
     refresh_social_topics()
-    build_hotspot_analysis()
+    hotspot_analysis = build_hotspot_analysis()
+    build_hotspot_daily_digest(hotspot_analysis)
     build_hotspot_timeseries()
     build_insight_digest()
     refresh_site_meta()

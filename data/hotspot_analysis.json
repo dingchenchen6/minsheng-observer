@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-03-23T20:57:22.796645+00:00",
+  "updated_at": "2026-03-24T03:12:40.949284+00:00",
   "edition": {
     "slot": "morning",
     "slot_label": "早报",
     "date_label": "2026年03月24日 早报",
-    "timestamp_label": "2026年03月24日 04:57（北京时间）"
+    "timestamp_label": "2026年03月24日 11:12（北京时间）"
   },
   "summary_cards": [
     {
@@ -38,7 +38,7 @@
     "edition_slot": "morning",
     "edition_label": "早报",
     "edition_date_label": "2026年03月24日 早报",
-    "edition_timestamp_label": "2026年03月24日 04:57（北京时间）",
+    "edition_timestamp_label": "2026年03月24日 11:12（北京时间）",
     "headline": "2026年03月24日 早报重点关注“食品”与“住房”",
     "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "sections": [

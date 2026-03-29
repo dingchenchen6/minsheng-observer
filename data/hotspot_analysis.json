@@ -1,10 +1,10 @@
 {
-  "updated_at": "2026-03-29T03:34:24.685327+00:00",
+  "updated_at": "2026-03-29T13:19:32.916842+00:00",
   "edition": {
-    "slot": "morning",
-    "slot_label": "早报",
-    "date_label": "2026年03月29日 早报",
-    "timestamp_label": "2026年03月29日 11:34（北京时间）"
+    "slot": "evening",
+    "slot_label": "晚报",
+    "date_label": "2026年03月29日 晚报",
+    "timestamp_label": "2026年03月29日 21:19（北京时间）"
   },
   "summary_cards": [
     {
@@ -35,17 +35,17 @@
     "当前仍受平台限制的入口有：ZHIHU、WEIBO，因此站点继续保留回退层和人工校准快照。"
   ],
   "express_brief": {
-    "edition_slot": "morning",
-    "edition_label": "早报",
-    "edition_date_label": "2026年03月29日 早报",
-    "edition_timestamp_label": "2026年03月29日 11:34（北京时间）",
-    "headline": "2026年03月29日 早报重点关注“食品”与“住房”",
-    "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
+    "edition_slot": "evening",
+    "edition_label": "晚报",
+    "edition_date_label": "2026年03月29日 晚报",
+    "edition_timestamp_label": "2026年03月29日 21:19（北京时间）",
+    "headline": "2026年03月29日 晚报重点关注“食品”与“住房”",
+    "summary": "本站按晚报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "sections": [
       {
         "topic": "food",
         "label": "食品",
-        "headline": "食品列入早报优先跟踪",
+        "headline": "食品列入晚报优先跟踪",
         "summary": "综合分 253，当前热度 84.0，社媒总热度 277，证据 2 条，讨论 1 条。",
         "opinion_hint": "标签透明和真实告知",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -53,7 +53,7 @@
       {
         "topic": "housing",
         "label": "住房",
-        "headline": "住房列入早报优先跟踪",
+        "headline": "住房列入晚报优先跟踪",
         "summary": "综合分 211，当前热度 87.0，社媒总热度 169，证据 2 条，讨论 1 条。",
         "opinion_hint": "通勤成本与地段可达性",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -61,7 +61,7 @@
       {
         "topic": "employment",
         "label": "就业",
-        "headline": "就业列入早报优先跟踪",
+        "headline": "就业列入晚报优先跟踪",
         "summary": "综合分 206，当前热度 96.0，社媒总热度 186，证据 2 条，讨论 0 条。",
         "opinion_hint": "要求与经验门槛过高",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -69,7 +69,7 @@
       {
         "topic": "elderly",
         "label": "养老",
-        "headline": "养老列入早报优先跟踪",
+        "headline": "养老列入晚报优先跟踪",
         "summary": "综合分 203，当前热度 91.0，社媒总热度 178，证据 1 条，讨论 1 条。",
         "opinion_hint": "失能照护服务不足",
         "watch_reason": "社媒热度高于站内快照，适合优先补政策口径和讨论摘录。"
@@ -77,7 +77,7 @@
       {
         "topic": "healthcare",
         "label": "医疗",
-        "headline": "医疗列入早报优先跟踪",
+        "headline": "医疗列入晚报优先跟踪",
         "summary": "综合分 166，当前热度 82.0，社媒总热度 80，证据 3 条，讨论 1 条。",
         "opinion_hint": "医保报销与费用透明度",
         "watch_reason": "证据和讨论积累较厚，适合做专题化持续追踪。"

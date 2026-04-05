@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-04T13:19:53.091914+00:00",
+  "updated_at": "2026-04-05T03:36:36.844095+00:00",
   "cadence": {
     "timezone": "Asia/Shanghai",
     "timezone_label": "北京时间",
@@ -30,45 +30,49 @@
     ]
   },
   "today_status": {
-    "date": "2026-04-04",
-    "date_label": "04月04日",
+    "date": "2026-04-05",
+    "date_label": "04月05日",
     "completed_slots": [
-      "morning",
-      "evening"
+      "morning"
     ],
     "completed_slot_labels": [
-      "早报",
+      "早报"
+    ],
+    "missing_slots": [
+      "evening"
+    ],
+    "missing_slot_labels": [
       "晚报"
     ],
-    "missing_slots": [],
-    "missing_slot_labels": [],
-    "run_count": 2,
+    "run_count": 1,
     "expected_runs": 2,
-    "progress_label": "2 / 2",
-    "latest_slot_label": "晚报",
-    "latest_timestamp_label": "2026年04月04日 21:19（北京时间）",
-    "next_expected_label": "已完成今日两次更新"
+    "progress_label": "1 / 2",
+    "latest_slot_label": "早报",
+    "latest_timestamp_label": "2026年04月05日 11:36（北京时间）",
+    "next_expected_label": "晚报 20:10"
   },
   "latest_run": {
-    "date": "2026-04-04",
-    "date_label": "04月04日",
-    "weekday_label": "Saturday",
+    "date": "2026-04-05",
+    "date_label": "04月05日",
+    "weekday_label": "Sunday",
     "completed_slots": [
-      "morning",
-      "evening"
+      "morning"
     ],
     "completed_slot_labels": [
-      "早报",
+      "早报"
+    ],
+    "missing_slots": [
+      "evening"
+    ],
+    "missing_slot_labels": [
       "晚报"
     ],
-    "missing_slots": [],
-    "missing_slot_labels": [],
-    "run_count": 2,
-    "latest_slot": "evening",
-    "latest_slot_label": "晚报",
-    "latest_timestamp_label": "2026年04月04日 21:19（北京时间）",
-    "headline": "2026年04月04日 晚报重点关注“食品”与“住房”",
-    "summary": "本站按晚报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
+    "run_count": 1,
+    "latest_slot": "morning",
+    "latest_slot_label": "早报",
+    "latest_timestamp_label": "2026年04月05日 11:36（北京时间）",
+    "headline": "2026年04月05日 早报重点关注“食品”与“住房”",
+    "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "top_topic": "food",
     "top_topic_label": "食品",
     "top_combined_score": 253,
@@ -89,13 +93,13 @@
   "summary_cards": [
     {
       "label": "今日进度",
-      "value": "2 / 2 次",
-      "note": "今日已完成：早报、晚报。"
+      "value": "1 / 2 次",
+      "note": "今日已完成：早报。"
     },
     {
       "label": "最近更新",
-      "value": "晚报",
-      "note": "2026年04月04日 21:19（北京时间）"
+      "value": "早报",
+      "note": "2026年04月05日 11:36（北京时间）"
     },
     {
       "label": "今日领跑",
@@ -104,11 +108,50 @@
     },
     {
       "label": "日档保留",
-      "value": "12 天",
+      "value": "13 天",
       "note": "每天自动累积热点日档，方便回看近两周变化。"
     }
   ],
   "history": [
+    {
+      "date": "2026-04-05",
+      "date_label": "04月05日",
+      "weekday_label": "Sunday",
+      "completed_slots": [
+        "morning"
+      ],
+      "completed_slot_labels": [
+        "早报"
+      ],
+      "missing_slots": [
+        "evening"
+      ],
+      "missing_slot_labels": [
+        "晚报"
+      ],
+      "run_count": 1,
+      "latest_slot": "morning",
+      "latest_slot_label": "早报",
+      "latest_timestamp_label": "2026年04月05日 11:36（北京时间）",
+      "headline": "2026年04月05日 早报重点关注“食品”与“住房”",
+      "summary": "本站按早报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
+      "top_topic": "food",
+      "top_topic_label": "食品",
+      "top_combined_score": 253,
+      "rising_topic": "housing",
+      "rising_topic_label": "住房",
+      "social_item_count": 14,
+      "current_trend_count": 6,
+      "archive_count": 12,
+      "discussion_count": 8,
+      "evidence_count": 15,
+      "chart_takeaway": "综合分前两位分别是“食品”和“住房”，说明当前讨论并非单点爆发。",
+      "watch_alert_titles": [
+        "预制菜争议的核心不只是‘该不该吃’，而是‘是否充分告知’",
+        "“花钱代办公租房、找关系优先配租、短视频低价房源引流”属于高风险住房骗局",
+        "“直签、保 offer、招转培、培训贷”不是正常求职服务，而是高风险套路"
+      ]
+    },
     {
       "date": "2026-04-04",
       "date_label": "04月04日",
@@ -556,13 +599,13 @@
   ],
   "series": {
     "labels": [
-      "03月29日",
       "03月30日",
       "03月31日",
       "04月01日",
       "04月02日",
       "04月03日",
-      "04月04日"
+      "04月04日",
+      "04月05日"
     ],
     "top_scores": [
       253,
@@ -580,7 +623,7 @@
       2,
       2,
       2,
-      2
+      1
     ]
   }
 }

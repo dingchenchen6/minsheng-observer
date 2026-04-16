@@ -5,7 +5,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.stats.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "可追踪 2025 国民经济和社会发展统计公报、人口、收入、就业与粮食等核心统计。"
   },
   {
@@ -14,7 +14,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.moe.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "教育部 2025-06-11 发布 2024 年全国教育事业发展统计公报。"
   },
   {
@@ -23,7 +23,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.nhc.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "国家卫健委发布 2024 年卫生健康事业发展统计公报，最新解读显示人均预期寿命达到 79 岁。"
   },
   {
@@ -32,7 +32,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.mohrss.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "就业、社保、养老金和劳动关系政策入口，也作为青年就业议题的政策跳转来源。"
   },
   {
@@ -41,7 +41,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.samr.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "市场监管、食品安全抽检、消费维权和 12315 相关公开信息入口。"
   },
   {
@@ -59,7 +59,7 @@
     "category": "research-metadata",
     "authority_level": "B",
     "url": "https://api.crossref.org/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "优先用于 DOI 元数据补全。"
   },
   {
@@ -68,7 +68,7 @@
     "category": "research-metadata",
     "authority_level": "B",
     "url": "https://api.openalex.org/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "作为 Crossref 的补充来源，用于论文摘要、期刊与作者信息兜底。"
   },
   {
@@ -77,7 +77,7 @@
     "category": "feed-proxy",
     "authority_level": "C",
     "url": "https://docs.rsshub.app/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "作为公开网页的订阅代理和回退层使用，不替代原始平台或官方来源。"
   },
   {
@@ -86,7 +86,7 @@
     "category": "public-link",
     "authority_level": "C",
     "url": "https://s.weibo.com/top/summary",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "仅保留公开入口链接与站内快照，不做高频抓取。"
   },
   {
@@ -104,7 +104,7 @@
     "category": "public-link",
     "authority_level": "C",
     "url": "https://www.bilibili.com/v/popular/all",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "视频平台热点的公开入口。"
   },
   {
@@ -113,7 +113,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "政策原文与政策解读总入口，住房、医改和综合民生条目优先链接到这里。"
   },
   {
@@ -122,7 +122,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://www.cnnic.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "《中国互联网络发展状况统计报告》来源，用于网民规模和互联网普及率口径。"
   },
   {
@@ -131,7 +131,7 @@
     "category": "official-data",
     "authority_level": "A",
     "url": "https://chinajob.mohrss.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "人社系统公开就业服务、风险提示、清理整顿人力资源市场秩序和求职陷阱整治信息。"
   },
   {
@@ -140,7 +140,7 @@
     "category": "official-data",
     "authority_level": "B",
     "url": "https://www.lf.gov.cn/",
-    "last_checked": "2026-04-15",
+    "last_checked": "2026-04-16",
     "note": "公开公租房申请、摇号、配租和防范保障房诈骗的官方提示。"
   }
 ]

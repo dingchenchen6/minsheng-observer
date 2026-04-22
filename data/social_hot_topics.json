@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-21T14:07:33.843391+00:00",
+  "updated_at": "2026-04-22T03:41:06.650442+00:00",
   "note": "知乎与微博优先走公开入口直抓；如触发鉴权，则回退到 RSSHub 等代理订阅源；仍失败时保留最近一次成功结果或人工校准快照，并公开显示状态。",
   "strategy_layers": [
     {
@@ -33,7 +33,7 @@
       "status": "restricted",
       "url": "https://www.zhihu.com/hot",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#zhihu",
-      "last_attempt": "2026-04-21T14:07:34.987902+00:00",
+      "last_attempt": "2026-04-22T03:41:07.303415+00:00",
       "last_success": "",
       "note": "知乎公开 API 和页面触发鉴权。"
     },
@@ -45,7 +45,7 @@
       "status": "visitor_gate",
       "url": "https://s.weibo.com/top/summary",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#weibo",
-      "last_attempt": "2026-04-21T14:07:40.737969+00:00",
+      "last_attempt": "2026-04-22T03:41:12.833189+00:00",
       "last_success": "",
       "note": "微博公开页触发访客系统或接口拒绝访问。"
     },
@@ -57,7 +57,7 @@
       "status": "standby",
       "url": "https://rsshub.app/zhihu/hot",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#zhihu",
-      "last_attempt": "2026-04-21T14:07:40.897772+00:00",
+      "last_attempt": "2026-04-22T03:41:12.942451+00:00",
       "last_success": "",
       "note": "RSSHub 实例当前不可达或未配置，继续保留站内快照。"
     },
@@ -69,7 +69,7 @@
       "status": "standby",
       "url": "https://rsshub.app/weibo/search/hot/fulltext",
       "docs_url": "https://docs.rsshub.app/zh/routes/social-media#weibo",
-      "last_attempt": "2026-04-21T14:07:40.982921+00:00",
+      "last_attempt": "2026-04-22T03:41:12.972411+00:00",
       "last_success": "",
       "note": "RSSHub 实例当前不可达或未配置，继续保留站内快照。"
     }
@@ -79,14 +79,14 @@
       "status": "restricted",
       "label": "抓取受限",
       "note": "知乎公开 API 和页面触发鉴权，保留最近一次成功或校准结果。",
-      "last_attempt": "2026-04-21T14:07:40.897793+00:00",
+      "last_attempt": "2026-04-22T03:41:12.942477+00:00",
       "last_success": ""
     },
     "weibo": {
       "status": "visitor_gate",
       "label": "游客验证",
       "note": "微博公开页触发访客系统或接口拒绝访问，保留最近一次成功或校准结果。",
-      "last_attempt": "2026-04-21T14:07:40.982946+00:00",
+      "last_attempt": "2026-04-22T03:41:12.972438+00:00",
       "last_success": ""
     }
   },

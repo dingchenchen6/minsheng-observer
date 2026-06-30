@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-30T04:32:50.831982+00:00",
+  "updated_at": "2026-06-30T14:41:57.444601+00:00",
   "cadence": {
     "timezone": "Asia/Shanghai",
     "timezone_label": "北京时间",
@@ -46,7 +46,7 @@
     "expected_runs": 2,
     "progress_label": "2 / 2",
     "latest_slot_label": "晚报",
-    "latest_timestamp_label": "2026年06月30日 12:32（北京时间）",
+    "latest_timestamp_label": "2026年06月30日 22:41（北京时间）",
     "next_expected_label": "已完成今日两次更新"
   },
   "latest_run": {
@@ -66,7 +66,7 @@
     "run_count": 2,
     "latest_slot": "evening",
     "latest_slot_label": "晚报",
-    "latest_timestamp_label": "2026年06月30日 12:32（北京时间）",
+    "latest_timestamp_label": "2026年06月30日 22:41（北京时间）",
     "headline": "2026年06月30日 晚报重点关注“民生”与“住房”",
     "summary": "本站按晚报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
     "top_topic": "livelihood",
@@ -95,7 +95,7 @@
     {
       "label": "最近更新",
       "value": "晚报",
-      "note": "2026年06月30日 12:32（北京时间）"
+      "note": "2026年06月30日 22:41（北京时间）"
     },
     {
       "label": "今日领跑",
@@ -126,7 +126,7 @@
       "run_count": 2,
       "latest_slot": "evening",
       "latest_slot_label": "晚报",
-      "latest_timestamp_label": "2026年06月30日 12:32（北京时间）",
+      "latest_timestamp_label": "2026年06月30日 22:41（北京时间）",
       "headline": "2026年06月30日 晚报重点关注“民生”与“住房”",
       "summary": "本站按晚报节奏自动汇总热点、社媒快照、证据库、讨论摘录和报告入口，帮助判断哪些议题值得继续盯。",
       "top_topic": "livelihood",

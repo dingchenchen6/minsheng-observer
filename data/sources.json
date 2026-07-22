@@ -59,7 +59,7 @@
     "category": "research-metadata",
     "authority_level": "B",
     "url": "https://api.crossref.org/",
-    "last_checked": "2026-07-21",
+    "last_checked": "2026-07-22",
     "note": "优先用于 DOI 元数据补全。"
   },
   {
